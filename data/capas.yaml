@@ -1,0 +1,849 @@
+# Catálogo de vulnerabilidades y protecciones por capa OSI (protección on-premise por capas).
+# Convenciones:
+# - La capa de una clase es la capa donde se produce el ataque o su impacto principal. La capa de cada
+#   protocolo es la de security-manager-control (data/smc_protocolos.yaml), que puede no coincidir
+#   (BGP y DHCP están en la capa 7 en SMC y aquí aparecen en clases de capa 3 y 2).
+# - cwe: ids de MITRE CWE. attack: técnicas de MITRE ATT&CK (T1xxx Enterprise, T0xxx ICS).
+#   Comprobados contra cwe.mitre.org y attack.mitre.org con tools/verificar_ids.py (data/verificacion_ids.yaml).
+#   CWE-345, CWE-400 y CWE-693 tienen uso DISCOURAGED en MITRE (son abstractos); se mantienen donde SMC los usa
+#   para el mismo protocolo (ARP, BGP, DNS, ICMP) o no hay un hijo claro (túneles). La página lo marca.
+# - ens: medidas del Anexo II del RD 311/2022 (solo ids de data/ens_ids.txt). nis2: letras del art. 21.2
+#   de la Directiva (UE) 2022/2555 con el formato de SMC (NIS2-21.2.x).
+# - Sin CVE concretos: cada clase lleva búsquedas en fuentes oficiales (consulta). Mapeo orientativo,
+#   juicio inicial del autor sin auditoría externa.
+version: v1
+capas:
+- id: L1
+  numero: 1
+  nombre: Física
+  descripcion: Medio de transmisión, cableado, radiofrecuencia, puertos físicos y salas donde viven los equipos.
+  activos: [Armarios y racks de comunicaciones, Cableado estructurado y fibra, Rosetas y puertos de red en puestos, Puntos de acceso Wi-Fi, Salas CPD]
+  clases:
+  - id: L1-ACCESO-FISICO
+    nombre: Acceso físico y dispositivos implantados
+    descripcion: Conexión de equipos no autorizados (implantes de red, mini PC, puntos de acceso) a rosetas libres o armarios abiertos.
+    cwe: [CWE-1263]
+    attack: [T1200]
+    protocolos: [EAP_8021X]
+    controles:
+    - Armarios y salas con cierre y control de acceso registrado
+    - Puertos de switch sin uso deshabilitados (shutdown) y asignados a una VLAN aislada
+    - 802.1X o NAC en todos los puertos de acceso
+    - Inventario de equipos conectados contrastado con el inventario de activos
+    deteccion: [Eventos link up y down del switch (syslog), Registro del NAC y del servidor RADIUS, Control de acceso físico y videovigilancia]
+    ens: [ENS-mp.if.1, ENS-mp.eq.4, ENS-op.exp.1]
+    nis2: [NIS2-21.2.i]
+    palabra_clave: hardware%20implant
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=hardware%20implant&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=hardware%20implant
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=hardware%20implant
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=hardware%20implant
+  - id: L1-INTERCEPCION-MEDIO
+    nombre: Intercepción del medio
+    descripcion: Derivación pasiva (TAP) en cobre o fibra o captura de radiofrecuencia para leer tráfico sin cifrar.
+    cwe: [CWE-319]
+    attack: [T1040]
+    protocolos: [TELNET, FTP, HTTP]
+    controles:
+    - Canalizaciones protegidas y cableado en zonas controladas
+    - MACsec (IEEE 802.1AE) en enlaces entre edificios o salas sin control
+    - Cifrado extremo a extremo (TLS, SSH, IPsec) para que la captura no sirva
+    deteccion: [Alarmas de pérdida de señal o atenuación en fibra, Inspección física periódica del cableado]
+    ens: [ENS-mp.com.2, ENS-mp.if.1]
+    nis2: [NIS2-21.2.h, NIS2-21.2.j]
+    palabra_clave: cleartext%20transmission
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=cleartext%20transmission&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=cleartext%20transmission
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=cleartext%20transmission
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=cleartext%20transmission
+
+- id: L2
+  numero: 2
+  nombre: Enlace de datos
+  descripcion: Tramas, direcciones MAC, switches, VLAN y Wi-Fi; decide quién habla dentro del segmento.
+  activos: [Switches de acceso y distribución, Controladoras y puntos de acceso Wi-Fi, Servidores RADIUS y NAC, Servidores DHCP]
+  clases:
+  - id: L2-ARP-SPOOFING
+    nombre: ARP spoofing (envenenamiento de caché ARP)
+    descripcion: Respuestas ARP falsas para suplantar la puerta de enlace y ponerse en medio del tráfico.
+    cwe: [CWE-345, CWE-290]
+    attack: [T1557.002, T1040]
+    protocolos: [ARP]
+    controles:
+    - Dynamic ARP Inspection (DAI) apoyado en la tabla de DHCP snooping
+    - Entradas ARP estáticas para pasarelas críticas
+    - Port security y VLAN pequeñas por función
+    deteccion: [Registros de DAI en el switch, Cambios de MAC de la puerta de enlace (arpwatch o NDR), IDS de red]
+    ens: [ENS-mp.com.3, ENS-op.exp.2, ENS-op.mon.1]
+    nis2: [NIS2-21.2.a, NIS2-21.2.j]
+    palabra_clave: ARP%20spoofing
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=ARP%20spoofing&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=ARP%20spoofing
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=ARP%20spoofing
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=ARP%20spoofing
+  - id: L2-MAC-FLOODING
+    nombre: MAC flooding
+    descripcion: Inundación de la tabla CAM del switch para que reenvíe tramas a todos los puertos como un concentrador.
+    cwe: [CWE-770]
+    attack: [T1040]
+    protocolos: []
+    controles:
+    - Port security con número máximo de MAC por puerto y acción shutdown o restrict
+    - 802.1X en puertos de acceso
+    - Alertas por llenado de la tabla CAM
+    deteccion: [Violaciones de port security (syslog o SNMP traps), Uso de la tabla CAM en la monitorización del switch]
+    ens: [ENS-op.exp.2, ENS-op.mon.3]
+    nis2: [NIS2-21.2.a]
+    palabra_clave: MAC%20flooding
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=MAC%20flooding&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=MAC%20flooding
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=MAC%20flooding
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=MAC%20flooding
+  - id: L2-VLAN-HOPPING
+    nombre: VLAN hopping
+    descripcion: Salto de VLAN por negociación automática de troncales (switch spoofing) o doble etiquetado 802.1Q.
+    cwe: [CWE-1188]
+    attack: [T1599]
+    protocolos: []
+    controles:
+    - Deshabilitar la negociación dinámica de troncales en puertos de acceso
+    - Puertos de acceso fijos (modo access) y troncales con lista explícita de VLAN permitidas
+    - VLAN nativa sin uso y etiquetada en troncales; no usar la VLAN 1
+    deteccion: [Cambios de configuración de puertos (syslog y gestor de configuración), Tráfico entre VLAN no esperado en NDR]
+    ens: [ENS-op.exp.2, ENS-op.exp.3, ENS-mp.com.4]
+    nis2: [NIS2-21.2.a, NIS2-21.2.e]
+    palabra_clave: VLAN%20hopping
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=VLAN%20hopping&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=VLAN%20hopping
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=VLAN%20hopping
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=VLAN%20hopping
+  - id: L2-STP
+    nombre: Manipulación de STP
+    descripcion: Envío de BPDU para convertirse en puente raíz, desviar tráfico o provocar recálculos continuos de la topología.
+    cwe: [CWE-346]
+    attack: [T1557]
+    protocolos: []
+    controles:
+    - BPDU Guard en puertos de usuario y PortFast solo en puertos de borde
+    - Root Guard en puertos que nunca deben llevar al puente raíz
+    - Prioridad de puente raíz fijada en los equipos de núcleo
+    deteccion: [Cambios de topología y de puente raíz (syslog, SNMP traps), Puertos en err-disabled por BPDU Guard]
+    ens: [ENS-op.exp.2, ENS-op.mon.3]
+    nis2: [NIS2-21.2.a]
+    palabra_clave: spanning%20tree
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=spanning%20tree&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=spanning%20tree
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=spanning%20tree
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=spanning%20tree
+  - id: L2-DHCP-SPOOFING
+    nombre: DHCP spoofing y agotamiento
+    descripcion: Servidor DHCP falso que entrega otra puerta de enlace o DNS, o agotamiento del ámbito con solicitudes masivas.
+    cwe: [CWE-346, CWE-770]
+    attack: [T1557.003]
+    protocolos: [DHCP]
+    controles:
+    - DHCP snooping con puertos de confianza solo hacia los servidores legítimos
+    - Límite de tasa de DHCP por puerto
+    - Port security para frenar el agotamiento por MAC aleatorias
+    deteccion: [Registros de DHCP snooping, Avisos de servidor DHCP no autorizado, Ocupación del ámbito en el servidor DHCP]
+    ens: [ENS-op.exp.2, ENS-mp.com.3]
+    nis2: [NIS2-21.2.a]
+    palabra_clave: DHCP%20spoofing
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=DHCP%20spoofing&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=DHCP%20spoofing
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=DHCP%20spoofing
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=DHCP%20spoofing
+  - id: L2-WIFI-ROGUE
+    nombre: Punto de acceso falso y gemelo malvado
+    descripcion: Red Wi-Fi que imita la corporativa para capturar credenciales EAP o ponerse en medio.
+    cwe: [CWE-295, CWE-522]
+    attack: [T1557, T1040]
+    protocolos: [EAP_8021X]
+    controles:
+    - WPA3-Enterprise o WPA2-Enterprise con EAP-TLS
+    - Validación del certificado del servidor RADIUS en los clientes (perfil gestionado)
+    - Detección y contención de puntos de acceso no autorizados (WIDS/WIPS)
+    deteccion: [WIDS/WIPS de la controladora, Registros del servidor RADIUS (fallos de EAP)]
+    ens: [ENS-mp.com.2, ENS-op.acc.6, ENS-op.mon.1]
+    nis2: [NIS2-21.2.h, NIS2-21.2.j]
+    palabra_clave: rogue%20access%20point
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=rogue%20access%20point&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=rogue%20access%20point
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=rogue%20access%20point
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=rogue%20access%20point
+  - id: L2-NAC-BYPASS
+    nombre: Suplantación de MAC para saltar el NAC
+    descripcion: Copia de la MAC de un equipo autorizado (impresora, teléfono IP) para entrar por puertos con autenticación solo por MAC.
+    cwe: [CWE-290]
+    attack: [T1200]
+    protocolos: [EAP_8021X]
+    controles:
+    - 802.1X con EAP-TLS en lugar de autenticación solo por MAC
+    - Perfilado de dispositivos en el NAC y VLAN restringida para equipos sin 802.1X
+    - MACsec donde el equipo lo soporte
+    deteccion: [NAC (misma MAC en dos puertos, perfil distinto del esperado), Registros RADIUS]
+    ens: [ENS-op.acc.1, ENS-mp.eq.4]
+    nis2: [NIS2-21.2.i]
+    palabra_clave: MAC%20authentication%20bypass
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=MAC%20authentication%20bypass&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=MAC%20authentication%20bypass
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=MAC%20authentication%20bypass
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=MAC%20authentication%20bypass
+
+- id: L3
+  numero: 3
+  nombre: Red
+  descripcion: Direccionamiento IP, enrutamiento, ICMP, fragmentación y túneles entre redes.
+  activos: [Routers de borde y de núcleo, Firewalls perimetrales e internos, Concentradores VPN, Switches de capa 3]
+  clases:
+  - id: L3-IP-SPOOFING
+    nombre: IP spoofing
+    descripcion: Paquetes con dirección de origen falsa para evadir filtros o reflejar tráfico contra un tercero.
+    cwe: [CWE-290]
+    attack: [T1498.002]
+    protocolos: []
+    controles:
+    - Filtrado de entrada y salida según BCP38 (RFC 2827) en el borde
+    - uRPF en modo estricto en interfaces hacia usuarios
+    - ACL antispoofing (rangos privados y propios entrando desde fuera)
+    deteccion: [Contadores de descarte por uRPF y ACL, NetFlow o IPFIX en el borde]
+    ens: [ENS-mp.com.1, ENS-op.exp.2]
+    nis2: [NIS2-21.2.a]
+    palabra_clave: IP%20spoofing
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=IP%20spoofing&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=IP%20spoofing
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=IP%20spoofing
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=IP%20spoofing
+  - id: L3-ENRUTAMIENTO
+    nombre: Ataques al enrutamiento
+    descripcion: Secuestro o fuga de prefijos BGP e inyección de rutas en protocolos internos (OSPF, EIGRP) sin autenticar.
+    cwe: [CWE-345, CWE-306]
+    attack: [T1557]
+    protocolos: [BGP]
+    controles:
+    - RPKI con validación de origen (ROV) y filtrado de prefijos por vecino
+    - Límite de prefijos y autenticación de sesiones (TCP-AO o MD5) en BGP
+    - Autenticación en OSPF y EIGRP e interfaces pasivas donde no hay vecinos
+    deteccion: [Cambios de vecindad y de tabla de rutas (syslog), Monitorización externa de anuncios de prefijos propios]
+    ens: [ENS-mp.com.1, ENS-mp.com.3, ENS-op.exp.2]
+    nis2: [NIS2-21.2.a, NIS2-21.2.j]
+    palabra_clave: BGP
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=BGP&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=BGP
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=BGP
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=BGP
+  - id: L3-FRAGMENTACION
+    nombre: Abuso de la fragmentación
+    descripcion: Fragmentos solapados o diminutos para evadir el IDS o agotar el reensamblado del destino.
+    cwe: [CWE-130, CWE-770]
+    attack: [T1499.001]
+    protocolos: []
+    controles:
+    - Reensamblado y normalización de fragmentos en el firewall o IPS antes de inspeccionar
+    - Descarte de fragmentos solapados y de fragmentos iniciales demasiado pequeños
+    - Firmware al día en equipos que reensamblan
+    deteccion: [Alertas de anomalía de fragmentación en el IDS/IPS, Contadores de fragmentos descartados en el firewall]
+    ens: [ENS-op.mon.1, ENS-op.exp.4]
+    nis2: [NIS2-21.2.a, NIS2-21.2.e]
+    palabra_clave: IP%20fragmentation
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=IP%20fragmentation&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=IP%20fragmentation
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=IP%20fragmentation
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=IP%20fragmentation
+  - id: L3-ICMP
+    nombre: Abuso de ICMP
+    descripcion: Reconocimiento, túneles encubiertos sobre ICMP, redirecciones e inundación.
+    cwe: [CWE-400]
+    attack: [T1018, T1095, T1498]
+    protocolos: [ICMP]
+    controles:
+    - Permitir solo los tipos ICMP necesarios (por ejemplo, los de PMTUD) en el perímetro
+    - Deshabilitar ICMP redirect en routers y servidores
+    - Límite de tasa de ICMP
+    deteccion: [NetFlow (volumen y tamaño de carga ICMP), IDS de red]
+    ens: [ENS-mp.com.1, ENS-op.mon.1]
+    nis2: [NIS2-21.2.a]
+    palabra_clave: ICMP
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=ICMP&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=ICMP
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=ICMP
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=ICMP
+  - id: L3-IPV6-RA
+    nombre: Anuncios de router IPv6 falsos
+    descripcion: Router Advertisement o DHCPv6 falsos en redes donde IPv6 está activo sin gestionar, para ponerse en medio.
+    cwe: [CWE-346]
+    attack: [T1557]
+    protocolos: []
+    controles:
+    - RA Guard y DHCPv6 Guard en switches de acceso
+    - Gestionar IPv6 de forma explícita (o deshabilitarlo en el sistema si no se usa)
+    - Inspección de Neighbor Discovery donde el switch la soporte
+    deteccion: [Registros de RA Guard, NDR (routers IPv6 no esperados)]
+    ens: [ENS-op.exp.2, ENS-mp.com.3]
+    nis2: [NIS2-21.2.a]
+    palabra_clave: IPv6%20router%20advertisement
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=IPv6%20router%20advertisement&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=IPv6%20router%20advertisement
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=IPv6%20router%20advertisement
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=IPv6%20router%20advertisement
+  - id: L3-VPN
+    nombre: VPN y túneles débiles o sin parchear
+    descripcion: IPsec con claves precompartidas débiles o algoritmos obsoletos y concentradores VPN expuestos sin parches.
+    cwe: [CWE-326, CWE-327, CWE-521]
+    attack: [T1133, T1190]
+    protocolos: [IPSEC_IKE]
+    controles:
+    - IKEv2 con certificados y algoritmos modernos
+    - Parcheo prioritario de VPN perimetrales (vigilar CISA KEV)
+    - MFA en el acceso remoto
+    deteccion: [Registros del concentrador VPN (autenticaciones y errores), Alertas de inicio de sesión anómalo en el SIEM]
+    ens: [ENS-op.acc.5, ENS-op.exp.4, ENS-mp.com.2]
+    nis2: [NIS2-21.2.e, NIS2-21.2.h, NIS2-21.2.j]
+    palabra_clave: IKE
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=IKE&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=IKE
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=IKE
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=IKE
+
+- id: L4
+  numero: 4
+  nombre: Transporte
+  descripcion: Puertos, TCP y UDP, establecimiento de conexión, estado y presión sobre los servicios.
+  activos: [Firewalls con estado, Balanceadores de carga, Protección antiDDoS, Servidores con servicios publicados]
+  clases:
+  - id: L4-SYN-FLOOD
+    nombre: SYN flood
+    descripcion: Conexiones TCP a medio abrir que agotan la tabla de estado del servidor, el firewall o el balanceador.
+    cwe: [CWE-770]
+    attack: [T1499.001, T1498.001]
+    protocolos: []
+    controles:
+    - SYN cookies en servidores y balanceadores
+    - Límites de conexiones embrionarias y de tasa por origen en el firewall
+    - Protección antiDDoS aguas arriba (operador o servicio) para volumen
+    deteccion: [Contadores de conexiones medio abiertas del firewall o balanceador, NetFlow, Monitorización de disponibilidad]
+    ens: [ENS-mp.s.4, ENS-op.pl.4]
+    nis2: [NIS2-21.2.a, NIS2-21.2.c]
+    palabra_clave: SYN%20flood
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=SYN%20flood&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=SYN%20flood
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=SYN%20flood
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=SYN%20flood
+  - id: L4-AMPLIFICACION
+    nombre: Reflexión y amplificación UDP
+    descripcion: Servicios UDP propios (DNS, NTP, SNMP) usados como reflectores contra terceros, o la organización como víctima.
+    cwe: [CWE-406]
+    attack: [T1498.002]
+    protocolos: [DNS, NTP, SNMP]
+    controles:
+    - Sin resolutores DNS abiertos ni monlist en NTP; SNMP no expuesto a Internet
+    - Filtrado BCP38 para no originar tráfico falsificado
+    - Límite de tasa de respuestas (RRL en DNS)
+    deteccion: [NetFlow (asimetría de tráfico UDP de salida), Registros del servidor DNS y NTP]
+    ens: [ENS-mp.s.4, ENS-op.exp.2]
+    nis2: [NIS2-21.2.a]
+    palabra_clave: amplification
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=amplification&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=amplification
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=amplification
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=amplification
+  - id: L4-SECUESTRO-TCP
+    nombre: Secuestro e inyección en sesiones TCP
+    descripcion: Inyección de segmentos o RST en conexiones sin cifrar cuando el atacante ve o predice los números de secuencia.
+    cwe: [CWE-319]
+    attack: [T1557]
+    protocolos: [TELNET, FTP, BGP]
+    controles:
+    - Cifrado e integridad en el canal (TLS, SSH, IPsec)
+    - TCP-AO o MD5 en sesiones BGP
+    - Firewall con estado que valide números de secuencia
+    deteccion: [IDS de red (RST anómalos, desincronización), Registros de sesiones caídas en servicios críticos]
+    ens: [ENS-mp.com.3, ENS-mp.com.2]
+    nis2: [NIS2-21.2.h, NIS2-21.2.j]
+    palabra_clave: TCP%20session%20hijacking
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=TCP%20session%20hijacking&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=TCP%20session%20hijacking
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=TCP%20session%20hijacking
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=TCP%20session%20hijacking
+  - id: L4-EXPOSICION-PUERTOS
+    nombre: Servicios expuestos y escaneo de puertos
+    descripcion: Servicios escuchando en todas las interfaces o publicados sin necesidad, descubiertos por escaneo.
+    cwe: [CWE-1327]
+    attack: [T1046]
+    protocolos: [SMB, RDP, SSH, TELNET, FTP, SNMP]
+    controles:
+    - Política de firewall de denegación por defecto y revisión periódica de reglas
+    - Servicios ligados solo a la interfaz necesaria
+    - Escaneo propio periódico del perímetro y entre zonas
+    deteccion: [Registros de denegación del firewall, NDR o IDS (patrones de escaneo)]
+    ens: [ENS-mp.com.1, ENS-op.exp.2, ENS-op.mon.1]
+    nis2: [NIS2-21.2.a, NIS2-21.2.f]
+    palabra_clave: port%20scan
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=port%20scan&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=port%20scan
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=port%20scan
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=port%20scan
+
+- id: L5
+  numero: 5
+  nombre: Sesión
+  descripcion: Estado conversacional, autenticación de sesión, tokens, cookies, reanudación y continuidad.
+  activos: [Proxies inversos y balanceadores con persistencia, Controladores de dominio, Servidores de aplicaciones, Pasarelas RDP]
+  clases:
+  - id: L5-SECUESTRO-SESION
+    nombre: Robo y fijación de sesión
+    descripcion: Robo de cookies o tokens de sesión, fijación de sesión y sesiones que no caducan.
+    cwe: [CWE-384, CWE-1463, CWE-1464]
+    attack: [T1539, T1550.004, T1563]
+    protocolos: [HTTP, RDP]
+    controles:
+    - Cookies con Secure, HttpOnly y SameSite; identificador nuevo tras autenticar
+    - Caducidad por inactividad y absoluta; revocación en el servidor
+    - Desconexión de sesiones RDP inactivas en las pasarelas
+    deteccion: [Registros de la aplicación y del proxy inverso (misma sesión desde orígenes distintos), Registros de sesiones RDP]
+    ens: [ENS-op.acc.6, ENS-mp.s.2]
+    nis2: [NIS2-21.2.i, NIS2-21.2.j]
+    palabra_clave: session%20fixation
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=session%20fixation&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=session%20fixation
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=session%20fixation
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=session%20fixation
+  - id: L5-RELE-AUTENTICACION
+    nombre: Relé y repetición de autenticación
+    descripcion: Captura y reenvío de autenticaciones NTLM o Kerberos (envenenamiento LLMNR y NBT-NS, relé SMB y LDAP).
+    cwe: [CWE-294, CWE-522]
+    attack: [T1557.001, T1550.002, T1558]
+    protocolos: [NTLM, SMB, LDAP, KERBEROS]
+    controles:
+    - Firma SMB obligatoria y firma y channel binding en LDAP
+    - Deshabilitar LLMNR y NBT-NS; restringir y auditar NTLM
+    - Protección extendida (EPA) en servicios web con autenticación integrada
+    deteccion: [Eventos de autenticación de los controladores de dominio, IDS de red (respuestas LLMNR y NBT-NS no esperadas)]
+    ens: [ENS-op.acc.6, ENS-mp.com.3, ENS-op.exp.2]
+    nis2: [NIS2-21.2.i, NIS2-21.2.j]
+    palabra_clave: NTLM%20relay
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=NTLM%20relay&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=NTLM%20relay
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=NTLM%20relay
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=NTLM%20relay
+
+- id: L6
+  numero: 6
+  nombre: Presentación
+  descripcion: Cifrado, certificados, codificación y formato de los datos que viajan.
+  activos: [Terminadores TLS (balanceadores y proxies inversos), PKI interna y HSM, Servidores web y de correo, Servidores LDAP]
+  clases:
+  - id: L6-TLS-DEBIL
+    nombre: TLS débil
+    descripcion: Versiones obsoletas (SSL 3.0, TLS 1.0 y 1.1) y suites sin confidencialidad directa o con cifrados rotos.
+    cwe: [CWE-327, CWE-326]
+    attack: [T1557, T1040]
+    protocolos: [TLS, HTTP, SMTP, IMAP_POP3, LDAP]
+    controles:
+    - Solo TLS 1.2 y 1.3 con suites AEAD y confidencialidad directa
+    - Configuración de referencia común para balanceadores, servidores y equipos de red
+    - Prueba periódica de la configuración TLS de los servicios publicados
+    deteccion: [Inventario de versiones TLS negociadas (registros del balanceador o NDR), Escaneo periódico de configuración]
+    ens: [ENS-mp.com.2, ENS-mp.com.3, ENS-op.exp.2]
+    nis2: [NIS2-21.2.h]
+    palabra_clave: TLS
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=TLS&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=TLS
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=TLS
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=TLS
+  - id: L6-DOWNGRADE
+    nombre: Degradación y eliminación del cifrado
+    descripcion: Forzar una versión o algoritmo más débil, o quitar el cifrado en el arranque (STARTTLS stripping, SSL stripping).
+    cwe: [CWE-757, CWE-319]
+    attack: [T1557]
+    protocolos: [TLS, HTTP, SMTP, IMAP_POP3, LDAP]
+    controles:
+    - HSTS en servicios web y redirección única a HTTPS
+    - TLS obligatorio (no oportunista) entre servidores de correo conocidos y LDAPS en lugar de LDAP con STARTTLS opcional
+    - Deshabilitar versiones antiguas en ambos extremos
+    deteccion: [Registros del servidor de correo (sesiones sin TLS), Registros del balanceador (versión negociada)]
+    ens: [ENS-mp.com.2, ENS-mp.com.3]
+    nis2: [NIS2-21.2.h, NIS2-21.2.j]
+    palabra_clave: downgrade
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=downgrade&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=downgrade
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=downgrade
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=downgrade
+  - id: L6-CERTIFICADOS
+    nombre: Validación deficiente de certificados
+    descripcion: Clientes o aplicaciones que aceptan certificados caducados, autofirmados o con otro nombre.
+    cwe: [CWE-295, CWE-297]
+    attack: [T1557]
+    protocolos: [TLS, EAP_8021X, OPCUA]
+    controles:
+    - Validación estricta de cadena, nombre y revocación en clientes y aplicaciones
+    - PKI interna con inventario y ciclo de vida de certificados
+    - Alertas de caducidad
+    deteccion: [Inventario de certificados (caducidad, emisor), Errores de validación en registros de clientes y aplicaciones]
+    ens: [ENS-mp.com.3, ENS-op.exp.10]
+    nis2: [NIS2-21.2.h]
+    palabra_clave: certificate%20validation
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=certificate%20validation&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=certificate%20validation
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=certificate%20validation
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=certificate%20validation
+  - id: L6-CLAVES
+    nombre: Claves criptográficas expuestas o embebidas
+    descripcion: Claves privadas en ficheros accesibles, claves embebidas en firmware o aplicaciones y claves compartidas entre equipos.
+    cwe: [CWE-321, CWE-798]
+    attack: [T1552.004]
+    protocolos: [TLS, SSH]
+    controles:
+    - Claves en HSM o almacén protegido, con permisos mínimos
+    - Rotación de claves y certificados y una clave por equipo
+    - Sustituir claves por defecto de fábrica en equipos de red
+    deteccion: [Auditoría de acceso a ficheros de claves, Búsqueda periódica de claves en repositorios y comparticiones]
+    ens: [ENS-op.exp.10, ENS-mp.si.2]
+    nis2: [NIS2-21.2.h]
+    palabra_clave: hard-coded%20key
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=hard-coded%20key&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=hard-coded%20key
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=hard-coded%20key
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=hard-coded%20key
+
+- id: L7
+  numero: 7
+  nombre: Aplicación
+  descripcion: Protocolos y lógica de usuario (HTTP, DNS, correo, directorio, protocolos industriales), entrada y salida de datos.
+  activos: [WAF y proxies inversos, Servidores web y de aplicaciones, Servidores DNS, Servidores de correo, Directorio activo, Pasarelas y servidores OT]
+  clases:
+  - id: L7-INYECCION
+    nombre: Inyección
+    descripcion: Datos de entrada que se ejecutan como consulta o comando (SQL, sistema operativo, LDAP).
+    cwe: [CWE-89, CWE-78, CWE-90]
+    attack: [T1190]
+    protocolos: [HTTP, LDAP]
+    controles:
+    - Consultas parametrizadas y validación de entrada en el código
+    - WAF delante de las aplicaciones publicadas
+    - Cuentas de servicio con privilegios mínimos en base de datos y sistema
+    deteccion: [Registros del WAF, Errores de base de datos en registros de la aplicación]
+    ens: [ENS-mp.s.2, ENS-mp.sw.1, ENS-mp.sw.2]
+    nis2: [NIS2-21.2.e]
+    palabra_clave: SQL%20injection
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=SQL%20injection&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=SQL%20injection
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=SQL%20injection
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=SQL%20injection
+  - id: L7-XSS
+    nombre: Cross-site scripting
+    descripcion: Código de script inyectado que se ejecuta en el navegador de otro usuario de la aplicación.
+    cwe: [CWE-79]
+    attack: [T1189, T1059.007]
+    protocolos: [HTTP]
+    controles:
+    - Codificación de salida según contexto
+    - Content Security Policy
+    - WAF y pruebas de seguridad antes de la puesta en servicio
+    deteccion: [Registros del WAF, Informes de violación de CSP]
+    ens: [ENS-mp.s.2, ENS-mp.sw.1]
+    nis2: [NIS2-21.2.e]
+    palabra_clave: cross-site%20scripting
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=cross-site%20scripting&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=cross-site%20scripting
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=cross-site%20scripting
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=cross-site%20scripting
+  - id: L7-SSRF
+    nombre: Server-side request forgery
+    descripcion: La aplicación hace peticiones a destinos internos elegidos por el atacante.
+    cwe: [CWE-918]
+    attack: [T1190]
+    protocolos: [HTTP]
+    controles:
+    - Lista de destinos permitidos en la aplicación
+    - Salida de los servidores de aplicación filtrada por firewall (sin acceso libre a la red interna)
+    - WAF con reglas para SSRF
+    deteccion: [Registros del firewall (conexiones salientes de servidores web a zonas internas), Registros del WAF]
+    ens: [ENS-mp.s.2, ENS-mp.com.4]
+    nis2: [NIS2-21.2.e]
+    palabra_clave: SSRF
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=SSRF&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=SSRF
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=SSRF
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=SSRF
+  - id: L7-DESERIALIZACION
+    nombre: Deserialización insegura
+    descripcion: Objetos serializados no confiables que la aplicación reconstruye y que llevan a ejecución de código.
+    cwe: [CWE-502]
+    attack: [T1190]
+    protocolos: [HTTP]
+    controles:
+    - No deserializar datos no confiables; usar formatos de datos simples con esquema
+    - Listas de clases permitidas en la deserialización
+    - Parcheo de librerías y servidores de aplicaciones
+    deteccion: [Registros del WAF, EDR en servidores (procesos hijo inesperados del servidor de aplicaciones)]
+    ens: [ENS-mp.sw.1, ENS-op.exp.4]
+    nis2: [NIS2-21.2.e]
+    palabra_clave: deserialization
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=deserialization&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=deserialization
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=deserialization
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=deserialization
+  - id: L7-SMUGGLING
+    nombre: HTTP request smuggling
+    descripcion: Proxy y servidor interpretan de forma distinta los límites de una petición HTTP.
+    cwe: [CWE-444]
+    attack: [T1190]
+    protocolos: [HTTP]
+    controles:
+    - Rechazar peticiones con cabeceras de longitud ambiguas en el proxy inverso
+    - Misma versión de HTTP de extremo a extremo y normalización en el proxy
+    - Parcheo de proxies y servidores web
+    deteccion: [Registros del proxy inverso y del WAF, Discrepancias entre registros del proxy y del servidor]
+    ens: [ENS-mp.s.2, ENS-op.exp.4]
+    nis2: [NIS2-21.2.e]
+    palabra_clave: request%20smuggling
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=request%20smuggling&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=request%20smuggling
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=request%20smuggling
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=request%20smuggling
+  - id: L7-CREDENCIALES
+    nombre: Credenciales débiles y fuerza bruta
+    descripcion: Contraseñas débiles, por defecto o reutilizadas en servicios de acceso remoto y aplicaciones.
+    cwe: [CWE-307, CWE-521, CWE-798]
+    attack: [T1110, T1078, T1133]
+    protocolos: [RDP, SSH, TELNET, FTP, IMAP_POP3, SIP]
+    controles:
+    - MFA en acceso remoto y cuentas privilegiadas
+    - Bloqueo o retardo tras intentos fallidos
+    - No publicar RDP ni SSH a Internet; acceso por VPN o ZTNA
+    deteccion: [Eventos de autenticación fallida (SIEM), Registros de VPN y pasarelas]
+    ens: [ENS-op.acc.5, ENS-op.acc.6]
+    nis2: [NIS2-21.2.i, NIS2-21.2.j]
+    palabra_clave: brute%20force
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=brute%20force&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=brute%20force
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=brute%20force
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=brute%20force
+  - id: L7-TEXTO-CLARO
+    nombre: Protocolos en texto claro
+    descripcion: Telnet, FTP, SNMP v1 y v2c, HTTP o LDAP sin cifrar que exponen credenciales y datos.
+    cwe: [CWE-319]
+    attack: [T1040]
+    protocolos: [TELNET, FTP, SNMP, HTTP, LDAP, IMAP_POP3]
+    controles:
+    - Sustituir por SSH, SFTP, SNMPv3 con authPriv, HTTPS y LDAPS
+    - Deshabilitar los servicios en texto claro en equipos de red y servidores
+    deteccion: [NDR (inventario de protocolos en texto claro), Escaneo de servicios]
+    ens: [ENS-mp.com.2, ENS-op.exp.2]
+    nis2: [NIS2-21.2.h, NIS2-21.2.j]
+    palabra_clave: cleartext
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=cleartext&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=cleartext
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=cleartext
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=cleartext
+  - id: L7-DNS
+    nombre: Abuso de DNS
+    descripcion: Envenenamiento de caché, túneles DNS para exfiltración o mando y control y resolutores abiertos.
+    cwe: [CWE-345, CWE-400]
+    attack: [T1071.004, T1048]
+    protocolos: [DNS]
+    controles:
+    - Resolutores internos únicos con salida DNS directa bloqueada en el firewall
+    - DNSSEC en la validación y aleatorización de puertos de origen
+    - Registro y filtrado de consultas DNS
+    deteccion: [Registros de consultas DNS (longitud y entropía, volumen por cliente), NDR]
+    ens: [ENS-op.mon.1, ENS-mp.com.1]
+    nis2: [NIS2-21.2.a, NIS2-21.2.b]
+    palabra_clave: DNS
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=DNS&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=DNS
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=DNS
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=DNS
+  - id: L7-OT-SIN-AUTENTICACION
+    nombre: Protocolos industriales sin autenticación
+    descripcion: Modbus, S7, DNP3 o BACnet aceptan órdenes de cualquiera que alcance el puerto.
+    cwe: [CWE-306, CWE-319]
+    attack: [T1692.001, T0846, T0842]
+    protocolos: [MODBUS, S7COMM, DNP3, BACNET, OPCUA]
+    controles:
+    - Zonas y conductos (IEC 62443) con firewall industrial entre TI y OT
+    - Inspección profunda de protocolos industriales y listas de órdenes permitidas
+    - Ningún protocolo industrial publicado a Internet
+    deteccion: [Monitorización pasiva de red OT, Registros del firewall industrial]
+    ens: [ENS-mp.com.4, ENS-mp.com.1, ENS-op.mon.1]
+    nis2: [NIS2-21.2.a, NIS2-21.2.e]
+    palabra_clave: Modbus
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=Modbus&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=Modbus
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=Modbus
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=Modbus
+  - id: L7-SERVICIOS-PUBLICADOS
+    nombre: Explotación de servicios publicados sin parchear
+    descripcion: Vulnerabilidades conocidas en servicios accesibles desde fuera (web, correo, VPN, gestión remota).
+    cwe: [CWE-1104]
+    attack: [T1190, T1133]
+    protocolos: [HTTP, SMTP, IPSEC_IKE, SMB]
+    controles:
+    - Inventario de servicios publicados con versión y responsable
+    - Parcheo priorizado por explotación activa (CISA KEV y EUVD)
+    - Parcheo virtual en WAF o IPS mientras no hay parche
+    deteccion: [Escaneo de vulnerabilidades autenticado, Registros del WAF y del IPS]
+    ens: [ENS-op.exp.4, ENS-op.exp.1, ENS-mp.s.2]
+    nis2: [NIS2-21.2.e]
+    palabra_clave: remote%20code%20execution
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=remote%20code%20execution&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=remote%20code%20execution
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=remote%20code%20execution
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=remote%20code%20execution
+  - id: L7-DOS-APLICACION
+    nombre: Denegación de servicio de aplicación
+    descripcion: Peticiones costosas, conexiones lentas o inundación HTTP que agotan la aplicación.
+    cwe: [CWE-770]
+    attack: [T1499.002, T1499.003]
+    protocolos: [HTTP, SIP]
+    controles:
+    - Límite de tasa por cliente y por ruta en el proxy inverso o WAF
+    - Tiempos máximos de cabecera y cuerpo en servidores y proxies
+    - Capacidad dimensionada y plan de continuidad del servicio
+    deteccion: [Métricas del proxy inverso (latencia, conexiones abiertas), Registros del WAF]
+    ens: [ENS-mp.s.4, ENS-op.pl.4, ENS-op.cont.2]
+    nis2: [NIS2-21.2.a, NIS2-21.2.c]
+    palabra_clave: denial%20of%20service
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=denial%20of%20service&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=denial%20of%20service
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=denial%20of%20service
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=denial%20of%20service
+
+- id: TX
+  numero: null
+  nombre: Transversal
+  descripcion: "Debilidades que cruzan varias capas: segmentación, plano de gestión, registro y ciclo de vida de los equipos."
+  activos: [Todos los equipos de red y seguridad, Red de gestión, SIEM y recolectores de registros, Servidores de gestión]
+  clases:
+  - id: TX-SEGMENTACION
+    nombre: Red plana y movimiento lateral
+    descripcion: Falta de separación entre zonas que permite saltar de un equipo comprometido al resto.
+    cwe: [CWE-653]
+    attack: [T1021, T1210, T1570]
+    protocolos: [SMB, RDP, SSH]
+    controles:
+    - Zonas por función y criticidad con firewall interno y ACL este-oeste
+    - Microsegmentación en servidores críticos
+    - Pruebas de segmentación periódicas
+    deteccion: [Registros del firewall interno, NDR (conexiones entre zonas no esperadas)]
+    ens: [ENS-mp.com.4, ENS-op.pl.2, ENS-mp.com.1]
+    nis2: [NIS2-21.2.a]
+    palabra_clave: lateral%20movement
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=lateral%20movement&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=lateral%20movement
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=lateral%20movement
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=lateral%20movement
+  - id: TX-PLANO-GESTION
+    nombre: Plano de gestión expuesto
+    descripcion: Interfaces de administración, SNMP con comunidades por defecto y cuentas de fábrica accesibles desde la red de usuarios.
+    cwe: [CWE-1392, CWE-798]
+    attack: [T1602.001, T1602.002, T1078.001]
+    protocolos: [SNMP, SSH, TELNET, HTTP]
+    controles:
+    - Red de gestión separada (fuera de banda) y ACL en las interfaces de gestión
+    - SNMPv3 con authPriv y cambio de credenciales por defecto
+    - Acceso administrativo con MFA desde puestos dedicados
+    deteccion: [Registros de acceso administrativo (TACACS+ o RADIUS), Registros del firewall hacia la red de gestión]
+    ens: [ENS-op.acc.6, ENS-op.exp.2, ENS-mp.com.4]
+    nis2: [NIS2-21.2.i, NIS2-21.2.g]
+    palabra_clave: default%20credentials
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=default%20credentials&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=default%20credentials
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=default%20credentials
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=default%20credentials
+  - id: TX-FIRMWARE
+    nombre: Firmware sin soporte o modificado
+    descripcion: Equipos de red fuera de soporte, sin parches o con la imagen del sistema alterada.
+    cwe: [CWE-1104, CWE-494]
+    attack: [T1601.001, T1190]
+    protocolos: []
+    controles:
+    - Inventario de equipos de red con versión y fecha de fin de soporte
+    - Parcheo periódico y verificación de la integridad de la imagen (firma o hash)
+    - Plan de sustitución de equipos sin soporte
+    deteccion: [Inventario y gestor de configuración (versiones), Verificación de hash de imagen]
+    ens: [ENS-op.exp.1, ENS-op.exp.4, ENS-op.pl.3]
+    nis2: [NIS2-21.2.e, NIS2-21.2.d]
+    palabra_clave: firmware
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=firmware&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=firmware
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=firmware
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=firmware
+  - id: TX-TUNELES
+    nombre: Túneles y evasión de controles de salida
+    descripcion: Tráfico encapsulado en protocolos permitidos (DNS, HTTPS, SSH) para saltar el firewall o el proxy.
+    cwe: [CWE-693]
+    attack: [T1572, T1090]
+    protocolos: [DNS, SSH, HTTP]
+    controles:
+    - Salida a Internet solo por proxy y resolutores autorizados
+    - Inspección TLS donde la política lo permita y bloqueo de túneles no autorizados
+    - Listas de destinos permitidos para servidores
+    deteccion: [Registros del proxy y del firewall de salida, NDR (sesiones largas y volumen anómalo)]
+    ens: [ENS-mp.com.1, ENS-op.mon.1, ENS-mp.s.3]
+    nis2: [NIS2-21.2.a, NIS2-21.2.b]
+    palabra_clave: tunneling
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=tunneling&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=tunneling
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=tunneling
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=tunneling
+  - id: TX-REGISTRO
+    nombre: Registro y monitorización insuficientes
+    descripcion: Equipos que no envían registros, relojes desincronizados o retención corta que impiden detectar y reconstruir un ataque.
+    cwe: [CWE-778]
+    attack: [T1070]
+    protocolos: [NTP]
+    controles:
+    - Registros centralizados de todos los equipos de red y seguridad en el SIEM
+    - NTP interno común con autenticación
+    - Retención según la política y alertas por fuentes que dejan de enviar
+    deteccion: [Cobertura de fuentes del SIEM, Alertas de silencio de fuentes]
+    ens: [ENS-op.exp.8, ENS-op.mon.3, ENS-op.exp.7]
+    nis2: [NIS2-21.2.b, NIS2-21.2.f]
+    palabra_clave: logging
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=logging&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=logging
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=logging
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=logging

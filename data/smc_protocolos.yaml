@@ -1,0 +1,34 @@
+# Protocolos de security-manager-control (vulnerabilities/protocols.yaml), copia del 2026-11-03, commit bbb08bc.
+# Solo id, nombre y capa OSI según la convención de SMC. No editar a mano: copiar de nuevo si SMC cambia.
+# Ojo: SMC sitúa BGP y DHCP en la capa 7 (protocolo de aplicación); este catálogo cita esos protocolos
+# en clases de capa 2 y 3 porque la capa de la clase es la del impacto, no la del protocolo.
+version: v1
+protocolos:
+- {id: SMB, nombre: "SMB / CIFS", capa_osi: 7}
+- {id: RDP, nombre: "RDP (Escritorio remoto)", capa_osi: 7}
+- {id: SSH, nombre: "SSH", capa_osi: 7}
+- {id: TELNET, nombre: "Telnet", capa_osi: 7}
+- {id: FTP, nombre: "FTP / FTPS", capa_osi: 7}
+- {id: SNMP, nombre: "SNMP", capa_osi: 7}
+- {id: DNS, nombre: "DNS", capa_osi: 7}
+- {id: NTP, nombre: "NTP", capa_osi: 7}
+- {id: LDAP, nombre: "LDAP / LDAPS", capa_osi: 7}
+- {id: KERBEROS, nombre: "Kerberos", capa_osi: 7}
+- {id: NTLM, nombre: "NTLM", capa_osi: 7}
+- {id: TLS, nombre: "TLS / SSL", capa_osi: 6}
+- {id: HTTP, nombre: "HTTP / HTTPS", capa_osi: 7}
+- {id: SMTP, nombre: "SMTP", capa_osi: 7}
+- {id: IMAP_POP3, nombre: "IMAP / POP3", capa_osi: 7}
+- {id: SIP, nombre: "SIP / VoIP", capa_osi: 7}
+- {id: MQTT, nombre: "MQTT", capa_osi: 7}
+- {id: MODBUS, nombre: "Modbus/TCP", capa_osi: 7}
+- {id: S7COMM, nombre: "S7comm (Siemens S7)", capa_osi: 7}
+- {id: DNP3, nombre: "DNP3", capa_osi: 7}
+- {id: BACNET, nombre: "BACnet/IP", capa_osi: 7}
+- {id: OPCUA, nombre: "OPC UA", capa_osi: 7}
+- {id: ARP, nombre: "ARP", capa_osi: 2}
+- {id: EAP_8021X, nombre: "802.1X / EAP (Wi-Fi y cable)", capa_osi: 2}
+- {id: ICMP, nombre: "ICMP", capa_osi: 3}
+- {id: IPSEC_IKE, nombre: "IPsec / IKE", capa_osi: 3}
+- {id: BGP, nombre: "BGP", capa_osi: 7}
+- {id: DHCP, nombre: "DHCP", capa_osi: 7}
