@@ -95,8 +95,9 @@ entradas:
   impacto: pérdida de confidencialidad
   control: Retirar WEP; migrar a seguridad Wi-Fi vigente
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  clases:
+  - L2-WIFI-CIFRADO
+  motivo_sin_clase: null
   revision:
     estado: corregida
     fecha: '2026-11-05'
@@ -128,8 +129,9 @@ entradas:
   impacto: desconexión del cliente
   control: PMF cuando sea compatible; no resuelve interferencia RF
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  clases:
+  - L2-WIFI-CIFRADO
+  motivo_sin_clase: null
   revision:
     estado: corregida
     fecha: '2026-11-05'
@@ -161,8 +163,9 @@ entradas:
   impacto: posible acceso a red
   control: Deshabilitar WPS PIN/registro externo y comprobarlo
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  clases:
+  - L2-WIFI-CIFRADO
+  motivo_sin_clase: null
   revision:
     estado: corregida
     fecha: '2026-11-05'
@@ -193,8 +196,9 @@ entradas:
   impacto: descifrado/replay según variante
   control: Actualizar clientes y AP según variante; cambiar PSK no corrige
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  clases:
+  - L2-WIFI-CIFRADO
+  motivo_sin_clase: null
   revision:
     estado: revisada
     fecha: '2026-11-05'
@@ -225,8 +229,9 @@ entradas:
   impacto: filtración/ataques a contraseña
   control: Firmware corregido y revisión de modo transición
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  clases:
+  - L2-WIFI-CIFRADO
+  motivo_sin_clase: null
   revision:
     estado: revisada
     fecha: '2026-11-05'
@@ -256,8 +261,9 @@ entradas:
   impacto: descifrado/inyección
   control: Parches y exigencia de longitud de clave adecuada
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  clases:
+  - L2-BLUETOOTH
+  motivo_sin_clase: null
   revision:
     estado: revisada
     fecha: '2026-11-05'
@@ -287,8 +293,9 @@ entradas:
   impacto: Suplantación de dispositivo emparejado sin clave de enlace
   control: Firmware y correcciones específicas del fabricante
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  clases:
+  - L2-BLUETOOTH
+  motivo_sin_clase: null
   revision:
     estado: corregida
     fecha: '2026-11-05'
@@ -321,8 +328,9 @@ entradas:
   impacto: inyección o acceso a dispositivos según variante
   control: Actualizar firmware/drivers; comprobar cada CVE aplicable
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  clases:
+  - L2-WIFI-CIFRADO
+  motivo_sin_clase: null
   revision:
     estado: revisada
     fecha: '2026-11-05'
@@ -789,8 +797,9 @@ entradas:
   impacto: kernel panic
   control: Aplicar actualización del proveedor; evaluar mitigación temporal
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
+  clases:
+  - L4-DOS-PILA
+  motivo_sin_clase: null
   revision:
     estado: revisada
     fecha: '2026-11-05'
@@ -820,8 +829,9 @@ entradas:
   impacto: consumo de CPU/recursos y DoS
   control: Kernel corregido según distribución
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
+  clases:
+  - L4-DOS-PILA
+  motivo_sin_clase: null
   revision:
     estado: revisada
     fecha: '2026-11-05'
@@ -851,8 +861,9 @@ entradas:
   impacto: degradación/DoS
   control: Kernel corregido; cambios de MSS requieren evaluación
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
+  clases:
+  - L4-DOS-PILA
+  motivo_sin_clase: null
   revision:
     estado: revisada
     fecha: '2026-11-05'
@@ -882,8 +893,9 @@ entradas:
   impacto: consumo excesivo de recursos
   control: Actualizar FreeBSD según aviso
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
+  clases:
+  - L4-DOS-PILA
+  motivo_sin_clase: null
   revision:
     estado: revisada
     fecha: '2026-11-05'

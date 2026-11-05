@@ -1,7 +1,7 @@
 # Vulnerabilidades y protecciones por capa OSI
 
 [![capas](https://img.shields.io/badge/capas-7%20%2B%20transversal-ef233c?style=flat-square)](data/capas.yaml)
-[![clases](https://img.shields.io/badge/clases-41-8d99ae?style=flat-square)](data/capas.yaml)
+[![clases](https://img.shields.io/badge/clases-44-8d99ae?style=flat-square)](data/capas.yaml)
 [![CWE y ATT&CK](https://img.shields.io/badge/CWE%20y%20ATT%26CK-verificados-2ea043?style=flat-square)](data/verificacion_ids.yaml)
 [![ENS y NIS2](https://img.shields.io/badge/ENS%20y%20NIS2-mapeado-1f6feb?style=flat-square)](data/ens_ids.txt)
 [![histórico](https://img.shields.io/badge/hist%C3%B3rico-1985%20a%202025-ef233c?style=flat-square)](https://pedri77.github.io/vulnerabilidades-capas-osi/historico/)
@@ -41,7 +41,7 @@ Convención de capa: la capa de una clase es la del ataque o su impacto. La de c
 ## Estructura
 
 ```text
-data/capas.yaml              catálogo: 7 capas + transversal, 41 clases
+data/capas.yaml              catálogo: 7 capas + transversal, 44 clases
 data/fuentes.yaml            fuentes oficiales y guías CCN-STIC
 data/ens_ids.txt             73 ids de medidas ENS (copia de SMC, con nota de origen)
 data/smc_protocolos.yaml     28 protocolos de SMC con su capa (copia, con nota de origen)

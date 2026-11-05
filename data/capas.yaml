@@ -179,6 +179,44 @@ capas:
       euvd: https://euvd.enisa.europa.eu/search?text=rogue%20access%20point
       cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=rogue%20access%20point
       cvedetails: https://www.cvedetails.com/google-search-results.php?q=rogue%20access%20point
+  - id: L2-WIFI-CIFRADO
+    nombre: Cifrado y gestión Wi-Fi débiles
+    descripcion: WEP, WPS por PIN, handshakes vulnerables y tramas de gestión sin proteger que permiten descifrar, inyectar o desconectar clientes.
+    cwe: [CWE-327, CWE-323, CWE-306]
+    attack: [T1040, T1557]
+    protocolos: [EAP_8021X]
+    controles:
+    - Retirar WEP y deshabilitar WPS por PIN
+    - WPA3 o WPA2 con tramas de gestión protegidas (802.11w) donde sea compatible
+    - Firmware de puntos de acceso y controladores de clientes al día según el aviso de cada CVE
+    deteccion: [WIDS/WIPS de la controladora (desautenticaciones masivas), Inventario de firmware de puntos de acceso y clientes]
+    ens: [ENS-mp.com.2, ENS-mp.com.3, ENS-op.exp.4]
+    nis2: [NIS2-21.2.e, NIS2-21.2.h]
+    palabra_clave: WPA2%20Wi-Fi
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=WPA2%20Wi-Fi&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=WPA2%20Wi-Fi
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=WPA2%20Wi-Fi
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=WPA2%20Wi-Fi
+  - id: L2-BLUETOOTH
+    nombre: Cifrado y autenticación Bluetooth
+    descripcion: Negociación de clave débil y suplantación de dispositivos emparejados en Bluetooth BR/EDR, con atacante próximo.
+    cwe: [CWE-326, CWE-290]
+    attack: [T1040, T1557]
+    protocolos: []
+    controles:
+    - Firmware y controladores Bluetooth al día según el aviso del fabricante
+    - Exigir longitud mínima de clave donde el dispositivo lo permita
+    - Deshabilitar Bluetooth en equipos gestionados que no lo necesiten
+    deteccion: [Inventario de firmware y controladores Bluetooth, Sensores Bluetooth propios (un WIDS Wi-Fi no lo ve)]
+    ens: [ENS-mp.eq.3, ENS-op.exp.2, ENS-op.exp.4]
+    nis2: [NIS2-21.2.e, NIS2-21.2.h]
+    palabra_clave: Bluetooth%20BR%20EDR
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=Bluetooth%20BR%20EDR&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=Bluetooth%20BR%20EDR
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=Bluetooth%20BR%20EDR
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=Bluetooth%20BR%20EDR
   - id: L2-NAC-BYPASS
     nombre: Suplantación de MAC para saltar el NAC
     descripcion: Copia de la MAC de un equipo autorizado (impresora, teléfono IP) para entrar por puertos con autenticación solo por MAC.
@@ -345,6 +383,25 @@ capas:
       euvd: https://euvd.enisa.europa.eu/search?text=SYN%20flood
       cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=SYN%20flood
       cvedetails: https://www.cvedetails.com/google-search-results.php?q=SYN%20flood
+  - id: L4-DOS-PILA
+    nombre: Denegación de servicio en la pila TCP
+    descripcion: Fallos del núcleo al tratar SACK, MSS u otras opciones de TCP con los que una conexión remota provoca caída o consumo excesivo de recursos.
+    cwe: [CWE-190, CWE-770]
+    attack: [T1499.004]
+    protocolos: []
+    controles:
+    - Núcleo corregido en una rama mantenida o con backport confirmado por el proveedor
+    - Inventario de versiones de núcleo y de equipos con pila propia
+    - Mitigaciones temporales (filtrar MSS muy bajo, desactivar SACK) solo tras evaluar su impacto
+    deteccion: [Registros del núcleo y eventos de caída, Monitorización de CPU y memoria, Contadores TCP del sistema]
+    ens: [ENS-op.exp.4, ENS-mp.s.4, ENS-op.pl.4]
+    nis2: [NIS2-21.2.c, NIS2-21.2.e]
+    palabra_clave: TCP%20stack%20denial%20of%20service
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=TCP%20stack%20denial%20of%20service&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=TCP%20stack%20denial%20of%20service
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=TCP%20stack%20denial%20of%20service
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=TCP%20stack%20denial%20of%20service
   - id: L4-AMPLIFICACION
     nombre: Reflexión y amplificación UDP
     descripcion: Servicios UDP propios (DNS, NTP, SNMP) usados como reflectores contra terceros, o la organización como víctima.

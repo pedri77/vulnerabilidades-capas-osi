@@ -211,6 +211,54 @@ Detección:
 - WIDS/WIPS de la controladora
 - Registros del servidor RADIUS (fallos de EAP)
 
+### Cifrado y gestión Wi-Fi débiles (`L2-WIFI-CIFRADO`)
+
+WEP, WPS por PIN, handshakes vulnerables y tramas de gestión sin proteger que permiten descifrar, inyectar o desconectar clientes.
+
+| Campo | Valor |
+| --- | --- |
+| CWE | [CWE-327](https://cwe.mitre.org/data/definitions/327.html), [CWE-323](https://cwe.mitre.org/data/definitions/323.html), [CWE-306](https://cwe.mitre.org/data/definitions/306.html) |
+| ATT&CK | [T1040](https://attack.mitre.org/techniques/T1040/), [T1557](https://attack.mitre.org/techniques/T1557/) |
+| Protocolos (SMC) | EAP_8021X |
+| ENS | ENS-mp.com.2, ENS-mp.com.3, ENS-op.exp.4 |
+| NIS2 | NIS2-21.2.e, NIS2-21.2.h |
+| Buscar CVE | [NVD](https://nvd.nist.gov/vuln/search?keyword=WPA2%20Wi-Fi&resultType=records) · [EUVD](https://euvd.enisa.europa.eu/search?text=WPA2%20Wi-Fi) · [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=WPA2%20Wi-Fi) · [CVE Details](https://www.cvedetails.com/google-search-results.php?q=WPA2%20Wi-Fi) |
+
+Controles:
+
+- Retirar WEP y deshabilitar WPS por PIN
+- WPA3 o WPA2 con tramas de gestión protegidas (802.11w) donde sea compatible
+- Firmware de puntos de acceso y controladores de clientes al día según el aviso de cada CVE
+
+Detección:
+
+- WIDS/WIPS de la controladora (desautenticaciones masivas)
+- Inventario de firmware de puntos de acceso y clientes
+
+### Cifrado y autenticación Bluetooth (`L2-BLUETOOTH`)
+
+Negociación de clave débil y suplantación de dispositivos emparejados en Bluetooth BR/EDR, con atacante próximo.
+
+| Campo | Valor |
+| --- | --- |
+| CWE | [CWE-326](https://cwe.mitre.org/data/definitions/326.html), [CWE-290](https://cwe.mitre.org/data/definitions/290.html) |
+| ATT&CK | [T1040](https://attack.mitre.org/techniques/T1040/), [T1557](https://attack.mitre.org/techniques/T1557/) |
+| Protocolos (SMC) | (general) |
+| ENS | ENS-mp.eq.3, ENS-op.exp.2, ENS-op.exp.4 |
+| NIS2 | NIS2-21.2.e, NIS2-21.2.h |
+| Buscar CVE | [NVD](https://nvd.nist.gov/vuln/search?keyword=Bluetooth%20BR%20EDR&resultType=records) · [EUVD](https://euvd.enisa.europa.eu/search?text=Bluetooth%20BR%20EDR) · [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=Bluetooth%20BR%20EDR) · [CVE Details](https://www.cvedetails.com/google-search-results.php?q=Bluetooth%20BR%20EDR) |
+
+Controles:
+
+- Firmware y controladores Bluetooth al día según el aviso del fabricante
+- Exigir longitud mínima de clave donde el dispositivo lo permita
+- Deshabilitar Bluetooth en equipos gestionados que no lo necesiten
+
+Detección:
+
+- Inventario de firmware y controladores Bluetooth
+- Sensores Bluetooth propios (un WIDS Wi-Fi no lo ve)
+
 ### Suplantación de MAC para saltar el NAC (`L2-NAC-BYPASS`)
 
 Copia de la MAC de un equipo autorizado (impresora, teléfono IP) para entrar por puertos con autenticación solo por MAC.
@@ -416,6 +464,31 @@ Detección:
 - Contadores de conexiones medio abiertas del firewall o balanceador
 - NetFlow
 - Monitorización de disponibilidad
+
+### Denegación de servicio en la pila TCP (`L4-DOS-PILA`)
+
+Fallos del núcleo al tratar SACK, MSS u otras opciones de TCP con los que una conexión remota provoca caída o consumo excesivo de recursos.
+
+| Campo | Valor |
+| --- | --- |
+| CWE | [CWE-190](https://cwe.mitre.org/data/definitions/190.html), [CWE-770](https://cwe.mitre.org/data/definitions/770.html) |
+| ATT&CK | [T1499.004](https://attack.mitre.org/techniques/T1499/004/) |
+| Protocolos (SMC) | (general) |
+| ENS | ENS-op.exp.4, ENS-mp.s.4, ENS-op.pl.4 |
+| NIS2 | NIS2-21.2.c, NIS2-21.2.e |
+| Buscar CVE | [NVD](https://nvd.nist.gov/vuln/search?keyword=TCP%20stack%20denial%20of%20service&resultType=records) · [EUVD](https://euvd.enisa.europa.eu/search?text=TCP%20stack%20denial%20of%20service) · [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=TCP%20stack%20denial%20of%20service) · [CVE Details](https://www.cvedetails.com/google-search-results.php?q=TCP%20stack%20denial%20of%20service) |
+
+Controles:
+
+- Núcleo corregido en una rama mantenida o con backport confirmado por el proveedor
+- Inventario de versiones de núcleo y de equipos con pila propia
+- Mitigaciones temporales (filtrar MSS muy bajo, desactivar SACK) solo tras evaluar su impacto
+
+Detección:
+
+- Registros del núcleo y eventos de caída
+- Monitorización de CPU y memoria
+- Contadores TCP del sistema
 
 ### Reflexión y amplificación UDP (`L4-AMPLIFICACION`)
 
