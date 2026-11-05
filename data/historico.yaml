@@ -1,7 +1,7 @@
 # Matriz histórica de vulnerabilidades de protocolos OSI. Esquema y reglas en tools/validar.py.
 version: v1
 meta:
-  edicion: '1.1'
+  edicion: '1.2'
   fecha_consulta: '2026-11-05'
   nota: 'Importado de la edición 1.0. Fuente única a partir de aquí: editar este fichero, no el documento original.'
 entradas:

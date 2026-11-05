@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -256,6 +257,64 @@ class TestVerificarCve(unittest.TestCase):
         x = {"id": "OSI-013", "cve": ["CVE-1999-0128"], "fechas": [{"valor": "1996", "naturaleza": "P"}]}
         out = verificar_ids.avisos_fecha([x], [{"id": "CVE-1999-0128", "publicado": "1999-09-29"}])
         self.assertEqual(len(out), 1)
+
+
+class TestInformeEnlaces(unittest.TestCase):
+    ROTO = {"url": "https://a.example/x", "http": 404, "estado": "fallo"}
+    BLOQUEADO = {"url": "https://b.example/y", "http": 403, "estado": "fallo"}
+    MOVIDO = {"id": "T1000", "url": "https://c.example/z", "http": 200, "estado": "movido", "destino": "T2000"}
+
+    def test_separa_rotos_de_dudosos(self):
+        texto = verificar_ids.informe([self.ROTO, self.BLOQUEADO, self.MOVIDO], 3, "2026-11-09")
+        rotos, dudosos = texto.split("## Dudosos")
+        self.assertIn("a.example", rotos)
+        self.assertIn("T1000", rotos)
+        self.assertIn("ahora T2000", rotos)
+        self.assertIn("b.example", dudosos)
+        self.assertNotIn("b.example", rotos)
+        self.assertIn("manual: 3", texto)
+
+    def test_cve_rechazado_no_es_dudoso(self):
+        self.assertFalse(verificar_ids.dudoso({"url": "u", "http": 200, "estado": "fallo"}))
+
+    def test_reintenta_solo_lo_transitorio(self):
+        with mock.patch.object(verificar_ids, "ESPERA_REINTENTO", 0):
+            with mock.patch.object(verificar_ids, "pedir", side_effect=[(503, ""), (200, "ok")]) as p:
+                self.assertEqual(verificar_ids.descargar("u"), (200, "ok"))
+                self.assertEqual(p.call_count, 2)
+            with mock.patch.object(verificar_ids, "pedir", return_value=(404, "")) as p:
+                self.assertEqual(verificar_ids.descargar("u")[0], 404)
+                self.assertEqual(p.call_count, 1)
+
+    def ejecutar(self, ruta, estado):
+        def respuesta(u):
+            return {"url": u, "http": 404 if estado == "fallo" else 200, "estado": estado}
+        ids = {n: (lambda i: {"id": i, "url": "u", "http": 200, "estado": "ok"})
+               for n in ("comprobar_cwe", "comprobar_attack", "comprobar_cve")}
+        with mock.patch.multiple(verificar_ids, comprobar_url=respuesta, **ids):
+            return verificar_ids.main(["--informe", str(ruta)])
+
+    def test_no_toca_los_datos_y_borra_el_informe_limpio(self):
+        datos = RAIZ / "data/verificacion_ids.yaml"
+        antes = datos.read_bytes()
+        with tempfile.TemporaryDirectory() as d:
+            ruta = Path(d) / "informe.md"
+            self.assertEqual(self.ejecutar(ruta, "fallo"), 0)
+            self.assertIn("## Rotos", ruta.read_text(encoding="utf-8"))
+            self.assertEqual(self.ejecutar(ruta, "ok"), 0)
+            self.assertFalse(ruta.exists())
+        self.assertEqual(datos.read_bytes(), antes)
+
+
+class TestChangelog(unittest.TestCase):
+    def test_edicion_vigente_registrada(self):
+        hist = cargar()[0]
+        texto = (RAIZ / "CHANGELOG.md").read_text(encoding="utf-8")
+        self.assertEqual(validar.validar_changelog(hist["meta"]["edicion"], texto), [])
+
+    def test_edicion_sin_entrada_falla(self):
+        self.assertTrue(validar.validar_changelog("9.9", "## 1.2 (2026-11-05)\n"))
+        self.assertTrue(validar.validar_changelog("1.2", "## 1.20 (2026-11-05)\n"))
 
 
 if __name__ == "__main__":

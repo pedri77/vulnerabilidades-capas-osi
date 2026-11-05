@@ -8,7 +8,9 @@ Writes data/verificacion_ids.yaml with the HTTP status, the page title and a sta
 CWE entries also record MITRE's "Vulnerability Mapping" usage (ALLOWED, ALLOWED-WITH-REVIEW, DISCOURAGED,
 PROHIBITED) when the page shows it.
 
-Usage: python tools/verificar_ids.py [--urls]
+Usage: python tools/verificar_ids.py [--urls] [--informe FICHERO]
+With --informe (implies --urls) data/verificacion_ids.yaml is left untouched: the problems go to FICHERO as
+Markdown, FICHERO is removed if there are none, and the exit code is 0. The weekly workflow uses this mode.
 Needs network. Stdlib + PyYAML.
 """
 from __future__ import annotations
@@ -19,6 +21,7 @@ import html
 import json
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -28,6 +31,7 @@ import yaml
 
 RAIZ = Path(__file__).resolve().parent.parent
 UA = "Mozilla/5.0 (verificador vulnerabilidades-capas-osi)"
+ESPERA_REINTENTO = 5
 # Never checked automatically, listed as manual: anti-bot firewalls (403 to scripts, www.cisa.gov after a burst)
 # and www.isg.rhul.ac.uk, whose incomplete certificate chain fails in urllib but not in browsers.
 HOSTS_MANUALES = ("www.cvedetails.com", "www.ccn-cert.cni.es", "ccn-cert.cni.es", "eur-lex.europa.eu", "www.cisco.com",
@@ -42,7 +46,22 @@ def url_attack(tid: str) -> str:
     return "https://attack.mitre.org/techniques/" + tid.replace(".", "/") + "/"
 
 
-def descargar(url: str) -> tuple[int, str]:
+def transitorio(st: int) -> bool:
+    """Network error, rate limit or server error: worth one more try."""
+    return st == 0 or st == 429 or st >= 500
+
+
+def descargar(url: str, intentos: int = 2) -> tuple[int, str]:
+    st, txt = pedir(url)
+    for _ in range(intentos - 1):
+        if not transitorio(st):
+            break
+        time.sleep(ESPERA_REINTENTO)
+        st, txt = pedir(url)
+    return st, txt
+
+
+def pedir(url: str) -> tuple[int, str]:
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
         with urllib.request.urlopen(req, timeout=30) as r:
@@ -134,6 +153,31 @@ def comprobar_url(url: str) -> dict:
     return {"url": url, "http": st, "estado": "ok" if st == 200 else "fallo"}
 
 
+def dudoso(r: dict) -> bool:
+    """The site refused or failed, which says nothing about the link. A 404 or a rejected id does."""
+    st = r.get("http") or 0
+    return r["estado"] == "fallo" and (transitorio(st) or st in (401, 403, 408))
+
+
+def informe(malos: list[dict], manuales: int, fecha: str) -> str:
+    """Markdown for the issue. Only data of this repo and status codes: never text taken from the pages."""
+    def linea(r: dict) -> str:
+        nombre = f"{r['id']}: " if r.get("id") else ""
+        destino = f", ahora {r['destino']}" if r.get("destino") else ""
+        return f"- {nombre}{r['url']} (`{r['estado']}`, HTTP {r.get('http')}{destino})"
+
+    rotos = [linea(r) for r in malos if not dudoso(r)]
+    dudosos = [linea(r) for r in malos if dudoso(r)]
+    partes = [f"Comprobación del {fecha}. No se ha cambiado ningún dato."]
+    if rotos:
+        partes += ["## Rotos", "Corregir la fuente o el identificador.", *rotos]
+    if dudosos:
+        partes += ["## Dudosos", "El sitio rechazó o falló la petición: comprobar en el navegador. "
+                   "Si funciona y el rechazo se repite, añadir el host a `HOSTS_MANUALES`.", *dudosos]
+    partes.append(f"Sin comprobar por ser de revisión manual: {manuales}.")
+    return "\n\n".join(partes) + "\n"
+
+
 def recoger(catalogo: dict) -> tuple[list[str], list[str], list[str]]:
     cwes, tecs, urls = set(), set(), set()
     for capa in catalogo["capas"]:
@@ -147,7 +191,9 @@ def recoger(catalogo: dict) -> tuple[list[str], list[str], list[str]]:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--urls", action="store_true", help="also check every search and source URL")
+    ap.add_argument("--informe", type=Path, help="report problems to this Markdown file, do not touch the data")
     a = ap.parse_args(argv)
+    a.urls = a.urls or a.informe is not None
     catalogo = yaml.safe_load((RAIZ / "data/capas.yaml").read_text(encoding="utf-8"))
     fuentes = yaml.safe_load((RAIZ / "data/fuentes.yaml").read_text(encoding="utf-8"))
     hist = yaml.safe_load((RAIZ / "data/historico.yaml").read_text(encoding="utf-8"))
@@ -162,6 +208,21 @@ def main(argv: list[str] | None = None) -> int:
         if a.urls:
             todas = sorted(set(urls) | {f["url"] for f in fuentes["fuentes"] + fue_hist["fuentes"]})
             r_url = list(ex.map(comprobar_url, todas))
+    malos = [r for r in r_cwe + r_att + r_cve + r_url if r["estado"] in ("fallo", "obsoleto", "movido")]
+    print(f"CWE {sum(r['estado'] == 'ok' for r in r_cwe)}/{len(r_cwe)} ok; "
+          f"ATT&CK {sum(r['estado'] == 'ok' for r in r_att)}/{len(r_att)} ok; "
+          f"CVE {sum(r['estado'] == 'ok' for r in r_cve)}/{len(r_cve)} ok"
+          + (f"; URL {sum(r['estado'] == 'ok' for r in r_url)}/{len(r_url)} ok, "
+             f"{sum(r['estado'] == 'manual' for r in r_url)} manuales" if a.urls else ""))
+    for r in malos:
+        print("  ", r["estado"].upper(), r.get("id", ""), r["url"], r.get("http"), r.get("titulo", ""), r.get("destino", ""))
+    if a.informe is not None:
+        if malos:
+            manuales = sum(r["estado"] == "manual" for r in r_url)
+            a.informe.write_text(informe(malos, manuales, dt.date.today().isoformat()), encoding="utf-8")
+        else:
+            a.informe.unlink(missing_ok=True)
+        return 0
     salida = {
         "comprobado": dt.date.today().isoformat(),
         "nota": "Generado por tools/verificar_ids.py; no editar a mano.",
@@ -174,14 +235,6 @@ def main(argv: list[str] | None = None) -> int:
     (RAIZ / "data/verificacion_ids.yaml").write_text(
         yaml.safe_dump(salida, allow_unicode=True, sort_keys=False, width=200), encoding="utf-8"
     )
-    malos = [r for r in r_cwe + r_att + r_cve + r_url if r["estado"] in ("fallo", "obsoleto", "movido")]
-    print(f"CWE {sum(r['estado'] == 'ok' for r in r_cwe)}/{len(r_cwe)} ok; "
-          f"ATT&CK {sum(r['estado'] == 'ok' for r in r_att)}/{len(r_att)} ok; "
-          f"CVE {sum(r['estado'] == 'ok' for r in r_cve)}/{len(r_cve)} ok"
-          + (f"; URL {sum(r['estado'] == 'ok' for r in r_url)}/{len(r_url)} ok, "
-             f"{sum(r['estado'] == 'manual' for r in r_url)} manuales" if a.urls else ""))
-    for r in malos:
-        print("  ", r["estado"].upper(), r.get("id", ""), r["url"], r.get("http"), r.get("titulo", ""), r.get("destino", ""))
     for aviso in avisos_fecha(hist["entradas"], r_cve):
         print("   AVISO fecha", aviso)
     return 1 if malos else 0
