@@ -1,0 +1,52 @@
+:root{--bg:#0d1117;--panel:#161b22;--line:#30363d;--txt:#e6edf3;--mut:#9da7b3;--acc:#ef233c;--lnk:#79c0ff;--avi:#d29922}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header,main,footer{max-width:1200px;margin:0 auto;padding:0 20px}
+header{padding-top:24px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+h1{font-size:1.7rem;line-height:1.2;margin:6px 0}h1 span{color:var(--acc)}
+h2{font-size:1.25rem;margin:30px 0 8px;border-left:4px solid var(--acc);padding-left:10px}
+p{margin:6px 0}a{color:var(--lnk)}.n,.migas,.resumen{color:var(--mut)}
+:focus-visible{outline:2px solid var(--lnk);outline-offset:2px}
+.limites{list-style:none;padding:0;margin:12px 0 4px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.limites li{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--avi);border-radius:6px;padding:8px 10px;font-size:.9rem}
+.desplaza{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+caption{text-align:left;padding:8px 10px;color:var(--mut)}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}
+thead th{background:#1c2128;font-weight:600}
+.matriz{min-width:760px}.matriz td{text-align:center;vertical-align:middle}.matriz thead th:not(:first-child){text-align:center}
+.matriz th[scope=row]{position:sticky;left:0;background:var(--panel);z-index:1}
+.matriz small{display:block;color:var(--mut);font-weight:400}
+.celda{display:block;min-width:44px;padding:8px 0;border-radius:6px;color:var(--txt);text-decoration:none;font-weight:700;border:1px solid var(--line)}
+.celda:hover{border-color:var(--lnk)}
+.celda.n1{background:#2a1216}.celda.n2{background:#4a151d}.celda.n3{background:#7a1824}.celda.n4{background:#a81a2c}
+.vacia{color:#6e7681}.total{font-weight:700}.fisica td{text-align:left;color:var(--mut)}
+tfoot th,tfoot td{font-weight:700;border-bottom:0}
+.filtros{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:8px}
+.filtros[hidden]{display:none}
+.filtros label{display:flex;flex-direction:column;font-size:.8rem;color:var(--mut);gap:3px}
+.filtros .texto{flex:1 1 200px}
+select,input,button{font:inherit;color:var(--txt);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;min-height:36px}
+button{cursor:pointer;background:var(--panel)}button:hover{border-color:var(--lnk)}
+.entrada{border:1px solid var(--line);border-radius:6px;background:var(--panel);margin-bottom:6px}
+.entrada[hidden]{display:none}.entrada:target{border-color:var(--acc)}
+.entrada summary{cursor:pointer;display:grid;grid-template-columns:80px minmax(0,2fr) minmax(0,1.3fr) 130px minmax(0,1fr);gap:10px;align-items:baseline;padding:8px 10px}
+.entrada summary .marca{grid-column:2;grid-row:2;justify-self:start}
+.prot,.fecha,.area{color:var(--mut);font-size:.85rem}
+code{background:#21262d;border-radius:4px;padding:0 4px;font-size:.82rem}
+.marca{font-size:.72rem;border:1px solid var(--avi);color:var(--avi);border-radius:4px;padding:0 5px}
+.ficha{padding:4px 12px 10px;border-top:1px solid var(--line)}
+dl{display:grid;grid-template-columns:170px 1fr;gap:4px 12px;margin:8px 0}dt{color:var(--mut)}dd{margin:0;overflow-wrap:anywhere}
+.aviso{color:var(--avi)}.aviso[hidden]{display:none}
+.leyenda{margin-top:12px}.leyenda summary{cursor:pointer;color:var(--lnk)}
+.refs{padding-left:0;list-style:none;font-size:.88rem}.refs li{margin-bottom:6px}
+footer{margin-top:36px;padding-bottom:40px;border-top:1px solid var(--line);color:var(--mut)}
+@media(max-width:760px){
+.entrada summary{grid-template-columns:72px minmax(0,1fr)}
+.entrada summary .prot,.entrada summary .fecha{grid-column:2}
+.entrada summary .area{display:none}
+.entrada summary .marca{grid-row:auto}
+dl{grid-template-columns:1fr}dd{margin-bottom:6px}
+.filtros label{flex:1 1 45%}
+.matriz{min-width:600px}.matriz th[scope=row]{max-width:140px;padding-right:6px;font-size:.82rem}.matriz td{padding:6px}
+}

@@ -1,0 +1,1940 @@
+# Matriz histórica de vulnerabilidades de protocolos OSI. Esquema y reglas en tools/validar.py.
+version: v1
+meta:
+  edicion: '1.1'
+  fecha_consulta: '2026-11-05'
+  nota: 'Importado de la edición 1.0. Fuente única a partir de aquí: editar este fichero, no el documento original.'
+entradas:
+- id: OSI-001
+  titulo: ARP spoofing
+  area: enlace
+  capas_osi:
+  - 2
+  - 3
+  protocolo: ARP
+  alcance: IPv4/ARP sin validación adicional
+  causas:
+  - D
+  fechas:
+  - valor: '2007'
+    precision: anio
+    naturaleza: R
+    cota: maxima
+  hallazgo: 'ARP spoofing: anuncios sin autenticación'
+  identificador: Sin CVE único
+  cve: []
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S06
+  condicion: Acceso al segmento
+  impacto: desvío/interceptación de tráfico
+  control: DAI y bindings válidos; TLS extremo a extremo
+  aviso_version: false
+  clases:
+  - L2-ARP-SPOOFING
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-002
+  titulo: Elección maliciosa de raíz y cambio de topología
+  area: enlace
+  capas_osi: &id001
+  - 2
+  protocolo: STP
+  alcance: Redes que aceptan BPDU de equipos no autorizados
+  causas:
+  - D
+  - C
+  fechas: []
+  hallazgo: Elección maliciosa de raíz y cambio de topología
+  identificador: Sin CVE único
+  cve: []
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S07
+  - S52
+  condicion: Acceso L2
+  impacto: interrupción o modificación de caminos
+  control: BPDU Guard en acceso y Root Guard donde corresponda
+  aviso_version: false
+  clases:
+  - L2-STP
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-003
+  titulo: Ataque FMS y recuperación de clave
+  area: enlace
+  capas_osi: *id001
+  protocolo: WEP / 802.11
+  alcance: WEP con RC4 y construcción de claves vulnerable
+  causas:
+  - D
+  fechas:
+  - valor: '2001'
+    precision: anio
+    naturaleza: P
+  hallazgo: Ataque FMS y recuperación de clave
+  identificador: Sin CVE único
+  cve: []
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S08
+  - S53
+  condicion: Captura de tráfico suficiente
+  impacto: pérdida de confidencialidad
+  control: Retirar WEP; migrar a seguridad Wi-Fi vigente
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-004
+  titulo: Falsificación de mensajes de gestión
+  area: enlace
+  capas_osi: *id001
+  protocolo: 802.11 gestión
+  alcance: Tramas de desautenticación/desasociación sin protección
+  causas:
+  - D
+  fechas:
+  - valor: 2001-04
+    precision: mes
+    naturaleza: H
+  - valor: '2003'
+    precision: anio
+    naturaleza: P
+  hallazgo: Falsificación de mensajes de gestión
+  identificador: Sin CVE único
+  cve: []
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S09
+  condicion: Proximidad radio
+  impacto: desconexión del cliente
+  control: PMF cuando sea compatible; no resuelve interferencia RF
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-005
+  titulo: Reducción del espacio efectivo de búsqueda
+  area: enlace
+  capas_osi: *id001
+  protocolo: WPS PIN
+  alcance: Registro externo por PIN con validación parcial
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: '2011-12-27'
+    precision: dia
+    naturaleza: P
+  hallazgo: Reducción del espacio efectivo de búsqueda
+  identificador: CVE-2011-5053; VU#723755
+  cve:
+  - CVE-2011-5053
+  avisos:
+  - VU#723755
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S10
+  condicion: Proximidad y servicio accesible
+  impacto: posible acceso a red
+  control: Deshabilitar WPS PIN/registro externo y comprobarlo
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-006
+  titulo: KRACK
+  area: enlace
+  capas_osi: *id001
+  protocolo: WPA2 / KRACK
+  alcance: Handshakes y productos susceptibles a reinstalar claves
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: '2017'
+    precision: anio
+    naturaleza: P
+  hallazgo: Reinstalación de claves y reutilización de nonce
+  identificador: CVE-2017-13077, ejemplo; familia
+  cve:
+  - CVE-2017-13077
+  avisos: []
+  es_familia: true
+  cve_es_ejemplo: true
+  fuentes:
+  - S11
+  condicion: Proximidad
+  impacto: descifrado/replay según variante
+  control: Actualizar clientes y AP según variante; cambiar PSK no corrige
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-007
+  titulo: Dragonblood
+  area: enlace
+  capas_osi: *id001
+  protocolo: WPA3 SAE / EAP-pwd
+  alcance: Implementaciones y negociaciones Dragonfly afectadas
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: 2019-04
+    precision: mes
+    naturaleza: P
+  hallazgo: 'Dragonblood: canales laterales y downgrade'
+  identificador: CVE-2019-9494, ejemplo; familia
+  cve:
+  - CVE-2019-9494
+  avisos: []
+  es_familia: true
+  cve_es_ejemplo: true
+  fuentes:
+  - S12
+  condicion: Radio y condiciones de variante
+  impacto: filtración/ataques a contraseña
+  control: Firmware corregido y revisión de modo transición
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-008
+  titulo: KNOB
+  area: enlace
+  capas_osi: *id001
+  protocolo: Bluetooth BR/EDR
+  alcance: Negociación de longitud de clave vulnerable; hasta Core 5.1
+  causas:
+  - D
+  fechas:
+  - valor: '2019'
+    precision: anio
+    naturaleza: P
+  hallazgo: 'KNOB: reducción de entropía de la clave'
+  identificador: CVE-2019-9506
+  cve:
+  - CVE-2019-9506
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S14
+  condicion: Atacante próximo que interfiere negociación
+  impacto: descifrado/inyección
+  control: Parches y exigencia de longitud de clave adecuada
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-009
+  titulo: BIAS
+  area: enlace
+  capas_osi: *id001
+  protocolo: Bluetooth BR/EDR
+  alcance: Autenticación vulnerable; Core 5.2 y anteriores según registro CVE
+  causas:
+  - D
+  fechas:
+  - valor: '2020'
+    precision: anio
+    naturaleza: P
+  hallazgo: 'BIAS: suplantación de dispositivo confiable'
+  identificador: CVE-2020-10135
+  cve:
+  - CVE-2020-10135
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S15
+  condicion: Proximidad y condiciones del emparejamiento/autenticación
+  impacto: Suplantación de dispositivo emparejado sin clave de enlace
+  control: Firmware y correcciones específicas del fabricante
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-010
+  titulo: FragAttacks
+  area: enlace
+  capas_osi: *id001
+  protocolo: 802.11 / FragAttacks
+  alcance: Variantes de fragmentación/agregación en WPA2/WPA3 y otros
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: '2021-05-11'
+    precision: dia
+    naturaleza: P
+  hallazgo: Fallos de diseño y aceptación incorrecta de tramas
+  identificador: 'CVE-2020-24586/24587/24588: diseño; otros de implementación'
+  cve:
+  - CVE-2020-24586
+  - CVE-2020-24587
+  - CVE-2020-24588
+  avisos: []
+  es_familia: true
+  cve_es_ejemplo: false
+  fuentes:
+  - S13
+  condicion: Proximidad
+  impacto: inyección o acceso a dispositivos según variante
+  control: Actualizar firmware/drivers; comprobar cada CVE aplicable
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-011
+  titulo: IP source spoofing
+  area: red
+  capas_osi: &id002
+  - 3
+  protocolo: IPv4
+  alcance: Paquetes cuyo origen no se valida en el dominio
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: '1989'
+    precision: anio
+    naturaleza: R
+  hallazgo: IP source spoofing
+  identificador: Sin CVE único
+  cve: []
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S01
+  - S43
+  condicion: Capacidad de emitir origen falso
+  impacto: facilita suplantación/reflexión
+  control: Validación de origen y BCP 38; no autenticar por IP sola
+  aviso_version: false
+  clases:
+  - L3-IP-SPOOFING
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-012
+  titulo: Manipulación del camino y de supuestos de confianza
+  area: red
+  capas_osi: *id002
+  protocolo: IPv4 source routing
+  alcance: Equipos que aceptan opciones de encaminamiento por origen
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: '1989'
+    precision: anio
+    naturaleza: R
+  hallazgo: Manipulación del camino y de supuestos de confianza
+  identificador: Sin CVE único
+  cve: []
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S01
+  condicion: Aceptación de opciones
+  impacto: facilita desvío/suplantación
+  control: Deshabilitar source routing no requerido y filtrar opciones
+  aviso_version: false
+  clases:
+  - L3-IP-SPOOFING
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-013
+  titulo: Ping o' Death
+  area: red
+  capas_osi: *id002
+  protocolo: IPv4 / ICMP
+  alcance: Pilas históricas con reensamblado de datagramas sobredimensionados
+  causas:
+  - I
+  fechas:
+  - valor: '1996'
+    precision: anio
+    naturaleza: P
+  hallazgo: Ping o' Death
+  identificador: CVE-1999-0128, retrospectivo; CA-1996-26
+  cve:
+  - CVE-1999-0128
+  avisos:
+  - CA-1996-26
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S05
+  - S54
+  condicion: Paquetes que alcanzan la pila vulnerable
+  impacto: caída
+  control: Actualizar la pila; retirada de sistemas sin soporte
+  aviso_version: false
+  clases:
+  - L3-FRAGMENTACION
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-014
+  titulo: Teardrop
+  area: red
+  capas_osi: *id002
+  protocolo: IPv4 fragmentación
+  alcance: Pilas históricas afectadas por fragmentos solapados
+  causas:
+  - I
+  fechas:
+  - valor: '1997-12-16'
+    precision: dia
+    naturaleza: P
+    cota: maxima
+  hallazgo: 'Teardrop: error de reensamblado'
+  identificador: CVE-1999-0015, retrospectivo; CA-1997-28
+  cve:
+  - CVE-1999-0015
+  avisos:
+  - CA-1997-28
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S04
+  condicion: Entrega de fragmentos
+  impacto: denegación de servicio
+  control: Corrección del fabricante; normalización como defensa adicional
+  aviso_version: false
+  clases:
+  - L3-FRAGMENTACION
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-015
+  titulo: Suplantación de vecinos
+  area: red
+  capas_osi: *id002
+  protocolo: IPv6 ND
+  alcance: NS/NA sin protección adecuada en enlace compartido
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: 2004-05
+    precision: mes
+    naturaleza: R
+  hallazgo: Suplantación de vecinos
+  identificador: Sin CVE único; RFC3756 §4.1.1
+  cve: []
+  avisos:
+  - RFC3756
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S16
+  condicion: Acceso al enlace
+  impacto: MITM/DoS
+  control: Controles de acceso y validación ND según equipos
+  aviso_version: false
+  clases:
+  - L3-IPV6-RA
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-016
+  titulo: Router/prefijos falsos
+  area: red
+  capas_osi: *id002
+  protocolo: IPv6 SLAAC / RA
+  alcance: Hosts que aceptan anuncios de router maliciosos
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: 2004-05
+    precision: mes
+    naturaleza: R
+  hallazgo: Router/prefijos falsos
+  identificador: Sin CVE único; RFC3756 §4.2
+  cve: []
+  avisos:
+  - RFC3756
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S16
+  condicion: Acceso al enlace
+  impacto: desvío o pérdida de conectividad
+  control: RA Guard correctamente implementado; routers autorizados
+  aviso_version: false
+  clases:
+  - L3-IPV6-RA
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-017
+  titulo: Respuestas falsas que impiden configurar dirección
+  area: red
+  capas_osi: *id002
+  protocolo: IPv6 DAD
+  alcance: Detección de direcciones duplicadas sin protección
+  causas:
+  - D
+  fechas:
+  - valor: 2004-05
+    precision: mes
+    naturaleza: R
+  hallazgo: Respuestas falsas que impiden configurar dirección
+  identificador: Sin CVE único; RFC3756 §4.1.3
+  cve: []
+  avisos:
+  - RFC3756
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S16
+  condicion: Acceso al enlace
+  impacto: DoS de autoconfiguración
+  control: Control del enlace y protecciones ND disponibles
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la detección de direcciones duplicadas de IPv6'
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-018
+  titulo: Secuestro de prefijos y manipulación de rutas
+  area: red
+  capas_osi: *id002
+  protocolo: BGP-4
+  alcance: Anuncios sin validación suficiente de origen/trayectoria
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: 2006-01
+    precision: mes
+    naturaleza: R
+  hallazgo: Secuestro de prefijos y manipulación de rutas
+  identificador: Sin CVE único; RFC4272
+  cve: []
+  avisos:
+  - RFC4272
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S17
+  condicion: Capacidad de introducir anuncios
+  impacto: desvío/blackhole
+  control: Políticas de prefijos/AS; RPKI-ROV valida origen, no todo AS-PATH
+  aviso_version: false
+  clases:
+  - L3-ENRUTAMIENTO
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-019
+  titulo: Aborto/degradación mediante errores falsificados
+  area: red
+  capas_osi: *id002
+  protocolo: ICMP contra TCP
+  alcance: Tratamiento vulnerable de errores ICMP
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: 2010-07
+    precision: mes
+    naturaleza: R
+  hallazgo: Aborto/degradación mediante errores falsificados
+  identificador: Sin CVE único; RFC5927
+  cve: []
+  avisos:
+  - RFC5927
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S18
+  condicion: Inyección de error aceptado
+  impacto: daño a conexiones TCP
+  control: Pilas corregidas y validación de ICMP; evitar bloqueo indiscriminado
+  aviso_version: false
+  clases:
+  - L3-ICMP
+  - L4-SECUESTRO-TCP
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-020
+  titulo: Suplantación mediante predicción de secuencias
+  area: transporte
+  capas_osi: &id003
+  - 4
+  protocolo: TCP ISN
+  alcance: Generadores predecibles y servicios que confían en dirección
+  causas:
+  - D
+  - I
+  - C
+  fechas:
+  - valor: '1985'
+    precision: anio
+    naturaleza: H
+  hallazgo: Suplantación mediante predicción de secuencias
+  identificador: CVE-1999-0077, retrospectivo; RFC1948
+  cve:
+  - CVE-1999-0077
+  avisos:
+  - RFC1948
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S02
+  condicion: Origen falso y condiciones de confianza
+  impacto: secuestro/suplantación
+  control: ISN robusto y autenticación criptográfica de aplicación
+  aviso_version: false
+  clases:
+  - L4-SECUESTRO-TCP
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-021
+  titulo: SYN flood
+  area: transporte
+  capas_osi: *id003
+  protocolo: TCP
+  alcance: Escucha TCP que reserva estado antes de completar handshake
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: '1994'
+    precision: anio
+    naturaleza: H
+  - valor: '1996'
+    precision: anio
+    naturaleza: P
+  hallazgo: SYN flood
+  identificador: CVE-1999-0116, retrospectivo
+  cve:
+  - CVE-1999-0116
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S03
+  condicion: Muchas conexiones incompletas
+  impacto: agotamiento de recursos
+  control: SYN cookies/proxy y control de capacidad
+  aviso_version: false
+  clases:
+  - L4-SYN-FLOOD
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-022
+  titulo: Land
+  area: transporte
+  capas_osi: *id003
+  protocolo: TCP/IP
+  alcance: Implementaciones históricas que manejan mal paquetes autorreferentes
+  causas:
+  - I
+  fechas:
+  - valor: '1997-12-16'
+    precision: dia
+    naturaleza: P
+    cota: maxima
+  hallazgo: Land
+  identificador: CVE-1999-0016, retrospectivo; CA-1997-28
+  cve:
+  - CVE-1999-0016
+  avisos:
+  - CA-1997-28
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S04
+  condicion: Paquete falsificado aceptado
+  impacto: DoS
+  control: Parche del sistema y filtrado de orígenes imposibles
+  aviso_version: false
+  clases:
+  - L3-IP-SPOOFING
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-023
+  titulo: Blind in-window injection
+  area: transporte
+  capas_osi: *id003
+  protocolo: TCP RST/SYN/data
+  alcance: Conexiones y validación susceptibles a inyección en ventana
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: 2010-08
+    precision: mes
+    naturaleza: R
+  hallazgo: Blind in-window injection
+  identificador: Sin CVE único; RFC5961
+  cve: []
+  avisos:
+  - RFC5961
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S19
+  condicion: Conocer/estimar tupla y secuencia
+  impacto: aborto/corrupción
+  control: Validación robusta y challenge ACK según pila
+  aviso_version: false
+  clases:
+  - L4-SECUESTRO-TCP
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-024
+  titulo: SACK Panic
+  area: transporte
+  capas_osi: *id003
+  protocolo: TCP SACK Linux
+  alcance: Linux ≥2.6.29 sin corrección, según CERT
+  causas:
+  - I
+  fechas:
+  - valor: 2019-06
+    precision: mes
+    naturaleza: P
+  hallazgo: 'SACK Panic: desbordamiento entero'
+  identificador: CVE-2019-11477
+  cve:
+  - CVE-2019-11477
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S20
+  condicion: Conexión con pila afectada
+  impacto: kernel panic
+  control: Aplicar actualización del proveedor; evaluar mitigación temporal
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-025
+  titulo: Fragmentación excesiva de cola TCP
+  area: transporte
+  capas_osi: *id003
+  protocolo: TCP SACK Linux
+  alcance: Ramas afectadas; diferencias antes/después de 4.15
+  causas:
+  - I
+  fechas:
+  - valor: 2019-06
+    precision: mes
+    naturaleza: P
+  hallazgo: Fragmentación excesiva de cola TCP
+  identificador: CVE-2019-11478
+  cve:
+  - CVE-2019-11478
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S20
+  condicion: Conexión
+  impacto: consumo de CPU/recursos y DoS
+  control: Kernel corregido según distribución
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-026
+  titulo: Consumo excesivo asociado a MSS
+  area: transporte
+  capas_osi: *id003
+  protocolo: TCP MSS Linux
+  alcance: Implementaciones afectadas que aceptan MSS muy bajo
+  causas:
+  - I
+  fechas:
+  - valor: 2019-06
+    precision: mes
+    naturaleza: P
+  hallazgo: Consumo excesivo asociado a MSS
+  identificador: CVE-2019-11479
+  cve:
+  - CVE-2019-11479
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S20
+  condicion: Conexión
+  impacto: degradación/DoS
+  control: Kernel corregido; cambios de MSS requieren evaluación
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-027
+  titulo: SACK Slowness
+  area: transporte
+  capas_osi: *id003
+  protocolo: TCP RACK FreeBSD
+  alcance: FreeBSD 12 con pila RACK afectada
+  causas:
+  - I
+  fechas:
+  - valor: 2019-06
+    precision: mes
+    naturaleza: P
+  hallazgo: SACK Slowness
+  identificador: CVE-2019-5599
+  cve:
+  - CVE-2019-5599
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S20
+  condicion: Conexión
+  impacto: consumo excesivo de recursos
+  control: Actualizar FreeBSD según aviso
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-028
+  titulo: Bleichenbacher
+  area: cripto-sesion
+  capas_osi: &id004
+  - 5
+  - 6
+  protocolo: SSL/TLS con RSA PKCS#1 v1.5
+  alcance: Intercambio RSA con oráculo de padding
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: '1998'
+    precision: anio
+    naturaleza: P
+  hallazgo: Bleichenbacher
+  identificador: Familia; sin CVE único aquí
+  cve: []
+  avisos: []
+  es_familia: true
+  cve_es_ejemplo: false
+  fuentes:
+  - S51
+  condicion: Consultas adaptativas
+  impacto: recuperación de secretos
+  control: Eliminar oráculos; favorecer intercambio moderno sin RSA estático
+  aviso_version: false
+  clases:
+  - L6-TLS-DEBIL
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-029
+  titulo: Inyección de prefijo en renegociación
+  area: cripto-sesion
+  capas_osi: *id004
+  protocolo: TLS renegociación
+  alcance: Renegociación sin enlace criptográfico seguro
+  causas:
+  - D
+  fechas:
+  - valor: '2009'
+    precision: anio
+    naturaleza: P
+  hallazgo: Inyección de prefijo en renegociación
+  identificador: CVE-2009-3555
+  cve:
+  - CVE-2009-3555
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S48
+  - S21
+  condicion: Atacante en camino
+  impacto: confusión de sesión
+  control: Secure renegotiation o retirar función obsoleta
+  aviso_version: false
+  clases:
+  - L6-TLS-DEBIL
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-030
+  titulo: SSL stripping
+  area: cripto-sesion
+  capas_osi: *id004
+  protocolo: HTTP a HTTPS
+  alcance: Inicio HTTP susceptible de modificación
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: '2009'
+    precision: anio
+    naturaleza: P
+  hallazgo: SSL stripping
+  identificador: Sin CVE único
+  cve: []
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S21
+  condicion: Atacante en camino
+  impacto: mantener sesión sin TLS
+  control: HTTPS desde inicio y HSTS/preload cuando proceda
+  aviso_version: false
+  clases:
+  - L6-DOWNGRADE
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-031
+  titulo: BEAST
+  area: cripto-sesion
+  capas_osi: *id004
+  protocolo: TLS 1.0 CBC
+  alcance: IV predecible; contexto de ataque requerido
+  causas:
+  - D
+  fechas:
+  - valor: '2011'
+    precision: anio
+    naturaleza: P
+  hallazgo: BEAST
+  identificador: CVE-2011-3389
+  cve:
+  - CVE-2011-3389
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S21
+  condicion: Tráfico elegido y observación
+  impacto: filtración
+  control: Retirar TLS1.0 y usar AEAD
+  aviso_version: false
+  clases:
+  - L6-TLS-DEBIL
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-032
+  titulo: CRIME
+  area: cripto-sesion
+  capas_osi: *id004
+  protocolo: TLS compression
+  alcance: Compresión junto a secretos y entrada controlada
+  causas:
+  - D
+  fechas:
+  - valor: '2012'
+    precision: anio
+    naturaleza: P
+  hallazgo: CRIME
+  identificador: CVE-2012-4929
+  cve:
+  - CVE-2012-4929
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S21
+  condicion: Observación de longitudes
+  impacto: filtración
+  control: Desactivar compresión TLS
+  aviso_version: false
+  clases:
+  - L6-TLS-DEBIL
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-033
+  titulo: Lucky Thirteen
+  area: cripto-sesion
+  capas_osi: *id004
+  protocolo: TLS/DTLS CBC
+  alcance: MAC-then-encrypt con diferencias temporales aprovechables
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: '2013-02-04'
+    precision: dia
+    naturaleza: P
+  hallazgo: Lucky Thirteen
+  identificador: CVE-2013-0169
+  cve:
+  - CVE-2013-0169
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S22
+  - S21
+  condicion: MITM y muestras
+  impacto: recuperación de texto según variante
+  control: AEAD y bibliotecas corregidas
+  aviso_version: false
+  clases:
+  - L6-TLS-DEBIL
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-034
+  titulo: BREACH
+  area: cripto-sesion
+  capas_osi: *id004
+  protocolo: HTTP comprimido sobre TLS
+  alcance: Respuesta que mezcla secreto y contenido influenciable
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: '2013'
+    precision: anio
+    naturaleza: P
+  hallazgo: BREACH; no es fallo del cifrado TLS
+  identificador: Familia; no se fija CVE
+  cve: []
+  avisos: []
+  es_familia: true
+  cve_es_ejemplo: false
+  fuentes:
+  - S50
+  condicion: Consultas y longitudes
+  impacto: filtración de secretos
+  control: Separar secretos/entrada y mitigaciones de compresión en aplicación
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: fuga por compresión HTTP, no es fallo del cifrado TLS'
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-035
+  titulo: Triple Handshake
+  area: cripto-sesion
+  capas_osi: *id004
+  protocolo: TLS handshake/reanudación
+  alcance: Sesiones sin enlace suficiente al contexto del handshake
+  causas:
+  - D
+  fechas:
+  - valor: '2014'
+    precision: anio
+    naturaleza: P
+  hallazgo: Triple Handshake
+  identificador: CVE-2014-1295, ejemplo de implementación
+  cve:
+  - CVE-2014-1295
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: true
+  fuentes:
+  - S49
+  - S21
+  condicion: Condiciones de identidad/sesión
+  impacto: suplantación
+  control: Extended Master Secret en TLS1.2 y migración a TLS1.3
+  aviso_version: false
+  clases:
+  - L6-TLS-DEBIL
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-036
+  titulo: Heartbleed
+  area: cripto-sesion
+  capas_osi: *id004
+  protocolo: TLS/DTLS OpenSSL
+  alcance: OpenSSL 1.0.1 anterior a 1.0.1g
+  causas:
+  - I
+  fechas:
+  - valor: '2014-04-07'
+    precision: dia
+    naturaleza: P
+  hallazgo: 'Heartbleed: lectura fuera de límites'
+  identificador: CVE-2014-0160
+  cve:
+  - CVE-2014-0160
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S23
+  condicion: Alcanzar servicio con heartbeat
+  impacto: fuga de memoria
+  control: Parche; evaluar rotación de secretos expuestos
+  aviso_version: false
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-037
+  titulo: POODLE
+  area: cripto-sesion
+  capas_osi: *id004
+  protocolo: SSL 3.0 CBC
+  alcance: Padding SSL3 vulnerable
+  causas:
+  - D
+  fechas:
+  - valor: '2014'
+    precision: anio
+    naturaleza: P
+  hallazgo: POODLE
+  identificador: CVE-2014-3566
+  cve:
+  - CVE-2014-3566
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S21
+  condicion: MITM y condiciones de tráfico
+  impacto: filtración
+  control: Deshabilitar SSL3; TLS_FALLBACK_SCSV no repara SSL3
+  aviso_version: false
+  clases:
+  - L6-TLS-DEBIL
+  - L6-DOWNGRADE
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-038
+  titulo: Logjam
+  area: cripto-sesion
+  capas_osi: *id004
+  protocolo: TLS DHE_EXPORT
+  alcance: Negociación que permite downgrade a DH de exportación
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: '2015-05-20'
+    precision: dia
+    naturaleza: P
+  hallazgo: Logjam
+  identificador: CVE-2015-4000
+  cve:
+  - CVE-2015-4000
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S24
+  condicion: MITM y extremos vulnerables
+  impacto: descifrado/modificación
+  control: Retirar suites EXPORT y parámetros débiles
+  aviso_version: false
+  clases:
+  - L6-DOWNGRADE
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-039
+  titulo: DROWN
+  area: cripto-sesion
+  capas_osi: *id004
+  protocolo: SSLv2 y TLS con clave RSA compartida
+  alcance: Servicio SSLv2 que expone oráculo con la misma clave
+  causas:
+  - D
+  - I
+  - C
+  fechas:
+  - valor: 2016-03
+    precision: mes
+    naturaleza: P
+  hallazgo: 'DROWN: ataque entre protocolos'
+  identificador: CVE-2016-0800, referencia principal
+  cve:
+  - CVE-2016-0800
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S25
+  condicion: Acceso al oráculo y tráfico objetivo
+  impacto: descifrado
+  control: Retirar SSLv2 en todos los servicios que comparten clave
+  aviso_version: false
+  clases:
+  - L6-TLS-DEBIL
+  - L6-CLAVES
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-040
+  titulo: FTP bounce
+  area: aplicacion
+  capas_osi: &id005
+  - 7
+  protocolo: FTP
+  alcance: Proxy FTP/PORT hacia terceros permitido
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: '1997'
+    precision: anio
+    naturaleza: H
+    cota: maxima
+  - valor: 1999-05
+    precision: mes
+    naturaleza: R
+  hallazgo: FTP bounce
+  identificador: CA-1997-27; RFC2577
+  cve: []
+  avisos:
+  - CA-1997-27
+  - RFC2577
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S35
+  - S04
+  condicion: Servidor accesible y función permitida
+  impacto: conexiones hacia terceros
+  control: Restringir PORT/destinos; deshabilitar proxy FTP innecesario
+  aviso_version: false
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-041
+  titulo: Rogue DHCP
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: DHCP
+  alcance: Clientes aceptan respuestas de servidor no autorizado
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: '2007'
+    precision: anio
+    naturaleza: R
+    cota: maxima
+  hallazgo: Rogue DHCP
+  identificador: Sin CVE único
+  cve: []
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S06
+  condicion: Acceso al segmento
+  impacto: DNS/gateway malicioso
+  control: DHCP snooping y puertos de confianza correctos
+  aviso_version: false
+  clases:
+  - L2-DHCP-SPOOFING
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-042
+  titulo: DHCP starvation
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: DHCP
+  alcance: Asignación de direcciones consumible por identidades falsas
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: '2007'
+    precision: anio
+    naturaleza: R
+    cota: maxima
+  hallazgo: DHCP starvation
+  identificador: Sin CVE único
+  cve: []
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S06
+  condicion: Acceso al segmento
+  impacto: agotamiento del pool
+  control: Límites y políticas de acceso; vigilar leases
+  aviso_version: false
+  clases:
+  - L2-DHCP-SPOOFING
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-043
+  titulo: Envenenamiento de caché, divulgación coordinada 2008
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: DNS
+  alcance: Resolvers con entropía/validación insuficientes
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: '2008-07-08'
+    precision: dia
+    naturaleza: P
+  hallazgo: Envenenamiento de caché, divulgación coordinada 2008
+  identificador: VU#800113; CVE-2008-1447
+  cve:
+  - CVE-2008-1447
+  avisos:
+  - VU#800113
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S26
+  condicion: Respuestas falsificadas aceptadas
+  impacto: redirección
+  control: Parches, puertos/ID impredecibles y validación DNSSEC
+  aviso_version: false
+  clases:
+  - L7-DNS
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-044
+  titulo: Procesamiento inseguro de solicitudes RPC
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: RPC servicio Server Windows
+  alcance: Versiones Windows afectadas por MS08-067
+  causas:
+  - I
+  fechas:
+  - valor: '2008-10-23'
+    precision: dia
+    naturaleza: P
+  hallazgo: Procesamiento inseguro de solicitudes RPC
+  identificador: CVE-2008-4250
+  cve:
+  - CVE-2008-4250
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S30
+  condicion: Servicio alcanzable
+  impacto: RCE según versión
+  control: Aplicar parche o retirar sistemas sin soporte
+  aviso_version: false
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-045
+  titulo: Reflexión/amplificación
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: NTP ntpd monlist
+  alcance: Servicio afectado expuesto con consultas permitidas
+  causas:
+  - D
+  - I
+  - C
+  fechas:
+  - valor: 2014-01
+    precision: mes
+    naturaleza: R
+  hallazgo: Reflexión/amplificación
+  identificador: CVE-2013-5211
+  cve:
+  - CVE-2013-5211
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S36
+  condicion: Origen UDP falsificable
+  impacto: tráfico hacia víctima
+  control: Retirar monlist expuesto, restringir consultas y actualizar
+  aviso_version: false
+  clases:
+  - L4-AMPLIFICACION
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-046
+  titulo: Mensajes manipulados y ejecución remota
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: SMBv1 Windows
+  alcance: Productos/builds del boletín MS17-010
+  causas:
+  - I
+  fechas:
+  - valor: '2017-03-14'
+    precision: dia
+    naturaleza: P
+  hallazgo: Mensajes manipulados y ejecución remota
+  identificador: CVE-2017-0144, ejemplo; boletín con varios CVE
+  cve:
+  - CVE-2017-0144
+  avisos: []
+  es_familia: true
+  cve_es_ejemplo: true
+  fuentes:
+  - S29
+  condicion: SMB alcanzable
+  impacto: RCE en sistemas afectados
+  control: Actualizar, retirar SMBv1 y limitar acceso SMB
+  aviso_version: false
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-047
+  titulo: Ausencia de protección criptográfica nativa equivalente a TLS
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: Modbus clásico
+  alcance: Modbus sin protección adicional; distinto de Modbus Security
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: '2018-10-29'
+    precision: dia
+    naturaleza: R
+  hallazgo: Ausencia de protección criptográfica nativa equivalente a TLS
+  identificador: Sin CVE único
+  cve: []
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S41
+  condicion: Acceso al canal
+  impacto: lectura/órdenes no autorizadas según despliegue
+  control: Segmentación; Modbus Security compatible; autorización de operaciones
+  aviso_version: false
+  clases:
+  - L7-OT-SIN-AUTENTICACION
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-048
+  titulo: SMBGhost
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: SMB 3.1.1 Microsoft
+  alcance: Windows/builds afectados, no cualquier SMB3
+  causas:
+  - I
+  fechas:
+  - valor: 2020-03
+    precision: mes
+    naturaleza: P
+  hallazgo: 'SMBGhost: compresión vulnerable'
+  identificador: CVE-2020-0796
+  cve:
+  - CVE-2020-0796
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S31
+  condicion: Llegar a extremo afectado
+  impacto: RCE
+  control: Actualizar; mitigación de compresión según rol y proveedor
+  aviso_version: false
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-049
+  titulo: Ripple20
+  area: aplicacion
+  capas_osi:
+  - 3
+  - 4
+  - 7
+  protocolo: Treck IP / Ripple20
+  alcance: Pilas embebidas Treck afectadas; revisión por CVE/producto
+  causas:
+  - I
+  fechas:
+  - valor: '2020-06-16'
+    precision: dia
+    naturaleza: P
+  hallazgo: Familia de fallos de memoria en múltiples protocolos
+  identificador: VU#257161; 19 vulnerabilidades; CVE-2020-11896, ejemplo
+  cve:
+  - CVE-2020-11896
+  avisos:
+  - VU#257161
+  es_familia: true
+  cve_es_ejemplo: true
+  fuentes:
+  - S38
+  condicion: Entrega de tráfico según CVE
+  impacto: DoS/RCE u otros efectos
+  control: Firmware del fabricante e inventario de componentes
+  aviso_version: false
+  clases:
+  - TX-FIRMWARE
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-050
+  titulo: AMNESIA:33
+  area: aplicacion
+  capas_osi:
+  - 3
+  - 4
+  - 7
+  protocolo: Pilas TCP/IP / AMNESIA:33
+  alcance: 'uIP, picoTCP, FNET y Nut/Net: versiones afectadas'
+  causas:
+  - I
+  fechas:
+  - valor: 2020-12
+    precision: mes
+    naturaleza: P
+  hallazgo: Familia de errores de memoria
+  identificador: VU#815128; 33 vulnerabilidades; CVE-2020-24335, ejemplo
+  cve:
+  - CVE-2020-24335
+  avisos:
+  - VU#815128
+  es_familia: true
+  cve_es_ejemplo: true
+  fuentes:
+  - S39
+  condicion: Exposición por componente
+  impacto: impacto según CVE
+  control: Firmware/parches y segmentación de equipos sin solución
+  aviso_version: false
+  clases:
+  - TX-FIRMWARE
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-051
+  titulo: NAME:WRECK
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: DNS / NAME:WRECK
+  alcance: 'FreeBSD (dhclient, opción DHCP 119), IPnet, NetX, Nucleus NET: componentes/versiones afectados'
+  causas:
+  - I
+  fechas:
+  - valor: 2021-04
+    precision: mes
+    naturaleza: P
+  hallazgo: Parsing DNS y compresión de nombres
+  identificador: 9 vulnerabilidades; informe original; CVE-2020-27009, ejemplo
+  cve:
+  - CVE-2020-27009
+  avisos: []
+  es_familia: true
+  cve_es_ejemplo: true
+  fuentes:
+  - S40
+  - S57
+  condicion: Respuestas procesadas por componente vulnerable
+  impacto: DoS/RCE según CVE
+  control: Corregir pila/firmware y controlar resolución DNS
+  aviso_version: false
+  clases:
+  - TX-FIRMWARE
+  - L7-DNS
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-052
+  titulo: HTTP request smuggling
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: HTTP/1.1
+  alcance: Cadenas de intermediarios con framing interpretado de forma distinta
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: 2005-06
+    precision: mes
+    naturaleza: H
+  - valor: 2022-06
+    precision: mes
+    naturaleza: R
+  hallazgo: HTTP request smuggling; antecedente citado de 2005
+  identificador: Familia; RFC9112 §11.2
+  cve: []
+  avisos:
+  - RFC9112
+  es_familia: true
+  cve_es_ejemplo: false
+  fuentes:
+  - S27
+  condicion: Solicitud atraviesa parsers discordantes
+  impacto: bypass/confusión
+  control: Rechazar ambigüedad y actualizar todos los saltos
+  aviso_version: false
+  clases:
+  - L7-SMUGGLING
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-053
+  titulo: Rapid Reset
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: HTTP/2
+  alcance: Implementaciones que no limitan adecuadamente creación/cancelación de streams
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: '2023-10-10'
+    precision: dia
+    naturaleza: P
+  hallazgo: Rapid Reset
+  identificador: CVE-2023-44487
+  cve:
+  - CVE-2023-44487
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S28
+  condicion: HTTP/2 accesible
+  impacto: agotamiento de recursos
+  control: Parches y límites de trabajo/cancelaciones
+  aviso_version: false
+  clases:
+  - L7-DOS-APLICACION
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-054
+  titulo: Terrapin
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: SSH2
+  alcance: ChaCha20-Poly1305 o CBC-EtM en condiciones vulnerables
+  causas:
+  - D
+  fechas:
+  - valor: 2023-12
+    precision: mes
+    naturaleza: P
+  hallazgo: 'Terrapin: truncamiento de prefijo'
+  identificador: CVE-2023-48795
+  cve:
+  - CVE-2023-48795
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S32
+  condicion: MITM activo
+  impacto: debilitamiento de negociación
+  control: Strict KEX en ambos extremos; actualizar cliente/servidor
+  aviso_version: false
+  clases:
+  - L6-DOWNGRADE
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-055
+  titulo: regreSSHion
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: OpenSSH portable sshd
+  alcance: 8.5p1 a 9.7p1; plataformas afectadas
+  causas:
+  - I
+  fechas:
+  - valor: '2024-07-01'
+    precision: dia
+    naturaleza: P
+  hallazgo: 'regreSSHion: carrera en manejo de señales'
+  identificador: CVE-2024-6387
+  cve:
+  - CVE-2024-6387
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S33
+  - S56
+  condicion: sshd alcanzable
+  impacto: RCE según plataforma/condiciones
+  control: Corrección en 9.8p1 o backport del proveedor
+  aviso_version: true
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-056
+  titulo: Blast-RADIUS
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: RADIUS clásico
+  alcance: RFC2865 con MD5 y sin protección efectiva requerida
+  causas:
+  - D
+  - C
+  fechas:
+  - valor: '2024-07-09'
+    precision: dia
+    naturaleza: P
+  hallazgo: 'Blast-RADIUS: falsificación mediante colisiones'
+  identificador: CVE-2024-3596
+  cve:
+  - CVE-2024-3596
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S34
+  - S47
+  condicion: Atacante que modifica tráfico
+  impacto: respuesta de autenticación falsificada
+  control: Message-Authenticator exigido según fabricante y transporte protegido
+  aviso_version: false
+  clases: []
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: falsificación en la cadena AAA'
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-057
+  titulo: Consumo excesivo de streams sin ACK de settings
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: HTTP/2 Apache Tomcat
+  alcance: 'Rama 9: 9.0.0.M1 a 9.0.106'
+  causas:
+  - I
+  fechas:
+  - valor: '2025-07-10'
+    precision: dia
+    naturaleza: P
+  hallazgo: Consumo excesivo de streams sin ACK de settings
+  identificador: CVE-2025-53506
+  cve:
+  - CVE-2025-53506
+  avisos: []
+  es_familia: false
+  cve_es_ejemplo: false
+  fuentes:
+  - S42
+  condicion: Servicio HTTP/2 alcanzable
+  impacto: DoS
+  control: 'Primera corrección de rama 9: 9.0.107'
+  aviso_version: true
+  clases:
+  - L7-DOS-APLICACION
+  motivo_sin_clase: null
+  revision:
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+- id: OSI-058
+  titulo: MadeYouReset
+  area: aplicacion
+  capas_osi: *id005
+  protocolo: HTTP/2
+  alcance: 'Implementaciones HTTP/2 que siguen procesando streams reiniciados por el servidor; ejemplo Apache Tomcat rama 9: 9.0.0.M1 a 9.0.107'
+  causas:
+  - D
+  - I
+  fechas:
+  - valor: '2025-08-13'
+    precision: dia
+    naturaleza: P
+  hallazgo: 'MadeYouReset: reinicios de stream provocados por el cliente que dejan de contarse mientras el servidor sigue procesando'
+  identificador: CVE-2025-8671; VU#767506 con 7 CVE; ejemplo Tomcat CVE-2025-48989
+  cve:
+  - CVE-2025-8671
+  - CVE-2025-48989
+  avisos:
+  - VU#767506
+  es_familia: true
+  cve_es_ejemplo: true
+  fuentes:
+  - S55
+  - S42
+  condicion: Servicio HTTP/2 alcanzable
+  impacto: DoS por agotamiento de CPU o memoria
+  control: 'Parches del fabricante y límite de RST_STREAM enviados por el servidor; ejemplo Tomcat, primera corrección de rama 9: 9.0.108'
+  aviso_version: true
+  clases:
+  - L7-DOS-APLICACION
+  motivo_sin_clase: null
+  revision:
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
+capa_fisica:
+- superficie: Radio
+  amenaza: Interferencia deliberada o accidental; escucha del medio
+  evidencia: Mediciones de espectro, eventos radio y correlación temporal
+  control: Supervisión radio, redundancia y procedimientos de continuidad
+- superficie: Cableado y terminaciones
+  amenaza: Corte, conexión de equipo interpuesto o acceso al enlace
+  evidencia: Inventario físico, alarmas y control de accesos
+  control: Protección de canalizaciones y armarios, cifrado y redundancia
+- superficie: Puertos y equipos accesibles
+  amenaza: Conexión de dispositivos no autorizados
+  evidencia: Estado de puertos, registros NAC y accesos físicos
+  control: Gestión de puertos, NAC y seguridad física

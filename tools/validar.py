@@ -1,6 +1,7 @@
 """Validate the catalogue: schema, id formats, ENS ids, protocol ids, https-only links and the pedri77 allowlist.
 
-Usage: python tools/validar.py        (exit 0 if valid, 1 otherwise)
+Usage: python tools/validar.py [--publicar]   (exit 0 if valid, 1 otherwise)
+--publicar also refuses historical entries whose human review is still pending.
 Stdlib + PyYAML. No network: online checks live in tools/verificar_ids.py.
 """
 from __future__ import annotations
@@ -17,6 +18,9 @@ RE_CWE = re.compile(r"^CWE-\d+$")
 RE_ATTACK = re.compile(r"^T\d{4}(\.\d{3})?$")
 RE_NIS2 = re.compile(r"^NIS2-21\.2\.[a-j]$")
 RE_CLASE = re.compile(r"^(L[1-7]|TX)-[A-Z0-9]+(-[A-Z0-9]+)*$")
+RE_OSI = re.compile(r"^OSI-\d{3}$")
+RE_CVE = re.compile(r"^CVE-\d{4}-\d{4,}$")
+RE_FUENTE = re.compile(r"^S\d{2}$")
 RE_URL = re.compile(r"""(?:https?|ftp)://[^\s"'<>)\]]+""")
 
 CAPAS_ESPERADAS = ["L1", "L2", "L3", "L4", "L5", "L6", "L7", "TX"]
@@ -29,6 +33,14 @@ PLANTILLAS_CONSULTA = {
     "cisa_kev": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext={k}",
     "cvedetails": "https://www.cvedetails.com/google-search-results.php?q={k}",
 }
+AREAS_HISTORICO = ("enlace", "red", "transporte", "cripto-sesion", "aplicacion")
+CAUSAS = ("D", "I", "C")
+NATURALEZAS = ("P", "H", "R")
+RE_PRECISION = {"anio": re.compile(r"^\d{4}$"), "mes": re.compile(r"^\d{4}-\d{2}$"), "dia": re.compile(r"^\d{4}-\d{2}-\d{2}$")}
+ESTADOS_REVISION = ("pendiente", "revisada", "corregida", "retirada")
+CAMPOS_ENTRADA = ("id", "titulo", "area", "capas_osi", "protocolo", "alcance", "causas", "fechas", "hallazgo",
+                  "identificador", "cve", "avisos", "es_familia", "cve_es_ejemplo", "fuentes", "condicion", "impacto",
+                  "control", "aviso_version", "clases", "motivo_sin_clase", "revision")
 # Public pedri77 repos that may be linked (GitHub repo or its Pages site). Anything else is refused.
 REPOS_PERMITIDOS = frozenset({
     "Basicos_Proteccion_Capas_OSI", "modelo_OSI", "security-manager-control", "smc-cinematica",
@@ -192,6 +204,98 @@ def validar_fuentes(fuentes: dict) -> list[str]:
     return errores
 
 
+def validar_fuentes_historico(fuentes: dict) -> list[str]:
+    lista = fuentes.get("fuentes") if isinstance(fuentes, dict) else None
+    if not isinstance(lista, list) or not lista:
+        return ["historico_fuentes.yaml: falta la lista fuentes"]
+    errores, ids = [], set()
+    for f in lista:
+        fid = f.get("id", "?")
+        if not RE_FUENTE.match(str(fid)):
+            errores.append(f"historico_fuentes/{fid}: id con forma incorrecta")
+        for k in ("titulo", "url", "respalda"):
+            if not isinstance(f.get(k), str) or not f[k].strip():
+                errores.append(f"historico_fuentes/{fid}: falta {k}")
+        if f.get("uso") not in ("evidencia", "contexto"):
+            errores.append(f"historico_fuentes/{fid}: uso debe ser evidencia o contexto")
+        if f.get("verificacion") not in ("auto", "manual"):
+            errores.append(f"historico_fuentes/{fid}: verificacion debe ser auto o manual")
+        if fid in ids:
+            errores.append(f"historico_fuentes/{fid}: id repetido")
+        ids.add(fid)
+    for ruta, s in textos(fuentes, "historico_fuentes.yaml"):
+        errores += comprobar_texto(ruta, s)
+    return errores
+
+
+def _validar_fechas(entrada: dict, donde: str) -> list[str]:
+    errores = []
+    if not isinstance(entrada["fechas"], list):
+        return [f"{donde}: fechas debe ser una lista (vacía si no hay fecha fijada)"]
+    for ev in entrada["fechas"]:
+        regla = RE_PRECISION.get(ev.get("precision"))
+        if regla is None:
+            errores.append(f"{donde}: precisión de fecha desconocida: {ev.get('precision')}")
+        elif not isinstance(ev.get("valor"), str) or not regla.match(ev["valor"]):
+            errores.append(f"{donde}: fecha no coincide con su precisión: {ev.get('valor')!r}")
+        if ev.get("naturaleza") not in NATURALEZAS:
+            errores.append(f"{donde}: fecha sin naturaleza P, H o R")
+    return errores
+
+
+def validar_historico(hist: dict, fuentes: dict, ids_clase: set[str], verificacion: dict | None = None,
+                      publicar: bool = False) -> list[str]:
+    if not isinstance(hist, dict) or hist.get("version") != "v1" or not isinstance(hist.get("entradas"), list):
+        return ["historico.yaml: falta version v1 o la lista entradas"]
+    ids_fuente = {f.get("id") for f in fuentes.get("fuentes", [])} if isinstance(fuentes, dict) else set()
+    ok_cve = None
+    if verificacion is not None and "cve" in verificacion:
+        ok_cve = {r["id"] for r in verificacion["cve"] if r.get("estado") == "ok"}
+    errores: list[str] = []
+    vistos: set[str] = set()
+    for x in hist["entradas"]:
+        oid = x.get("id", "?") if isinstance(x, dict) else "?"
+        donde = f"historico/{oid}"
+        faltan = [k for k in CAMPOS_ENTRADA if not isinstance(x, dict) or k not in x]
+        if faltan:
+            errores.append(f"{donde}: faltan {faltan}")
+            continue
+        if not RE_OSI.match(str(oid)):
+            errores.append(f"{donde}: id con forma incorrecta")
+        if oid in vistos:
+            errores.append(f"{donde}: id repetido")
+        vistos.add(oid)
+        if x["area"] not in AREAS_HISTORICO:
+            errores.append(f"{donde}: área desconocida: {x['area']}")
+        if not x["causas"] or any(c not in CAUSAS for c in x["causas"]):
+            errores.append(f"{donde}: causas debe ser una lista de D, I, C")
+        if not x["capas_osi"] or any(c not in range(1, 8) for c in x["capas_osi"]):
+            errores.append(f"{donde}: capas_osi debe ser una lista de 1 a 7")
+        errores += _validar_fechas(x, donde)
+        errores += [f"{donde}: CVE mal formado: {c}" for c in x["cve"] if not RE_CVE.match(c)]
+        if ok_cve is not None:
+            errores += [f"{donde}: {c} sin verificar en data/verificacion_ids.yaml" for c in x["cve"] if c not in ok_cve]
+        if not x["fuentes"]:
+            errores.append(f"{donde}: sin fuentes")
+        errores += [f"{donde}: fuente inexistente: {s}" for s in x["fuentes"] if s not in ids_fuente]
+        errores += [f"{donde}: clase inexistente en capas.yaml: {k}" for k in x["clases"] if k not in ids_clase]
+        rev = x["revision"] if isinstance(x["revision"], dict) else {}
+        estado = rev.get("estado")
+        if estado not in ESTADOS_REVISION:
+            errores.append(f"{donde}: estado de revisión desconocido: {estado}")
+        elif estado == "pendiente":
+            if publicar:
+                errores.append(f"{donde}: revisión pendiente, no se puede publicar")
+        else:
+            if not rev.get("fecha") or not rev.get("por"):
+                errores.append(f"{donde}: revisión sin fecha o sin revisor")
+            if estado != "retirada" and not x["clases"] and not x["motivo_sin_clase"]:
+                errores.append(f"{donde}: sin clases y sin motivo_sin_clase")
+    for ruta, s in textos(hist, "historico.yaml"):
+        errores += comprobar_texto(ruta, s)
+    return errores
+
+
 def validar_ficheros_texto(rutas: list[Path]) -> list[str]:
     """Generated pages and README: https only, allowlist, no em dash."""
     errores = []
@@ -209,7 +313,7 @@ def validar_ficheros_texto(rutas: list[Path]) -> list[str]:
     return errores
 
 
-def validar_repo(raiz: Path = RAIZ) -> list[str]:
+def validar_repo(raiz: Path = RAIZ, publicar: bool = False) -> list[str]:
     d = raiz / "data"
     catalogo = yaml.safe_load((d / "capas.yaml").read_text(encoding="utf-8"))
     fuentes = yaml.safe_load((d / "fuentes.yaml").read_text(encoding="utf-8"))
@@ -222,12 +326,18 @@ def validar_repo(raiz: Path = RAIZ) -> list[str]:
     if verificacion is None:
         errores.append("data/verificacion_ids.yaml no existe: ejecutar tools/verificar_ids.py")
     errores += validar_fuentes(fuentes)
-    errores += validar_ficheros_texto([raiz / "README.md", raiz / "docs/index.html", raiz / "docs/capas.md"])
+    hist = yaml.safe_load((d / "historico.yaml").read_text(encoding="utf-8"))
+    fue_hist = yaml.safe_load((d / "historico_fuentes.yaml").read_text(encoding="utf-8"))
+    ids_clase = {k["id"] for capa in catalogo["capas"] for k in capa["clases"]}
+    errores += validar_fuentes_historico(fue_hist)
+    errores += validar_historico(hist, fue_hist, ids_clase, verificacion, publicar)
+    errores += validar_ficheros_texto([raiz / "README.md", raiz / "docs/index.html", raiz / "docs/capas.md",
+                                       raiz / "docs/historico/index.html"])
     return errores
 
 
 def main() -> int:
-    errores = validar_repo()
+    errores = validar_repo(publicar="--publicar" in sys.argv[1:])
     for e in errores:
         print("ERROR", e)
     if not errores:

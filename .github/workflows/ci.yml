@@ -1,0 +1,26 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.11"
+      - run: pip install pyyaml pytest
+      # Without network on purpose: CVE and URL checks are run by hand and stored in data/verificacion_ids.yaml.
+      - run: python tools/generar.py
+      - name: docs/ matches the data
+        run: git diff --exit-code docs/ && test -z "$(git status --porcelain docs/)"
+      - run: python -m pytest -q
+      # Refuses entries whose human review is pending: main is what Pages publishes.
+      - run: python tools/validar.py --publicar
