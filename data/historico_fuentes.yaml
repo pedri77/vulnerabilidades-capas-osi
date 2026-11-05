@@ -1,0 +1,309 @@
+# Fuentes de data/historico.yaml.
+version: v1
+fuentes:
+- id: S01
+  titulo: 'Bellovin: Security Problems in the TCP/IP Protocol Suite (1989)'
+  url: https://www.cs.columbia.edu/~smb/papers/ipext.pdf
+  respalda: Artículo del autor; IP, encaminamiento y confianza TCP/IP.
+  uso: evidencia
+  verificacion: auto
+- id: S02
+  titulo: 'IETF: RFC 1948 (1996), Defending Against Sequence Number Attacks'
+  url: https://www.rfc-editor.org/rfc/rfc1948.html
+  respalda: 'Resumen histórico: describe el antecedente de Morris de 1985.'
+  uso: evidencia
+  verificacion: auto
+- id: S03
+  titulo: 'IETF: RFC 4987 (2007), TCP SYN Flooding'
+  url: https://www.rfc-editor.org/rfc/rfc4987.html
+  respalda: '§2.1: conocimiento en 1994 y divulgación/explotación en 1996.'
+  uso: evidencia
+  verificacion: auto
+- id: S04
+  titulo: 'CERT/CC: avisos de 1997, CA-1997-28'
+  url: https://www.sei.cmu.edu/documents/504/1997_019_001_496176.pdf
+  respalda: 'Aviso de 16-12-1997: Teardrop y Land.'
+  uso: evidencia
+  verificacion: auto
+- id: S05
+  titulo: 'CVE: CVE-1999-0128, Ping o'' Death'
+  url: https://www.cve.org/CVERecord?id=CVE-1999-0128
+  respalda: Registro retrospectivo; referencia a CA-96.26.
+  uso: evidencia
+  verificacion: auto
+- id: S06
+  titulo: 'Cisco: Layer 2 Security Features (2007)'
+  url: https://www.cisco.com/c/en/us/support/docs/switches/catalyst-3750-series-switches/72846-layer2-secftrs-catl3fixed.html
+  respalda: ARP y DHCP; fecha de documentación, no de descubrimiento.
+  uso: evidencia
+  verificacion: manual
+- id: S07
+  titulo: 'Cisco: Campus LAN and Wireless LAN Solution Design Guide'
+  url: https://www.cisco.com/c/en/us/td/docs/solutions/CVD/Campus/cisco-campus-lan-wlan-design-guide.html
+  respalda: STP/BPDU Guard y defensas de acceso.
+  uso: evidencia
+  verificacion: manual
+- id: S08
+  titulo: 'Stubblefield, Ioannidis y Rubin: ataque FMS a WEP, USENIX 2001'
+  url: https://www.usenix.org/conference/10th-usenix-security-symposium/using-fluhrer-mantin-and-shamir-attack-break-wep
+  respalda: Investigación original.
+  uso: evidencia
+  verificacion: auto
+- id: S09
+  titulo: 'Bellardo y Savage: 802.11 DoS, USENIX 2003'
+  url: https://www.usenix.org/legacy/publications/library/proceedings/sec03/tech/full_papers/bellardo/bellardo_html/index.html
+  respalda: Investigación original; tramas de gestión y acceso al medio.
+  uso: evidencia
+  verificacion: auto
+- id: S10
+  titulo: 'CERT/CC: VU#723755, WPS PIN (2011)'
+  url: https://www.kb.cert.org/vuls/id/723755/
+  respalda: Divulgación 27-12-2011.
+  uso: evidencia
+  verificacion: auto
+- id: S11
+  titulo: 'Vanhoef y Piessens: KRACK (2017)'
+  url: https://www.krackattacks.com/
+  respalda: Investigación original y catálogo CVE.
+  uso: evidencia
+  verificacion: auto
+- id: S12
+  titulo: 'Vanhoef y Ronen: Dragonblood (2019)'
+  url: https://wpa3.mathyvanhoef.com/
+  respalda: Investigación original; SAE y EAP-pwd.
+  uso: evidencia
+  verificacion: auto
+- id: S13
+  titulo: 'Vanhoef: FragAttacks (2021)'
+  url: https://www.fragattacks.com/
+  respalda: Divulgación 11-05-2021; diseño e implementación.
+  uso: evidencia
+  verificacion: auto
+- id: S14
+  titulo: 'CERT/CC: VU#918987, KNOB'
+  url: https://www.kb.cert.org/vuls/id/918987/
+  respalda: Coordinación de vulnerabilidad Bluetooth.
+  uso: evidencia
+  verificacion: auto
+- id: S15
+  titulo: 'CERT/CC: VU#647177, BIAS (2020)'
+  url: https://www.kb.cert.org/vuls/id/647177/
+  respalda: Nota de coordinación de BIAS, CVE-2020-10135 y alcance BR/EDR.
+  uso: evidencia
+  verificacion: auto
+- id: S16
+  titulo: 'IETF: RFC 3756 (2004), IPv6 ND Threats'
+  url: https://www.rfc-editor.org/rfc/rfc3756.html
+  respalda: '§4: vecinos, routers, DAD y redirecciones.'
+  uso: evidencia
+  verificacion: auto
+- id: S17
+  titulo: 'IETF: RFC 4272 (2006), BGP Security Vulnerabilities Analysis'
+  url: https://www.rfc-editor.org/rfc/rfc4272.html
+  respalda: Análisis de amenazas de BGP; no primera divulgación.
+  uso: evidencia
+  verificacion: auto
+- id: S18
+  titulo: 'IETF: RFC 5927 (2010), ICMP Attacks against TCP'
+  url: https://www.rfc-editor.org/rfc/rfc5927.html
+  respalda: Errores ICMP falsificados y tratamiento por TCP.
+  uso: evidencia
+  verificacion: auto
+- id: S19
+  titulo: 'IETF: RFC 5961 (2010), Blind In-Window Attacks'
+  url: https://www.rfc-editor.org/rfc/rfc5961.html
+  respalda: Inyección de RST, SYN y datos; robustecimiento TCP.
+  uso: evidencia
+  verificacion: auto
+- id: S20
+  titulo: 'CERT/CC: VU#905115, SACK/MSS (2019)'
+  url: https://www.kb.cert.org/vuls/id/905115/
+  respalda: Diferencia Linux/FreeBSD y los cuatro CVE.
+  uso: evidencia
+  verificacion: auto
+- id: S21
+  titulo: 'IETF: RFC 7457 (2015), TLS Attacks'
+  url: https://www.rfc-editor.org/rfc/rfc7457.html
+  respalda: Síntesis técnica e histórica; §2 y bibliografía.
+  uso: evidencia
+  verificacion: auto
+- id: S22
+  titulo: 'AlFardan y Paterson: Lucky Thirteen (2013)'
+  url: https://www.isg.rhul.ac.uk/tls/Lucky13.html
+  respalda: Divulgación 04-02-2013; alcance y contramedidas.
+  uso: evidencia
+  verificacion: manual
+- id: S23
+  titulo: 'OpenSSL: vulnerabilidades de la rama 1.0.1'
+  url: https://openssl-library.org/news/vulnerabilities-1.0.1/
+  respalda: 'Heartbleed: rango afectado y primera corrección histórica.'
+  uso: evidencia
+  verificacion: auto
+- id: S24
+  titulo: 'Adrian et al.: Logjam (2015)'
+  url: https://weakdh.org/
+  respalda: Divulgación 20-05-2015.
+  uso: evidencia
+  verificacion: auto
+- id: S25
+  titulo: 'CERT/CC: VU#583776, DROWN (2016)'
+  url: https://www.kb.cert.org/vuls/id/583776/
+  respalda: Ataque entre protocolos usando SSLv2.
+  uso: evidencia
+  verificacion: auto
+- id: S26
+  titulo: 'CERT/CC: VU#800113, DNS cache poisoning (2008)'
+  url: https://kb.cert.org/vuls/id/800113
+  respalda: Divulgación 08-07-2008; diseño e implementaciones.
+  uso: evidencia
+  verificacion: auto
+- id: S27
+  titulo: 'IETF: RFC 9112 (2022), HTTP/1.1'
+  url: https://www.rfc-editor.org/rfc/rfc9112.html
+  respalda: '§11.2 y framing: request smuggling; fecha de referencia.'
+  uso: evidencia
+  verificacion: auto
+- id: S28
+  titulo: 'CISA: HTTP/2 Rapid Reset (2023)'
+  url: https://content.govdelivery.com/accounts/USDHSCISA/bulletins/375225e
+  respalda: Divulgación 10-10-2023; explotación observada.
+  uso: evidencia
+  verificacion: auto
+- id: S29
+  titulo: 'Microsoft: MS17-010 (2017)'
+  url: https://learn.microsoft.com/en-us/security-updates/securitybulletins/2017/ms17-010
+  respalda: Boletín 14-03-2017; varias vulnerabilidades SMBv1.
+  uso: evidencia
+  verificacion: auto
+- id: S30
+  titulo: 'Microsoft: MS08-067 (2008)'
+  url: https://learn.microsoft.com/en-us/security-updates/securitybulletins/2008/ms08-067
+  respalda: Boletín 23-10-2008; RPC del servicio Server.
+  uso: evidencia
+  verificacion: auto
+- id: S31
+  titulo: 'CERT/CC: VU#872016, SMBv3 compression (2020)'
+  url: https://kb.cert.org/vuls/id/872016/
+  respalda: SMBGhost; implementación de SMB 3.1.1 de Microsoft.
+  uso: evidencia
+  verificacion: auto
+- id: S32
+  titulo: 'Bäumer, Brinkmann y Schwenk: Terrapin'
+  url: https://terrapin-attack.com/
+  respalda: Investigación original; condiciones y strict KEX.
+  uso: evidencia
+  verificacion: auto
+- id: S33
+  titulo: 'OpenSSH: notas de versión'
+  url: https://www.openbsd.org/openssh/releasenotes.html
+  respalda: Buscar OpenSSH 9.8/9.8p1, 01-07-2024; regreSSHion.
+  uso: evidencia
+  verificacion: auto
+- id: S34
+  titulo: 'CERT/CC: VU#456537, RADIUS (2024)'
+  url: https://www.kb.cert.org/vuls/id/456537/
+  respalda: Blast-RADIUS y avisos de fabricantes.
+  uso: evidencia
+  verificacion: auto
+- id: S35
+  titulo: 'IETF: RFC 2577 (1999), FTP Security Considerations'
+  url: https://www.rfc-editor.org/rfc/rfc2577.html
+  respalda: FTP bounce y autenticación; referencia al aviso de 1997.
+  uso: evidencia
+  verificacion: auto
+- id: S36
+  titulo: 'FreeBSD: FreeBSD-SA-14:02.ntpd (2014)'
+  url: https://lists.freebsd.org/pipermail/freebsd-security-notifications/2014-January/000197.html
+  respalda: Aviso del fabricante de 14-01-2014.
+  uso: evidencia
+  verificacion: auto
+- id: S37
+  titulo: 'IETF: RFC 8915 (2020), Network Time Security'
+  url: https://www.rfc-editor.org/rfc/rfc8915.html
+  respalda: Protección criptográfica de NTP cliente-servidor.
+  uso: contexto
+  verificacion: auto
+- id: S38
+  titulo: 'CERT/CC: VU#257161, Ripple20 (2020)'
+  url: https://kb.cert.org/vuls/id/257161
+  respalda: Divulgación 16-06-2020; grupo de fallos de implementación.
+  uso: evidencia
+  verificacion: auto
+- id: S39
+  titulo: 'CERT/CC: VU#815128, AMNESIA:33 (2020)'
+  url: https://kb.cert.org/vuls/id/815128
+  respalda: Pilas embebidas y gestión de memoria.
+  uso: evidencia
+  verificacion: auto
+- id: S40
+  titulo: 'Forescout/JSOF: NAME:WRECK, informe original'
+  url: https://www.forescout.com/resources/namewreck-breaking-and-fixing-dns-implementations/
+  respalda: Nueve vulnerabilidades de DNS en cuatro pilas.
+  uso: evidencia
+  verificacion: auto
+- id: S41
+  titulo: 'Modbus Organization: Modbus Security (2018)'
+  url: https://www.modbus.org/news/modbus-security-new-protocol-to-improve-control-system-security
+  respalda: Anuncio de 29-10-2018 de extensión con TLS.
+  uso: evidencia
+  verificacion: auto
+- id: S42
+  titulo: 'Apache Tomcat: vulnerabilidades rama 9'
+  url: https://tomcat.apache.org/security-9
+  respalda: CVE-2025-48989 y CVE-2025-53506, rangos y correcciones.
+  uso: evidencia
+  verificacion: auto
+- id: S43
+  titulo: 'IETF: RFC 2827 / BCP 38 (2000)'
+  url: https://www.rfc-editor.org/rfc/rfc2827.html
+  respalda: Filtrado de origen falsificado.
+  uso: evidencia
+  verificacion: auto
+- id: S44
+  titulo: 'IETF: RFC 9325 (2022), uso seguro TLS/DTLS'
+  url: https://www.rfc-editor.org/rfc/rfc9325.html
+  respalda: Base de recomendaciones; no garantiza seguridad de una implementación.
+  uso: contexto
+  verificacion: auto
+- id: S45
+  titulo: 'IETF: RFC 9099 (2021), IPv6 Operational Security'
+  url: https://www.rfc-editor.org/rfc/rfc9099.html
+  respalda: Base de controles operativos IPv6.
+  uso: contexto
+  verificacion: auto
+- id: S46
+  titulo: 'NIST: SP 800-82 Rev.3 (2023), OT Security'
+  url: https://csrc.nist.gov/pubs/sp/800/82/r3/final
+  respalda: Contexto para aplicar controles a entornos OT.
+  uso: contexto
+  verificacion: auto
+- id: S47
+  titulo: 'CVE/CERT-CC: CVE-2024-3596'
+  url: https://www.cve.org/CVERecord?id=CVE-2024-3596
+  respalda: Registro publicado 09-07-2024; falsificación RADIUS.
+  uso: evidencia
+  verificacion: auto
+- id: S48
+  titulo: 'IETF: RFC 5746 (2010), TLS Renegotiation'
+  url: https://www.rfc-editor.org/rfc/rfc5746.html
+  respalda: Explica el ataque de 2009 y la extensión correctora.
+  uso: evidencia
+  verificacion: auto
+- id: S49
+  titulo: 'IETF: RFC 7627 (2015), Extended Master Secret'
+  url: https://www.rfc-editor.org/rfc/rfc7627.html
+  respalda: Explica triple handshake y enlace al contexto de sesión.
+  uso: evidencia
+  verificacion: auto
+- id: S50
+  titulo: 'Gluck, Harris y Prado: BREACH (2013)'
+  url: https://breachattack.com/
+  respalda: Sitio de los investigadores; compresión HTTP, condiciones y defensas.
+  uso: evidencia
+  verificacion: auto
+- id: S51
+  titulo: 'CERT/CC: VU#888801, oráculos RSA (2003)'
+  url: https://www.kb.cert.org/vuls/id/888801
+  respalda: Referencia histórica al ataque Bleichenbacher de 1998.
+  uso: evidencia
+  verificacion: auto

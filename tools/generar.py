@@ -13,6 +13,7 @@ import yaml
 
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ / "tools"))
+import generar_historico  # noqa: E402
 from validar import validar_repo  # noqa: E402
 
 ENLACES_HERMANOS = [
@@ -34,6 +35,21 @@ def cargar():
     return cat, fue, ver, {p["id"]: p for p in smc["protocolos"]}
 
 
+def cargar_historico():
+    d = RAIZ / "data"
+    hist = yaml.safe_load((d / "historico.yaml").read_text(encoding="utf-8"))
+    fue = yaml.safe_load((d / "historico_fuentes.yaml").read_text(encoding="utf-8"))
+    return hist, fue
+
+
+def casos_por_clase(hist: dict | None) -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = {}
+    for x in generar_historico.publicadas(hist) if hist else []:
+        for k in x["clases"]:
+            out.setdefault(k, []).append(x)
+    return out
+
+
 def nombre_corto(titulo: str, ident: str) -> str:
     """'CWE - CWE-79: Improper ... (5.0)' -> 'Improper ...'; 'Network Sniffing, Technique T1040 - ...' -> 'Network Sniffing'."""
     t = titulo
@@ -52,7 +68,8 @@ def etiqueta_capa(capa: dict) -> str:
     return "Transversal" if capa["numero"] is None else f"Capa {capa['numero']} · {capa['nombre']}"
 
 
-def html_pagina(cat, fue, ver, smc) -> str:
+def html_pagina(cat, fue, ver, smc, hist=None) -> str:
+    casos = casos_por_clase(hist)
     cwe = {r["id"]: r for r in ver["cwe"]}
     att = {r["id"]: r for r in ver["attack"]}
     n_clases = sum(len(c["clases"]) for c in cat["capas"])
@@ -79,9 +96,13 @@ def html_pagina(cat, fue, ver, smc) -> str:
             det = "<ul>" + "".join(f"<li>{e(x)}</li>" for x in c["deteccion"]) + "</ul>"
             norma = " ".join(f'<code>{e(x)}</code>' for x in c["ens"] + c["nis2"])
             busq = " · ".join(a(u, NOMBRES_CONSULTA[k]) for k, u in c["consulta"].items())
+            hist_c = ""
+            if casos.get(c["id"]):
+                enlaces = ", ".join(f'<a href="historico/#{e(x["id"])}">{e(x["titulo"])}</a>' for x in casos[c["id"]])
+                hist_c = f'<br><span class="n">Casos históricos:</span> {enlaces}'
             filas.append(
                 f'<tr id="{e(c["id"])}"><td><strong>{e(c["nombre"])}</strong><br>'
-                f'<span class="n">{e(c["descripcion"])}</span><br><code class="id">{e(c["id"])}</code></td>'
+                f'<span class="n">{e(c["descripcion"])}</span><br><code class="id">{e(c["id"])}</code>{hist_c}</td>'
                 f"<td>{cwes}</td><td>{atts}</td><td>{prots}</td><td>{ctrl}</td><td>{det}</td>"
                 f"<td>{norma}</td><td>{busq}</td></tr>")
         secciones.append(
@@ -130,7 +151,7 @@ code.id{{color:var(--mut)}} .aviso{{color:#d29922;font-size:.75rem}}
 <header>
 <h1>Vulnerabilidades y protecciones por capa <span>OSI</span></h1>
 <p class="resumen">{len(cat["capas"]) - 1} capas y una sección transversal, {n_clases} clases de ataque con CWE, MITRE ATT&amp;CK, controles on-premise, detección y mapeo a ENS (RD 311/2022) y NIS2 art. 21.2. Sin CVE concretos: cada clase enlaza búsquedas en fuentes oficiales.</p>
-<p>Relacionado: {hermanos}</p>
+<p>Relacionado: <a href="historico/">Matriz histórica de protocolos</a> · {hermanos}</p>
 </header>
 <main>
 <nav class="filtro" aria-label="Filtrar por capa"><span class="n">Capa:</span> {"".join(botones)}</nav>
@@ -191,9 +212,11 @@ def main() -> int:
         return 1
     cat, fue, ver, smc = cargar()
     (RAIZ / "docs").mkdir(exist_ok=True)
-    (RAIZ / "docs/index.html").write_text(html_pagina(cat, fue, ver, smc), encoding="utf-8")
+    hist, fue_hist = cargar_historico()
+    (RAIZ / "docs/index.html").write_text(html_pagina(cat, fue, ver, smc, hist), encoding="utf-8")
+    generar_historico.escribir(hist, fue_hist, ver)
     (RAIZ / "docs/capas.md").write_text(markdown(cat, fue, ver), encoding="utf-8")
-    print("Generado docs/index.html y docs/capas.md")
+    print("Generado docs/index.html, docs/capas.md y docs/historico/")
     return 0
 
 

@@ -4,6 +4,7 @@
 [![clases](https://img.shields.io/badge/clases-41-8d99ae?style=flat-square)](data/capas.yaml)
 [![CWE y ATT&CK](https://img.shields.io/badge/CWE%20y%20ATT%26CK-verificados-2ea043?style=flat-square)](data/verificacion_ids.yaml)
 [![ENS y NIS2](https://img.shields.io/badge/ENS%20y%20NIS2-mapeado-1f6feb?style=flat-square)](data/ens_ids.txt)
+[![histórico](https://img.shields.io/badge/hist%C3%B3rico-1985%20a%202025-ef233c?style=flat-square)](https://pedri77.github.io/vulnerabilidades-capas-osi/historico/)
 [![licencia](https://img.shields.io/badge/licencia-MIT-lightgrey?style=flat-square)](LICENSE)
 
 Catálogo de vulnerabilidades y protecciones on-premise ordenado por capa OSI. Para cada capa recoge los activos típicos (switches, routers, firewalls, balanceadores, WAF, servidores) y las clases de ataque que la afectan. Cada clase lleva:
@@ -15,13 +16,15 @@ Catálogo de vulnerabilidades y protecciones on-premise ordenado por capa OSI. P
 - mapeo a medidas del **ENS** (RD 311/2022, Anexo II) y a las letras del **art. 21.2 de NIS2**;
 - búsquedas en NVD, ENISA EUVD, CISA KEV y CVE Details en lugar de CVE concretos.
 
+Incluye además una [matriz histórica](https://pedri77.github.io/vulnerabilidades-capas-osi/historico/) de casos concretos de protocolos desde 1985: área funcional, década, fecha con su naturaleza, causa, condición, control y fuente. Cada caso enlaza con su clase del catálogo.
+
 ## Relación con los otros repositorios
 
 | Repositorio | Para qué |
 | --- | --- |
 | [Modelo OSI interactivo](https://pedri77.github.io/modelo_OSI/) | Aprender las 7 capas, PDU y protocolos. |
 | [Protección por capas OSI](https://pedri77.github.io/Basicos_Proteccion_Capas_OSI/) | Curso interactivo: señales, simulador de investigación, quiz. |
-| Este repositorio | Catálogo de consulta: clase de ataque, CWE, ATT&CK, control, detección y norma. |
+| Este repositorio | Catálogo de consulta: clase de ataque, CWE, ATT&CK, control, detección y norma. Matriz histórica: casos con fecha y fuente. |
 | [security-manager-control](https://github.com/pedri77/security-manager-control) | Evaluación NIS2/ENS; usa este catálogo en la vertical `VRT-OSI`. |
 
 ## Uso con SMC (vertical VRT-OSI)
@@ -42,12 +45,16 @@ data/capas.yaml              catálogo: 7 capas + transversal, 41 clases
 data/fuentes.yaml            fuentes oficiales y guías CCN-STIC
 data/ens_ids.txt             73 ids de medidas ENS (copia de SMC, con nota de origen)
 data/smc_protocolos.yaml     28 protocolos de SMC con su capa (copia, con nota de origen)
-data/verificacion_ids.yaml   resultado de la comprobación en línea de CWE, ATT&CK y URL
+data/historico.yaml          matriz histórica: entradas OSI-NNN y amenazas de capa física
+data/historico_fuentes.yaml  fuentes S01 a S51 de la matriz histórica
+data/verificacion_ids.yaml   resultado de la comprobación en línea de CWE, ATT&CK, CVE y URL
 tools/validar.py             esquema, formatos de id, ENS, https y lista blanca de enlaces
 tools/verificar_ids.py       comprueba ids y URL contra cwe.mitre.org, attack.mitre.org y las fuentes
-tools/generar.py             genera docs/index.html y docs/capas.md
-tests/test_validar.py        tests con mutaciones y una contraprueba
+tools/generar.py             genera docs/index.html, docs/capas.md y docs/historico/
+tools/generar_historico.py   genera la matriz histórica (CSS y JS en tools/historico_estaticos/)
+tests/                       tests con mutaciones y contrapruebas
 docs/index.html              página estática para GitHub Pages (sin CDN)
+docs/historico/              matriz histórica, usable sin JavaScript
 ```
 
 ## Uso
@@ -56,7 +63,7 @@ Requisitos: Python 3.11+ y PyYAML (pytest opcional).
 
 ```bash
 python tools/verificar_ids.py --urls   # necesita red; reescribe data/verificacion_ids.yaml
-python tools/validar.py                # sin red
+python tools/validar.py                # sin red; --publicar rechaza entradas sin revisión humana
 python tools/generar.py                # docs/index.html y docs/capas.md
 python -m pytest -q                    # o: python -m unittest discover tests
 ```
@@ -70,7 +77,8 @@ NIST NVD, ENISA EUVD, CISA KEV, CVE Details, MITRE CWE y ATT&CK, INCIBE-CERT, CC
 ## Límites
 
 - Mapeo orientativo: juicio inicial del autor, sin auditoría externa. No sustituye el análisis de riesgos de cada sistema.
-- Sin CVE concretos a propósito: las búsquedas devuelven los actuales.
+- El catálogo no cita CVE concretos a propósito: las búsquedas devuelven los actuales. Los CVE concretos están en la matriz histórica.
+- La matriz histórica no es un censo ni cubre 2026 de forma sistemática. Una entrada puede ser un fallo, una familia o una debilidad de diseño: no equivale a un CVE. No acredita exposición de ninguna organización.
 - Algunas medidas ENS de SMC llevan `verificar: true` (pendientes de contrastar con el Anexo II).
 - Sin datos de clientes ni secretos.
 
