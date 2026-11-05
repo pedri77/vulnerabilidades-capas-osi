@@ -27,6 +27,7 @@ NATURALEZAS = {
     "H": ("Antecedente histórico", "Identificado por otra fuente técnica; no es documento original inspeccionado."),
     "R": ("Documentación de referencia", "Demuestra que el riesgo estaba documentado, no su primer descubrimiento."),
 }
+CHANGELOG = "https://github.com/pedri77/vulnerabilidades-capas-osi/blob/main/CHANGELOG.md"
 REVISOR_IA = "Claude (IA), por delegación de David Moya"
 CSP = ("default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; "
        "base-uri 'none'; form-action 'none'")
@@ -198,7 +199,7 @@ def html_pagina(hist: dict, fue: dict, ver: dict) -> str:
 <header>
 <p class="migas"><a href="../">Catálogo por capa OSI</a> / Histórico</p>
 <h1>Matriz histórica de vulnerabilidades de <span>protocolos OSI</span></h1>
-<p class="resumen">{len(entradas)} entradas desde {anios[0]} hasta {anios[-1]}, cada una con fecha, causa, condición, control y fuente. Edición {e(meta["edicion"])}, fuentes consultadas el {e(meta["fecha_consulta"])}.</p>
+<p class="resumen">{len(entradas)} entradas desde {anios[0]} hasta {anios[-1]}, cada una con fecha, causa, condición, control y fuente. Edición {e(meta["edicion"])} (<a href="{CHANGELOG}">registro de cambios</a>), fuentes consultadas el {e(meta["fecha_consulta"])}.</p>
 <ul class="limites" aria-label="Límites de esta edición">
 <li><strong>No es un censo.</strong> Es una selección documentada y ampliable.</li>
 <li><strong>Sin revisión sistemática de 2026.</strong> Los casos llegan a {anios[-1]}.</li>

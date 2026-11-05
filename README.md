@@ -46,7 +46,7 @@ data/fuentes.yaml            fuentes oficiales y guías CCN-STIC
 data/ens_ids.txt             73 ids de medidas ENS (copia de SMC, con nota de origen)
 data/smc_protocolos.yaml     28 protocolos de SMC con su capa (copia, con nota de origen)
 data/historico.yaml          matriz histórica: entradas OSI-NNN y amenazas de capa física
-data/historico_fuentes.yaml  fuentes S01 a S51 de la matriz histórica
+data/historico_fuentes.yaml  fuentes S01 a S57 de la matriz histórica
 data/verificacion_ids.yaml   resultado de la comprobación en línea de CWE, ATT&CK, CVE y URL
 tools/validar.py             esquema, formatos de id, ENS, https y lista blanca de enlaces
 tools/verificar_ids.py       comprueba ids y URL contra cwe.mitre.org, attack.mitre.org y las fuentes
@@ -55,6 +55,7 @@ tools/generar_historico.py   genera la matriz histórica (CSS y JS en tools/hist
 tests/                       tests con mutaciones y contrapruebas
 docs/index.html              página estática para GitHub Pages (sin CDN)
 docs/historico/              matriz histórica, usable sin JavaScript
+CHANGELOG.md                 registro de cambios por edición de la matriz histórica
 ```
 
 ## Uso
@@ -67,6 +68,10 @@ python tools/validar.py                # sin red; --publicar rechaza entradas si
 python tools/generar.py                # docs/index.html y docs/capas.md
 python -m pytest -q                    # o: python -m unittest discover tests
 ```
+
+Cada lunes `.github/workflows/enlaces.yml` repite la comprobación con `--informe`: no toca los datos, abre o actualiza un único issue con etiqueta `enlaces` si algo falla y lo cierra cuando vuelve a estar bien. Se puede lanzar a mano desde Actions.
+
+Al cambiar `data/historico.yaml` de forma visible, sube `meta.edicion` y añade su entrada a `CHANGELOG.md`.
 
 Con `uv` sin instalar nada: `uv run --no-project --with pyyaml --with pytest python -m pytest -q`.
 

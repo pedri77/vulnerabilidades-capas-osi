@@ -313,6 +313,13 @@ def validar_ficheros_texto(rutas: list[Path]) -> list[str]:
     return errores
 
 
+def validar_changelog(edicion: str, texto: str) -> list[str]:
+    """Every published edition has its entry: a citable edition must not change silently."""
+    if not re.search(rf"^## {re.escape(edicion)}( |$)", texto, re.M):
+        return [f"CHANGELOG.md: falta la edición {edicion} de data/historico.yaml"]
+    return []
+
+
 def validar_repo(raiz: Path = RAIZ, publicar: bool = False) -> list[str]:
     d = raiz / "data"
     catalogo = yaml.safe_load((d / "capas.yaml").read_text(encoding="utf-8"))
@@ -331,8 +338,9 @@ def validar_repo(raiz: Path = RAIZ, publicar: bool = False) -> list[str]:
     ids_clase = {k["id"] for capa in catalogo["capas"] for k in capa["clases"]}
     errores += validar_fuentes_historico(fue_hist)
     errores += validar_historico(hist, fue_hist, ids_clase, verificacion, publicar)
-    errores += validar_ficheros_texto([raiz / "README.md", raiz / "docs/index.html", raiz / "docs/capas.md",
-                                       raiz / "docs/historico/index.html"])
+    errores += validar_changelog(hist["meta"]["edicion"], (raiz / "CHANGELOG.md").read_text(encoding="utf-8"))
+    errores += validar_ficheros_texto([raiz / "README.md", raiz / "CHANGELOG.md", raiz / "docs/index.html",
+                                       raiz / "docs/capas.md", raiz / "docs/historico/index.html"])
     return errores
 
 
