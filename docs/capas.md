@@ -410,6 +410,30 @@ Detección:
 - Registros de RA Guard
 - NDR (routers IPv6 no esperados)
 
+### Neighbor Discovery IPv6 sin proteger (`L3-IPV6-ND`)
+
+Mensajes NS y NA falsos en el enlace para suplantar vecinos o impedir que un equipo configure su dirección mediante DAD.
+
+| Campo | Valor |
+| --- | --- |
+| CWE | [CWE-346](https://cwe.mitre.org/data/definitions/346.html) |
+| ATT&CK | [T1557](https://attack.mitre.org/techniques/T1557/), [T1498](https://attack.mitre.org/techniques/T1498/) |
+| Protocolos (SMC) | ICMP |
+| ENS | ENS-op.exp.2, ENS-mp.com.3 |
+| NIS2 | NIS2-21.2.a |
+| Buscar CVE | [NVD](https://nvd.nist.gov/vuln/search?keyword=IPv6%20neighbor%20discovery&resultType=records) · [EUVD](https://euvd.enisa.europa.eu/search?text=IPv6%20neighbor%20discovery) · [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=IPv6%20neighbor%20discovery) · [CVE Details](https://www.cvedetails.com/google-search-results.php?q=IPv6%20neighbor%20discovery) |
+
+Controles:
+
+- Inspección de Neighbor Discovery y seguridad de primer salto en switches de acceso
+- Control de acceso al enlace con 802.1X o NAC
+- Gestionar IPv6 de forma explícita o deshabilitarlo en el sistema si no se usa
+
+Detección:
+
+- Tabla de vecinos y eventos del switch
+- Fallos de DAD en los registros del sistema
+
 ### VPN y túneles débiles o sin parchear (`L3-VPN`)
 
 IPsec con claves precompartidas débiles o algoritmos obsoletos y concentradores VPN expuestos sin parches.
@@ -846,6 +870,30 @@ Detección:
 - Registros del proxy inverso y del WAF
 - Discrepancias entre registros del proxy y del servidor
 
+### Fuga de secretos por compresión HTTP (`L7-COMPRESION-HTTP`)
+
+Respuestas comprimidas que mezclan un secreto con contenido influenciable por el atacante y lo filtran por su longitud aunque el tráfico vaya cifrado.
+
+| Campo | Valor |
+| --- | --- |
+| CWE | [CWE-203](https://cwe.mitre.org/data/definitions/203.html) |
+| ATT&CK | [T1040](https://attack.mitre.org/techniques/T1040/) |
+| Protocolos (SMC) | HTTP, TLS |
+| ENS | ENS-mp.s.2, ENS-mp.com.2 |
+| NIS2 | NIS2-21.2.e, NIS2-21.2.h |
+| Buscar CVE | [NVD](https://nvd.nist.gov/vuln/search?keyword=BREACH%20HTTP%20compression&resultType=records) · [EUVD](https://euvd.enisa.europa.eu/search?text=BREACH%20HTTP%20compression) · [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=BREACH%20HTTP%20compression) · [CVE Details](https://www.cvedetails.com/google-search-results.php?q=BREACH%20HTTP%20compression) |
+
+Controles:
+
+- Separar secretos y contenido controlado por el usuario en la misma respuesta
+- Tokens anti CSRF enmascarados en cada petición
+- Desactivar la compresión en respuestas que incluyan secretos
+
+Detección:
+
+- Revisión de la compresión en servidores y proxies
+- Registros de peticiones repetidas con variaciones mínimas
+
 ### Credenciales débiles y fuerza bruta (`L7-CREDENCIALES`)
 
 Contraseñas débiles, por defecto o reutilizadas en servicios de acceso remoto y aplicaciones.
@@ -869,6 +917,30 @@ Detección:
 
 - Eventos de autenticación fallida (SIEM)
 - Registros de VPN y pasarelas
+
+### Falsificación de respuestas en RADIUS (`L7-AAA-RADIUS`)
+
+Atacante en el camino que altera el tráfico RADIUS y falsifica una respuesta de autenticación aprovechando la protección basada en MD5.
+
+| Campo | Valor |
+| --- | --- |
+| CWE | [CWE-328](https://cwe.mitre.org/data/definitions/328.html), [CWE-924](https://cwe.mitre.org/data/definitions/924.html) |
+| ATT&CK | [T1557](https://attack.mitre.org/techniques/T1557/) |
+| Protocolos (SMC) | EAP_8021X |
+| ENS | ENS-op.acc.6, ENS-mp.com.3 |
+| NIS2 | NIS2-21.2.i, NIS2-21.2.j |
+| Buscar CVE | [NVD](https://nvd.nist.gov/vuln/search?keyword=RADIUS%20Message-Authenticator&resultType=records) · [EUVD](https://euvd.enisa.europa.eu/search?text=RADIUS%20Message-Authenticator) · [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=RADIUS%20Message-Authenticator) · [CVE Details](https://www.cvedetails.com/google-search-results.php?q=RADIUS%20Message-Authenticator) |
+
+Controles:
+
+- Exigir Message-Authenticator en clientes y servidores según el fabricante
+- RADIUS sobre transporte protegido como TLS
+- Aislar el tráfico AAA en la red de gestión
+
+Detección:
+
+- Configuración AAA de clientes y servidores
+- Registros del servidor RADIUS
 
 ### Protocolos en texto claro (`L7-TEXTO-CLARO`)
 
