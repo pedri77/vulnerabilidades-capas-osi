@@ -237,7 +237,7 @@ fuentes:
   verificacion: auto
 - id: S40
   titulo: 'Forescout/JSOF: NAME:WRECK, informe original'
-  url: https://www.forescout.com/resources/namewreck-breaking-and-fixing-dns-implementations/
+  url: https://standash.github.io/tech_reports/namewreck.pdf
   respalda: Nueve vulnerabilidades de DNS en cuatro pilas.
   uso: evidencia
   verificacion: auto

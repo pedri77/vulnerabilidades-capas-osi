@@ -902,6 +902,9 @@ urls:
 - url: https://openssl-library.org/news/vulnerabilities-1.0.1/
   http: 200
   estado: ok
+- url: https://standash.github.io/tech_reports/namewreck.pdf
+  http: 200
+  estado: ok
 - url: https://terrapin-attack.com/
   http: 200
   estado: ok
@@ -1196,9 +1199,6 @@ urls:
 - url: https://www.cvedetails.com/google-search-results.php?q=tunneling
   http: null
   estado: manual
-- url: https://www.forescout.com/resources/namewreck-breaking-and-fixing-dns-implementations/
-  http: 200
-  estado: ok
 - url: https://www.fragattacks.com/
   http: 200
   estado: ok
