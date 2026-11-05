@@ -27,6 +27,7 @@ NATURALEZAS = {
     "H": ("Antecedente histórico", "Identificado por otra fuente técnica; no es documento original inspeccionado."),
     "R": ("Documentación de referencia", "Demuestra que el riesgo estaba documentado, no su primer descubrimiento."),
 }
+REVISOR_IA = "Claude (IA), por delegación de David Moya"
 CSP = ("default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; "
        "base-uri 'none'; form-action 'none'")
 AVISO_VERSION = ("La versión citada es la primera corrección histórica, no una recomendación de instalarla hoy. "
@@ -72,6 +73,17 @@ def tipos_identificador(x: dict) -> list[str]:
 
 def naturalezas(x: dict) -> list[str]:
     return sorted({ev["naturaleza"] for ev in x["fechas"]}) or ["sin-fecha"]
+
+
+def nota_revision(entradas: list[dict]) -> str:
+    """State who reviewed the entries, from the data. An AI review must never read as a human one."""
+    revisores = sorted({x["revision"]["por"] for x in entradas if x["revision"].get("por")})
+    if not revisores:
+        return "Entradas sin revisar contra sus fuentes."
+    texto = f"Entradas contrastadas con sus fuentes por {', '.join(revisores)}."
+    if REVISOR_IA in revisores:
+        texto += " Revisión asistida por IA, sin revisión humana entrada a entrada: comprueba la fuente antes de citar."
+    return texto
 
 
 def html_matriz(entradas: list[dict]) -> str:
@@ -124,6 +136,9 @@ def html_entrada(x: dict, fuentes: dict) -> str:
     if x["impacto"]:
         filas.append(("Impacto posible", e(x["impacto"])))
     filas.append(("Corrección o control", e(x["control"])))
+    if x["cve"]:
+        filas.append(("Registro CVE", " ".join(
+            f'<a href="https://www.cve.org/CVERecord?id={e(c)}" rel="noopener">{e(c)}</a>' for c in x["cve"])))
     if x["clases"]:
         filas.append(("Clases del catálogo", " ".join(f'<a href="../#{e(k)}"><code>{e(k)}</code></a>' for k in x["clases"])))
     filas.append(("Fuentes", "<br>".join(enlace_fuente(s, fuentes) for s in x["fuentes"])))
@@ -147,7 +162,7 @@ def html_filtros() -> str:
             f'<label>Década {grupo("decada", [(d, d + "s") for d in DECADAS] + [(SIN_FECHA, "Sin fecha")])}</label>'
             f'<label>Causa {grupo("causa", list(CAUSAS.items()))}</label>'
             f'<label>Fecha {grupo("naturaleza", [(k, v[0]) for k, v in NATURALEZAS.items()] + [("sin-fecha", "Sin primera fecha")])}</label>'
-            f'<label>Identificador {grupo("ident", [("cve", "Con CVE"), ("sin-cve", "Sin CVE"), ("familia", "Familia")])}</label>'
+            f'<label>Identificador {grupo("ident", [("cve", "Con CVE"), ("sin-cve", "Sin CVE citado"), ("familia", "Familia")])}</label>'
             '<label class="texto">Texto <input type="search" name="q" placeholder="TLS, Heartbleed, CVE-2014..."></label>'
             '<button type="button" id="limpiar">Limpiar</button></form>'
             '<p id="estado" class="n" role="status" aria-live="polite"></p>'
@@ -189,6 +204,7 @@ def html_pagina(hist: dict, fue: dict, ver: dict) -> str:
 <li><strong>Sin revisión sistemática de 2026.</strong> Los casos llegan a {anios[-1]}.</li>
 <li><strong>Una entrada no equivale a un CVE.</strong> Puede ser un fallo, una familia o una debilidad de diseño: no se suman como CVE.</li>
 <li><strong>No acredita exposición.</strong> Sin pruebas de explotación ni datos de ningún activo.</li>
+<li><strong>Revisión.</strong> {e(nota_revision(entradas))}</li>
 </ul>
 </header>
 <main>

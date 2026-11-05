@@ -40,8 +40,11 @@ class TestDatosReales(unittest.TestCase):
         self.assertEqual(validar.validar_historico(self.hist, self.fue, self.clases, self.ver), [])
 
     def test_tamano_de_la_edicion(self):
-        self.assertEqual(len(self.fue["fuentes"]), 51)
+        self.assertEqual(len(self.fue["fuentes"]), 57)
         self.assertLessEqual(len(self.hist["entradas"]), 58)
+
+    def test_edicion_publicable(self):
+        self.assertEqual(validar.validar_historico(self.hist, self.fue, self.clases, self.ver, publicar=True), [])
 
     def test_sin_marca_en_datos_publicos(self):
         texto = (RAIZ / "data/historico.yaml").read_text(encoding="utf-8").lower()
@@ -201,9 +204,23 @@ class TestGenerar(unittest.TestCase):
             self.assertIn(texto, p)
         self.assertNotIn("riskitera", p.lower())
 
+    def test_revision_por_ia_se_declara(self):
+        h = copy.deepcopy(self.hist)
+        for x in h["entradas"]:
+            x["revision"] = {"estado": "revisada", "fecha": "2026-11-05", "por": gh.REVISOR_IA}
+        self.assertIn("sin revisión humana entrada a entrada", gh.html_pagina(h, self.fue, self.ver))
+        for x in h["entradas"]:
+            x["revision"]["por"] = "David Moya"
+        self.assertNotIn("sin revisión humana", gh.html_pagina(h, self.fue, self.ver))
+
     def test_aviso_de_version_antigua(self):
         p = gh.html_pagina(self.hist, self.fue, self.ver)
         self.assertEqual(p.count(gh.e(gh.AVISO_VERSION)), sum(x["aviso_version"] for x in gh.publicadas(self.hist)))
+
+    def test_cada_cve_enlaza_a_su_registro(self):
+        p = gh.html_pagina(self.hist, self.fue, self.ver)
+        for c in {c for x in gh.publicadas(self.hist) for c in x["cve"]}:
+            self.assertIn(f"https://www.cve.org/CVERecord?id={c}", p)
 
     def test_catalogo_enlaza_casos_y_ficha_enlaza_clase(self):
         h = copy.deepcopy(self.hist)

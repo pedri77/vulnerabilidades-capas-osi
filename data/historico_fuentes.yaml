@@ -20,15 +20,15 @@ fuentes:
   uso: evidencia
   verificacion: auto
 - id: S04
-  titulo: 'CERT/CC: avisos de 1997, CA-1997-28'
+  titulo: 'CERT/CC: avisos de 1997, CA-1997-27 y CA-1997-28'
   url: https://www.sei.cmu.edu/documents/504/1997_019_001_496176.pdf
-  respalda: 'Aviso de 16-12-1997: Teardrop y Land.'
+  respalda: Avisos de 10-12-1997 (FTP bounce) y 16-12-1997 (Teardrop y Land); cita debate público previo.
   uso: evidencia
   verificacion: auto
 - id: S05
   titulo: 'CVE: CVE-1999-0128, Ping o'' Death'
   url: https://www.cve.org/CVERecord?id=CVE-1999-0128
-  respalda: Registro retrospectivo; referencia a CA-96.26.
+  respalda: Registro retrospectivo; identifica Ping o' Death.
   uso: evidencia
   verificacion: auto
 - id: S06
@@ -44,15 +44,15 @@ fuentes:
   uso: evidencia
   verificacion: manual
 - id: S08
-  titulo: 'Stubblefield, Ioannidis y Rubin: ataque FMS a WEP, USENIX 2001'
+  titulo: 'Stubblefield y Rubin: implementación del ataque FMS a WEP, USENIX 2001'
   url: https://www.usenix.org/conference/10th-usenix-security-symposium/using-fluhrer-mantin-and-shamir-attack-break-wep
-  respalda: Investigación original.
+  respalda: Implementación práctica del ataque descrito por Fluhrer, Mantin y Shamir.
   uso: evidencia
   verificacion: auto
 - id: S09
   titulo: 'Bellardo y Savage: 802.11 DoS, USENIX 2003'
   url: https://www.usenix.org/legacy/publications/library/proceedings/sec03/tech/full_papers/bellardo/bellardo_html/index.html
-  respalda: Investigación original; tramas de gestión y acceso al medio.
+  respalda: Validación empírica de ataques identificados por Lough en 2001; tramas de gestión y acceso al medio.
   uso: evidencia
   verificacion: auto
 - id: S10
@@ -196,7 +196,7 @@ fuentes:
 - id: S33
   titulo: 'OpenSSH: notas de versión'
   url: https://www.openbsd.org/openssh/releasenotes.html
-  respalda: Buscar OpenSSH 9.8/9.8p1, 01-07-2024; regreSSHion.
+  respalda: Buscar OpenSSH 9.8/9.8p1, 01-07-2024; carrera en sshd, rango y corrección.
   uso: evidencia
   verificacion: auto
 - id: S34
@@ -307,3 +307,39 @@ fuentes:
   respalda: Referencia histórica al ataque Bleichenbacher de 1998.
   uso: evidencia
   verificacion: auto
+- id: S52
+  titulo: 'Cisco: Enhance STP with Root Guard'
+  url: https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10588-74.html
+  respalda: Root Guard y diferencia con BPDU Guard.
+  uso: evidencia
+  verificacion: manual
+- id: S53
+  titulo: 'Fluhrer, Mantin y Shamir: Weaknesses in the Key Scheduling Algorithm of RC4 (2001)'
+  url: https://doi.org/10.1007/3-540-45537-X_1
+  respalda: Trabajo que define el ataque FMS.
+  uso: evidencia
+  verificacion: auto
+- id: S54
+  titulo: 'CERT/CC: avisos de 1996, CA-1996-26'
+  url: https://www.sei.cmu.edu/documents/503/1996_019_001_496172.pdf
+  respalda: 'Aviso de 18-12-1996: datagramas ICMP sobredimensionados.'
+  uso: evidencia
+  verificacion: auto
+- id: S55
+  titulo: 'CERT/CC: VU#767506, MadeYouReset (2025)'
+  url: https://www.kb.cert.org/vuls/id/767506/
+  respalda: Divulgación 13-08-2025; CVE-2025-8671, implementaciones HTTP/2 afectadas y CVE por producto.
+  uso: evidencia
+  verificacion: auto
+- id: S56
+  titulo: 'Qualys: regreSSHion, CVE-2024-6387 (2024)'
+  url: https://www.qualys.com/2024/07/01/cve-2024-6387/regresshion.txt
+  respalda: Aviso original; carrera en manejador de señales, CVE y versiones.
+  uso: evidencia
+  verificacion: auto
+- id: S57
+  titulo: 'Forescout: anuncio de NAME:WRECK (2021)'
+  url: https://www.forescout.com/company/blog/forescout-and-jsof-disclose-new-dns-vulnerabilities-impacting-millions-of-enterprise-and-consumer-devices/
+  respalda: Divulgación 12-04-2021.
+  uso: evidencia
+  verificacion: manual

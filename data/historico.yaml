@@ -1,8 +1,8 @@
 # Matriz histórica de vulnerabilidades de protocolos OSI. Esquema y reglas en tools/validar.py.
 version: v1
 meta:
-  edicion: '1.0'
-  fecha_consulta: '2026-11-03'
+  edicion: '1.1'
+  fecha_consulta: '2026-11-05'
   nota: 'Importado de la edición 1.0. Fuente única a partir de aquí: editar este fichero, no el documento original.'
 entradas:
 - id: OSI-001
@@ -32,10 +32,13 @@ entradas:
   impacto: desvío/interceptación de tráfico
   control: DAI y bindings válidos; TLS extremo a extremo
   aviso_version: false
-  clases: []
+  clases:
+  - L2-ARP-SPOOFING
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-002
   titulo: Elección maliciosa de raíz y cambio de topología
   area: enlace
@@ -55,14 +58,18 @@ entradas:
   cve_es_ejemplo: false
   fuentes:
   - S07
+  - S52
   condicion: Acceso L2
   impacto: interrupción o modificación de caminos
   control: BPDU Guard en acceso y Root Guard donde corresponda
   aviso_version: false
-  clases: []
+  clases:
+  - L2-STP
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-003
   titulo: Ataque FMS y recuperación de clave
   area: enlace
@@ -83,14 +90,17 @@ entradas:
   cve_es_ejemplo: false
   fuentes:
   - S08
+  - S53
   condicion: Captura de tráfico suficiente
   impacto: pérdida de confidencialidad
   control: Retirar WEP; migrar a seguridad Wi-Fi vigente
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-004
   titulo: Falsificación de mensajes de gestión
   area: enlace
@@ -100,6 +110,9 @@ entradas:
   causas:
   - D
   fechas:
+  - valor: 2001-04
+    precision: mes
+    naturaleza: H
   - valor: '2003'
     precision: anio
     naturaleza: P
@@ -116,9 +129,11 @@ entradas:
   control: PMF cuando sea compatible; no resuelve interferencia RF
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-005
   titulo: Reducción del espacio efectivo de búsqueda
   area: enlace
@@ -133,8 +148,9 @@ entradas:
     precision: dia
     naturaleza: P
   hallazgo: Reducción del espacio efectivo de búsqueda
-  identificador: VU#723755
-  cve: []
+  identificador: CVE-2011-5053; VU#723755
+  cve:
+  - CVE-2011-5053
   avisos:
   - VU#723755
   es_familia: false
@@ -146,9 +162,11 @@ entradas:
   control: Deshabilitar WPS PIN/registro externo y comprobarlo
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-006
   titulo: KRACK
   area: enlace
@@ -176,9 +194,11 @@ entradas:
   control: Actualizar clientes y AP según variante; cambiar PSK no corrige
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-007
   titulo: Dragonblood
   area: enlace
@@ -206,9 +226,11 @@ entradas:
   control: Firmware corregido y revisión de modo transición
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-008
   titulo: KNOB
   area: enlace
@@ -235,15 +257,17 @@ entradas:
   control: Parches y exigencia de longitud de clave adecuada
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-009
   titulo: BIAS
   area: enlace
   capas_osi: *id001
   protocolo: Bluetooth BR/EDR
-  alcance: Autenticación vulnerable; Core 5.2 y anteriores según aviso
+  alcance: Autenticación vulnerable; Core 5.2 y anteriores según registro CVE
   causas:
   - D
   fechas:
@@ -260,13 +284,15 @@ entradas:
   fuentes:
   - S15
   condicion: Proximidad y condiciones del emparejamiento/autenticación
-  impacto: null
+  impacto: Suplantación de dispositivo emparejado sin clave de enlace
   control: Firmware y correcciones específicas del fabricante
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-010
   titulo: FragAttacks
   area: enlace
@@ -296,9 +322,11 @@ entradas:
   control: Actualizar firmware/drivers; comprobar cada CVE aplicable
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: cifrado y autenticación de Wi-Fi y Bluetooth'
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-011
   titulo: IP source spoofing
   area: red
@@ -326,10 +354,13 @@ entradas:
   impacto: facilita suplantación/reflexión
   control: Validación de origen y BCP 38; no autenticar por IP sola
   aviso_version: false
-  clases: []
+  clases:
+  - L3-IP-SPOOFING
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-012
   titulo: Manipulación del camino y de supuestos de confianza
   area: red
@@ -355,10 +386,13 @@ entradas:
   impacto: facilita desvío/suplantación
   control: Deshabilitar source routing no requerido y filtrar opciones
   aviso_version: false
-  clases: []
+  clases:
+  - L3-IP-SPOOFING
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-013
   titulo: Ping o' Death
   area: red
@@ -372,22 +406,27 @@ entradas:
     precision: anio
     naturaleza: P
   hallazgo: Ping o' Death
-  identificador: CVE-1999-0128, retrospectivo
+  identificador: CVE-1999-0128, retrospectivo; CA-1996-26
   cve:
   - CVE-1999-0128
-  avisos: []
+  avisos:
+  - CA-1996-26
   es_familia: false
   cve_es_ejemplo: false
   fuentes:
   - S05
+  - S54
   condicion: Paquetes que alcanzan la pila vulnerable
   impacto: caída
   control: Actualizar la pila; retirada de sistemas sin soporte
   aviso_version: false
-  clases: []
+  clases:
+  - L3-FRAGMENTACION
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-014
   titulo: Teardrop
   area: red
@@ -400,12 +439,14 @@ entradas:
   - valor: '1997-12-16'
     precision: dia
     naturaleza: P
+    cota: maxima
   hallazgo: 'Teardrop: error de reensamblado'
-  identificador: CA-1997-28; familia histórica
-  cve: []
+  identificador: CVE-1999-0015, retrospectivo; CA-1997-28
+  cve:
+  - CVE-1999-0015
   avisos:
   - CA-1997-28
-  es_familia: true
+  es_familia: false
   cve_es_ejemplo: false
   fuentes:
   - S04
@@ -413,10 +454,13 @@ entradas:
   impacto: denegación de servicio
   control: Corrección del fabricante; normalización como defensa adicional
   aviso_version: false
-  clases: []
+  clases:
+  - L3-FRAGMENTACION
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-015
   titulo: Suplantación de vecinos
   area: red
@@ -443,10 +487,13 @@ entradas:
   impacto: MITM/DoS
   control: Controles de acceso y validación ND según equipos
   aviso_version: false
-  clases: []
+  clases:
+  - L3-IPV6-RA
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-016
   titulo: Router/prefijos falsos
   area: red
@@ -473,10 +520,13 @@ entradas:
   impacto: desvío o pérdida de conectividad
   control: RA Guard correctamente implementado; routers autorizados
   aviso_version: false
-  clases: []
+  clases:
+  - L3-IPV6-RA
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-017
   titulo: Respuestas falsas que impiden configurar dirección
   area: red
@@ -503,9 +553,11 @@ entradas:
   control: Control del enlace y protecciones ND disponibles
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la detección de direcciones duplicadas de IPv6'
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-018
   titulo: Secuestro de prefijos y manipulación de rutas
   area: red
@@ -532,10 +584,13 @@ entradas:
   impacto: desvío/blackhole
   control: Políticas de prefijos/AS; RPKI-ROV valida origen, no todo AS-PATH
   aviso_version: false
-  clases: []
+  clases:
+  - L3-ENRUTAMIENTO
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-019
   titulo: Aborto/degradación mediante errores falsificados
   area: red
@@ -562,10 +617,14 @@ entradas:
   impacto: daño a conexiones TCP
   control: Pilas corregidas y validación de ICMP; evitar bloqueo indiscriminado
   aviso_version: false
-  clases: []
+  clases:
+  - L3-ICMP
+  - L4-SECUESTRO-TCP
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-020
   titulo: Suplantación mediante predicción de secuencias
   area: transporte
@@ -582,8 +641,9 @@ entradas:
     precision: anio
     naturaleza: H
   hallazgo: Suplantación mediante predicción de secuencias
-  identificador: Sin CVE único; RFC1948
-  cve: []
+  identificador: CVE-1999-0077, retrospectivo; RFC1948
+  cve:
+  - CVE-1999-0077
   avisos:
   - RFC1948
   es_familia: false
@@ -594,10 +654,13 @@ entradas:
   impacto: secuestro/suplantación
   control: ISN robusto y autenticación criptográfica de aplicación
   aviso_version: false
-  clases: []
+  clases:
+  - L4-SECUESTRO-TCP
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-021
   titulo: SYN flood
   area: transporte
@@ -615,8 +678,9 @@ entradas:
     precision: anio
     naturaleza: P
   hallazgo: SYN flood
-  identificador: Sin CVE único
-  cve: []
+  identificador: CVE-1999-0116, retrospectivo
+  cve:
+  - CVE-1999-0116
   avisos: []
   es_familia: false
   cve_es_ejemplo: false
@@ -626,10 +690,13 @@ entradas:
   impacto: agotamiento de recursos
   control: SYN cookies/proxy y control de capacidad
   aviso_version: false
-  clases: []
+  clases:
+  - L4-SYN-FLOOD
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-022
   titulo: Land
   area: transporte
@@ -642,9 +709,11 @@ entradas:
   - valor: '1997-12-16'
     precision: dia
     naturaleza: P
+    cota: maxima
   hallazgo: Land
-  identificador: CA-1997-28
-  cve: []
+  identificador: CVE-1999-0016, retrospectivo; CA-1997-28
+  cve:
+  - CVE-1999-0016
   avisos:
   - CA-1997-28
   es_familia: false
@@ -655,10 +724,13 @@ entradas:
   impacto: DoS
   control: Parche del sistema y filtrado de orígenes imposibles
   aviso_version: false
-  clases: []
+  clases:
+  - L3-IP-SPOOFING
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-023
   titulo: Blind in-window injection
   area: transporte
@@ -685,10 +757,13 @@ entradas:
   impacto: aborto/corrupción
   control: Validación robusta y challenge ACK según pila
   aviso_version: false
-  clases: []
+  clases:
+  - L4-SECUESTRO-TCP
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-024
   titulo: SACK Panic
   area: transporte
@@ -715,9 +790,11 @@ entradas:
   control: Aplicar actualización del proveedor; evaluar mitigación temporal
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-025
   titulo: Fragmentación excesiva de cola TCP
   area: transporte
@@ -744,9 +821,11 @@ entradas:
   control: Kernel corregido según distribución
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-026
   titulo: Consumo excesivo asociado a MSS
   area: transporte
@@ -773,9 +852,11 @@ entradas:
   control: Kernel corregido; cambios de MSS requieren evaluación
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-027
   titulo: SACK Slowness
   area: transporte
@@ -802,9 +883,11 @@ entradas:
   control: Actualizar FreeBSD según aviso
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la pila TCP del sistema'
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-028
   titulo: Bleichenbacher
   area: cripto-sesion
@@ -832,10 +915,13 @@ entradas:
   impacto: recuperación de secretos
   control: Eliminar oráculos; favorecer intercambio moderno sin RSA estático
   aviso_version: false
-  clases: []
+  clases:
+  - L6-TLS-DEBIL
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-029
   titulo: Inyección de prefijo en renegociación
   area: cripto-sesion
@@ -857,14 +943,18 @@ entradas:
   cve_es_ejemplo: false
   fuentes:
   - S48
+  - S21
   condicion: Atacante en camino
   impacto: confusión de sesión
   control: Secure renegotiation o retirar función obsoleta
   aviso_version: false
-  clases: []
+  clases:
+  - L6-TLS-DEBIL
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-030
   titulo: SSL stripping
   area: cripto-sesion
@@ -890,10 +980,13 @@ entradas:
   impacto: mantener sesión sin TLS
   control: HTTPS desde inicio y HSTS/preload cuando proceda
   aviso_version: false
-  clases: []
+  clases:
+  - L6-DOWNGRADE
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-031
   titulo: BEAST
   area: cripto-sesion
@@ -919,10 +1012,13 @@ entradas:
   impacto: filtración
   control: Retirar TLS1.0 y usar AEAD
   aviso_version: false
-  clases: []
+  clases:
+  - L6-TLS-DEBIL
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-032
   titulo: CRIME
   area: cripto-sesion
@@ -948,10 +1044,13 @@ entradas:
   impacto: filtración
   control: Desactivar compresión TLS
   aviso_version: false
-  clases: []
+  clases:
+  - L6-TLS-DEBIL
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-033
   titulo: Lucky Thirteen
   area: cripto-sesion
@@ -974,14 +1073,18 @@ entradas:
   cve_es_ejemplo: false
   fuentes:
   - S22
+  - S21
   condicion: MITM y muestras
   impacto: recuperación de texto según variante
   control: AEAD y bibliotecas corregidas
   aviso_version: false
-  clases: []
+  clases:
+  - L6-TLS-DEBIL
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-034
   titulo: BREACH
   area: cripto-sesion
@@ -1008,9 +1111,11 @@ entradas:
   control: Separar secretos/entrada y mitigaciones de compresión en aplicación
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: fuga por compresión HTTP, no es fallo del cifrado TLS'
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-035
   titulo: Triple Handshake
   area: cripto-sesion
@@ -1032,14 +1137,18 @@ entradas:
   cve_es_ejemplo: true
   fuentes:
   - S49
+  - S21
   condicion: Condiciones de identidad/sesión
   impacto: suplantación
   control: Extended Master Secret en TLS1.2 y migración a TLS1.3
   aviso_version: false
-  clases: []
+  clases:
+  - L6-TLS-DEBIL
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-036
   titulo: Heartbleed
   area: cripto-sesion
@@ -1065,10 +1174,13 @@ entradas:
   impacto: fuga de memoria
   control: Parche; evaluar rotación de secretos expuestos
   aviso_version: false
-  clases: []
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-037
   titulo: POODLE
   area: cripto-sesion
@@ -1094,10 +1206,14 @@ entradas:
   impacto: filtración
   control: Deshabilitar SSL3; TLS_FALLBACK_SCSV no repara SSL3
   aviso_version: false
-  clases: []
+  clases:
+  - L6-TLS-DEBIL
+  - L6-DOWNGRADE
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-038
   titulo: Logjam
   area: cripto-sesion
@@ -1124,10 +1240,13 @@ entradas:
   impacto: descifrado/modificación
   control: Retirar suites EXPORT y parámetros débiles
   aviso_version: false
-  clases: []
+  clases:
+  - L6-DOWNGRADE
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-039
   titulo: DROWN
   area: cripto-sesion
@@ -1155,10 +1274,14 @@ entradas:
   impacto: descifrado
   control: Retirar SSLv2 en todos los servicios que comparten clave
   aviso_version: false
-  clases: []
+  clases:
+  - L6-TLS-DEBIL
+  - L6-CLAVES
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-040
   titulo: FTP bounce
   area: aplicacion
@@ -1173,6 +1296,7 @@ entradas:
   - valor: '1997'
     precision: anio
     naturaleza: H
+    cota: maxima
   - valor: 1999-05
     precision: mes
     naturaleza: R
@@ -1186,14 +1310,18 @@ entradas:
   cve_es_ejemplo: false
   fuentes:
   - S35
+  - S04
   condicion: Servidor accesible y función permitida
   impacto: conexiones hacia terceros
   control: Restringir PORT/destinos; deshabilitar proxy FTP innecesario
   aviso_version: false
-  clases: []
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-041
   titulo: Rogue DHCP
   area: aplicacion
@@ -1220,10 +1348,13 @@ entradas:
   impacto: DNS/gateway malicioso
   control: DHCP snooping y puertos de confianza correctos
   aviso_version: false
-  clases: []
+  clases:
+  - L2-DHCP-SPOOFING
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-042
   titulo: DHCP starvation
   area: aplicacion
@@ -1250,10 +1381,13 @@ entradas:
   impacto: agotamiento del pool
   control: Límites y políticas de acceso; vigilar leases
   aviso_version: false
-  clases: []
+  clases:
+  - L2-DHCP-SPOOFING
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-043
   titulo: Envenenamiento de caché, divulgación coordinada 2008
   area: aplicacion
@@ -1268,11 +1402,12 @@ entradas:
     precision: dia
     naturaleza: P
   hallazgo: Envenenamiento de caché, divulgación coordinada 2008
-  identificador: VU#800113; varios CVE
-  cve: []
+  identificador: VU#800113; CVE-2008-1447
+  cve:
+  - CVE-2008-1447
   avisos:
   - VU#800113
-  es_familia: true
+  es_familia: false
   cve_es_ejemplo: false
   fuentes:
   - S26
@@ -1280,10 +1415,13 @@ entradas:
   impacto: redirección
   control: Parches, puertos/ID impredecibles y validación DNSSEC
   aviso_version: false
-  clases: []
+  clases:
+  - L7-DNS
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-044
   titulo: Procesamiento inseguro de solicitudes RPC
   area: aplicacion
@@ -1309,10 +1447,13 @@ entradas:
   impacto: RCE según versión
   control: Aplicar parche o retirar sistemas sin soporte
   aviso_version: false
-  clases: []
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-045
   titulo: Reflexión/amplificación
   area: aplicacion
@@ -1340,10 +1481,13 @@ entradas:
   impacto: tráfico hacia víctima
   control: Retirar monlist expuesto, restringir consultas y actualizar
   aviso_version: false
-  clases: []
+  clases:
+  - L4-AMPLIFICACION
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-046
   titulo: Mensajes manipulados y ejecución remota
   area: aplicacion
@@ -1369,10 +1513,13 @@ entradas:
   impacto: RCE en sistemas afectados
   control: Actualizar, retirar SMBv1 y limitar acceso SMB
   aviso_version: false
-  clases: []
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-047
   titulo: Ausencia de protección criptográfica nativa equivalente a TLS
   area: aplicacion
@@ -1398,10 +1545,13 @@ entradas:
   impacto: lectura/órdenes no autorizadas según despliegue
   control: Segmentación; Modbus Security compatible; autorización de operaciones
   aviso_version: false
-  clases: []
+  clases:
+  - L7-OT-SIN-AUTENTICACION
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-048
   titulo: SMBGhost
   area: aplicacion
@@ -1427,10 +1577,13 @@ entradas:
   impacto: RCE
   control: Actualizar; mitigación de compresión según rol y proveedor
   aviso_version: false
-  clases: []
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-049
   titulo: Ripple20
   area: aplicacion
@@ -1447,22 +1600,26 @@ entradas:
     precision: dia
     naturaleza: P
   hallazgo: Familia de fallos de memoria en múltiples protocolos
-  identificador: VU#257161; 19 vulnerabilidades
-  cve: []
+  identificador: VU#257161; 19 vulnerabilidades; CVE-2020-11896, ejemplo
+  cve:
+  - CVE-2020-11896
   avisos:
   - VU#257161
   es_familia: true
-  cve_es_ejemplo: false
+  cve_es_ejemplo: true
   fuentes:
   - S38
   condicion: Entrega de tráfico según CVE
   impacto: DoS/RCE u otros efectos
   control: Firmware del fabricante e inventario de componentes
   aviso_version: false
-  clases: []
+  clases:
+  - TX-FIRMWARE
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-050
   titulo: AMNESIA:33
   area: aplicacion
@@ -1479,28 +1636,32 @@ entradas:
     precision: mes
     naturaleza: P
   hallazgo: Familia de errores de memoria
-  identificador: VU#815128; 33 vulnerabilidades
-  cve: []
+  identificador: VU#815128; 33 vulnerabilidades; CVE-2020-24335, ejemplo
+  cve:
+  - CVE-2020-24335
   avisos:
   - VU#815128
   es_familia: true
-  cve_es_ejemplo: false
+  cve_es_ejemplo: true
   fuentes:
   - S39
   condicion: Exposición por componente
   impacto: impacto según CVE
   control: Firmware/parches y segmentación de equipos sin solución
   aviso_version: false
-  clases: []
+  clases:
+  - TX-FIRMWARE
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-051
   titulo: NAME:WRECK
   area: aplicacion
   capas_osi: *id005
   protocolo: DNS / NAME:WRECK
-  alcance: 'FreeBSD, IPnet, NetX, Nucleus NET: componentes/versiones afectados'
+  alcance: 'FreeBSD (dhclient, opción DHCP 119), IPnet, NetX, Nucleus NET: componentes/versiones afectados'
   causas:
   - I
   fechas:
@@ -1508,21 +1669,27 @@ entradas:
     precision: mes
     naturaleza: P
   hallazgo: Parsing DNS y compresión de nombres
-  identificador: 9 vulnerabilidades; informe original
-  cve: []
+  identificador: 9 vulnerabilidades; informe original; CVE-2020-27009, ejemplo
+  cve:
+  - CVE-2020-27009
   avisos: []
   es_familia: true
-  cve_es_ejemplo: false
+  cve_es_ejemplo: true
   fuentes:
   - S40
+  - S57
   condicion: Respuestas procesadas por componente vulnerable
   impacto: DoS/RCE según CVE
   control: Corregir pila/firmware y controlar resolución DNS
   aviso_version: false
-  clases: []
+  clases:
+  - TX-FIRMWARE
+  - L7-DNS
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-052
   titulo: HTTP request smuggling
   area: aplicacion
@@ -1533,10 +1700,13 @@ entradas:
   - D
   - I
   fechas:
+  - valor: 2005-06
+    precision: mes
+    naturaleza: H
   - valor: 2022-06
     precision: mes
     naturaleza: R
-  hallazgo: HTTP request smuggling; anterior a este RFC
+  hallazgo: HTTP request smuggling; antecedente citado de 2005
   identificador: Familia; RFC9112 §11.2
   cve: []
   avisos:
@@ -1549,10 +1719,13 @@ entradas:
   impacto: bypass/confusión
   control: Rechazar ambigüedad y actualizar todos los saltos
   aviso_version: false
-  clases: []
+  clases:
+  - L7-SMUGGLING
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-053
   titulo: Rapid Reset
   area: aplicacion
@@ -1579,10 +1752,13 @@ entradas:
   impacto: agotamiento de recursos
   control: Parches y límites de trabajo/cancelaciones
   aviso_version: false
-  clases: []
+  clases:
+  - L7-DOS-APLICACION
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-054
   titulo: Terrapin
   area: aplicacion
@@ -1608,10 +1784,13 @@ entradas:
   impacto: debilitamiento de negociación
   control: Strict KEX en ambos extremos; actualizar cliente/servidor
   aviso_version: false
-  clases: []
+  clases:
+  - L6-DOWNGRADE
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-055
   titulo: regreSSHion
   area: aplicacion
@@ -1633,14 +1812,18 @@ entradas:
   cve_es_ejemplo: false
   fuentes:
   - S33
+  - S56
   condicion: sshd alcanzable
   impacto: RCE según plataforma/condiciones
   control: Corrección en 9.8p1 o backport del proveedor
   aviso_version: true
-  clases: []
+  clases:
+  - L7-SERVICIOS-PUBLICADOS
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-056
   titulo: Blast-RADIUS
   area: aplicacion
@@ -1669,9 +1852,11 @@ entradas:
   control: Message-Authenticator exigido según fabricante y transporte protegido
   aviso_version: false
   clases: []
-  motivo_sin_clase: null
+  motivo_sin_clase: 'Sin clase equivalente en el catálogo: falsificación en la cadena AAA'
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-057
   titulo: Consumo excesivo de streams sin ACK de settings
   area: aplicacion
@@ -1697,39 +1882,49 @@ entradas:
   impacto: DoS
   control: 'Primera corrección de rama 9: 9.0.107'
   aviso_version: true
-  clases: []
+  clases:
+  - L7-DOS-APLICACION
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: revisada
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 - id: OSI-058
-  titulo: Made You Reset
+  titulo: MadeYouReset
   area: aplicacion
   capas_osi: *id005
-  protocolo: HTTP/2 Apache Tomcat
-  alcance: 'Rama 9: 9.0.0.M1 a 9.0.107'
+  protocolo: HTTP/2
+  alcance: 'Implementaciones HTTP/2 que siguen procesando streams reiniciados por el servidor; ejemplo Apache Tomcat rama 9: 9.0.0.M1 a 9.0.107'
   causas:
+  - D
   - I
   fechas:
   - valor: '2025-08-13'
     precision: dia
     naturaleza: P
-  hallazgo: 'Made You Reset: recursos no liberados adecuadamente'
-  identificador: CVE-2025-48989
+  hallazgo: 'MadeYouReset: reinicios de stream provocados por el cliente que dejan de contarse mientras el servidor sigue procesando'
+  identificador: CVE-2025-8671; VU#767506 con 7 CVE; ejemplo Tomcat CVE-2025-48989
   cve:
+  - CVE-2025-8671
   - CVE-2025-48989
-  avisos: []
-  es_familia: false
-  cve_es_ejemplo: false
+  avisos:
+  - VU#767506
+  es_familia: true
+  cve_es_ejemplo: true
   fuentes:
+  - S55
   - S42
   condicion: Servicio HTTP/2 alcanzable
-  impacto: DoS/memoria
-  control: 'Primera corrección de rama 9: 9.0.108'
+  impacto: DoS por agotamiento de CPU o memoria
+  control: 'Parches del fabricante y límite de RST_STREAM enviados por el servidor; ejemplo Tomcat, primera corrección de rama 9: 9.0.108'
   aviso_version: true
-  clases: []
+  clases:
+  - L7-DOS-APLICACION
   motivo_sin_clase: null
   revision:
-    estado: pendiente
+    estado: corregida
+    fecha: '2026-11-05'
+    por: Claude (IA), por delegación de David Moya
 capa_fisica:
 - superficie: Radio
   amenaza: Interferencia deliberada o accidental; escucha del medio

@@ -452,11 +452,36 @@ attack:
   titulo: 'Unauthorized Message: Command Message, Sub-technique T1692.001 - ICS | MITRE ATT&CK®'
   estado: ok
 cve:
+- id: CVE-1999-0015
+  url: https://www.cve.org/CVERecord?id=CVE-1999-0015
+  http: 200
+  estado: ok
+  publicado: '2000-02-04'
+- id: CVE-1999-0016
+  url: https://www.cve.org/CVERecord?id=CVE-1999-0016
+  http: 200
+  estado: ok
+  publicado: '1999-09-29'
+- id: CVE-1999-0077
+  url: https://www.cve.org/CVERecord?id=CVE-1999-0077
+  http: 200
+  estado: ok
+  publicado: '1999-09-29'
+- id: CVE-1999-0116
+  url: https://www.cve.org/CVERecord?id=CVE-1999-0116
+  http: 200
+  estado: ok
+  publicado: '1999-09-29'
 - id: CVE-1999-0128
   url: https://www.cve.org/CVERecord?id=CVE-1999-0128
   http: 200
   estado: ok
   publicado: '1999-09-29'
+- id: CVE-2008-1447
+  url: https://www.cve.org/CVERecord?id=CVE-2008-1447
+  http: 200
+  estado: ok
+  publicado: '2008-07-08'
 - id: CVE-2008-4250
   url: https://www.cve.org/CVERecord?id=CVE-2008-4250
   http: 200
@@ -472,6 +497,11 @@ cve:
   http: 200
   estado: ok
   publicado: '2011-09-06'
+- id: CVE-2011-5053
+  url: https://www.cve.org/CVERecord?id=CVE-2011-5053
+  http: 200
+  estado: ok
+  publicado: '2012-01-06'
 - id: CVE-2012-4929
   url: https://www.cve.org/CVERecord?id=CVE-2012-4929
   http: 200
@@ -562,6 +592,16 @@ cve:
   http: 200
   estado: ok
   publicado: '2020-05-19'
+- id: CVE-2020-11896
+  url: https://www.cve.org/CVERecord?id=CVE-2020-11896
+  http: 200
+  estado: ok
+  publicado: '2020-06-17'
+- id: CVE-2020-24335
+  url: https://www.cve.org/CVERecord?id=CVE-2020-24335
+  http: 200
+  estado: ok
+  publicado: '2021-02-02'
 - id: CVE-2020-24586
   url: https://www.cve.org/CVERecord?id=CVE-2020-24586
   http: 200
@@ -577,6 +617,11 @@ cve:
   http: 200
   estado: ok
   publicado: '2021-05-11'
+- id: CVE-2020-27009
+  url: https://www.cve.org/CVERecord?id=CVE-2020-27009
+  http: 200
+  estado: ok
+  publicado: '2021-04-22'
 - id: CVE-2023-44487
   url: https://www.cve.org/CVERecord?id=CVE-2023-44487
   http: 200
@@ -607,6 +652,11 @@ cve:
   http: 200
   estado: ok
   publicado: '2025-07-10'
+- id: CVE-2025-8671
+  url: https://www.cve.org/CVERecord?id=CVE-2025-8671
+  http: 200
+  estado: ok
+  publicado: '2025-08-13'
 urls:
 - url: https://attack.mitre.org/
   http: 200
@@ -621,6 +671,9 @@ urls:
   http: 200
   estado: ok
 - url: https://cwe.mitre.org/
+  http: 200
+  estado: ok
+- url: https://doi.org/10.1007/3-540-45537-X_1
   http: 200
   estado: ok
 - url: https://eur-lex.europa.eu/eli/dir/2022/2555/oj
@@ -1058,6 +1111,9 @@ urls:
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=tunneling
   http: null
   estado: manual
+- url: https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10588-74.html
+  http: null
+  estado: manual
 - url: https://www.cisco.com/c/en/us/support/docs/switches/catalyst-3750-series-switches/72846-layer2-secftrs-catl3fixed.html
   http: null
   estado: manual
@@ -1199,6 +1255,9 @@ urls:
 - url: https://www.cvedetails.com/google-search-results.php?q=tunneling
   http: null
   estado: manual
+- url: https://www.forescout.com/company/blog/forescout-and-jsof-disclose-new-dns-vulnerabilities-impacting-millions-of-enterprise-and-consumer-devices/
+  http: null
+  estado: manual
 - url: https://www.fragattacks.com/
   http: 200
   estado: ok
@@ -1220,6 +1279,9 @@ urls:
 - url: https://www.kb.cert.org/vuls/id/723755/
   http: 200
   estado: ok
+- url: https://www.kb.cert.org/vuls/id/767506/
+  http: 200
+  estado: ok
 - url: https://www.kb.cert.org/vuls/id/888801
   http: 200
   estado: ok
@@ -1236,6 +1298,9 @@ urls:
   http: 200
   estado: ok
 - url: https://www.openbsd.org/openssh/releasenotes.html
+  http: 200
+  estado: ok
+- url: https://www.qualys.com/2024/07/01/cve-2024-6387/regresshion.txt
   http: 200
   estado: ok
 - url: https://www.rfc-editor.org/rfc/rfc1948.html
@@ -1281,6 +1346,9 @@ urls:
   http: 200
   estado: ok
 - url: https://www.rfc-editor.org/rfc/rfc9325.html
+  http: 200
+  estado: ok
+- url: https://www.sei.cmu.edu/documents/503/1996_019_001_496172.pdf
   http: 200
   estado: ok
 - url: https://www.sei.cmu.edu/documents/504/1997_019_001_496176.pdf

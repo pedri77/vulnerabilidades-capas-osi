@@ -31,7 +31,7 @@ UA = "Mozilla/5.0 (verificador vulnerabilidades-capas-osi)"
 # Never checked automatically, listed as manual: anti-bot firewalls (403 to scripts, www.cisa.gov after a burst)
 # and www.isg.rhul.ac.uk, whose incomplete certificate chain fails in urllib but not in browsers.
 HOSTS_MANUALES = ("www.cvedetails.com", "www.ccn-cert.cni.es", "ccn-cert.cni.es", "eur-lex.europa.eu", "www.cisco.com",
-                  "www.cisa.gov", "www.isg.rhul.ac.uk")
+                  "www.cisa.gov", "www.isg.rhul.ac.uk", "www.forescout.com")
 
 
 def url_cwe(cid: str) -> str:
