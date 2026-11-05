@@ -31,6 +31,12 @@ cwe:
   titulo: 'CWE - CWE-130: Improper Handling of Length Parameter Inconsistency (5.0)'
   estado: ok
   uso_mapeo: ALLOWED
+- id: CWE-190
+  url: https://cwe.mitre.org/data/definitions/190.html
+  http: 200
+  titulo: 'CWE - CWE-190: Integer Overflow or Wraparound (5.0)'
+  estado: ok
+  uso_mapeo: ALLOWED
 - id: CWE-290
   url: https://cwe.mitre.org/data/definitions/290.html
   http: 200
@@ -77,6 +83,12 @@ cwe:
   url: https://cwe.mitre.org/data/definitions/321.html
   http: 200
   titulo: 'CWE - CWE-321: Use of Hard-coded Cryptographic Key (5.0)'
+  estado: ok
+  uso_mapeo: ALLOWED
+- id: CWE-323
+  url: https://cwe.mitre.org/data/definitions/323.html
+  http: 200
+  titulo: 'CWE - CWE-323: Reusing a Nonce, Key Pair in Encryption (5.0)'
   estado: ok
   uso_mapeo: ALLOWED
 - id: CWE-326
@@ -365,6 +377,11 @@ attack:
   url: https://attack.mitre.org/techniques/T1499/003/
   http: 200
   titulo: 'Endpoint Denial of Service: Application Exhaustion Flood, Sub-technique T1499.003 - Enterprise | MITRE ATT&CK®'
+  estado: ok
+- id: T1499.004
+  url: https://attack.mitre.org/techniques/T1499/004/
+  http: 200
+  titulo: 'Endpoint Denial of Service: Application or System Exploitation, Sub-technique T1499.004 - Enterprise | MITRE ATT&CK®'
   estado: ok
 - id: T1539
   url: https://attack.mitre.org/techniques/T1539/
@@ -688,6 +705,9 @@ urls:
 - url: https://euvd.enisa.europa.eu/search?text=BGP
   http: 200
   estado: ok
+- url: https://euvd.enisa.europa.eu/search?text=Bluetooth%20BR%20EDR
+  http: 200
+  estado: ok
 - url: https://euvd.enisa.europa.eu/search?text=DHCP%20spoofing
   http: 200
   estado: ok
@@ -733,10 +753,16 @@ urls:
 - url: https://euvd.enisa.europa.eu/search?text=TCP%20session%20hijacking
   http: 200
   estado: ok
+- url: https://euvd.enisa.europa.eu/search?text=TCP%20stack%20denial%20of%20service
+  http: 200
+  estado: ok
 - url: https://euvd.enisa.europa.eu/search?text=TLS
   http: 200
   estado: ok
 - url: https://euvd.enisa.europa.eu/search?text=VLAN%20hopping
+  http: 200
+  estado: ok
+- url: https://euvd.enisa.europa.eu/search?text=WPA2%20Wi-Fi
   http: 200
   estado: ok
 - url: https://euvd.enisa.europa.eu/search?text=amplification
@@ -835,6 +861,9 @@ urls:
 - url: https://nvd.nist.gov/vuln/search?keyword=BGP&resultType=records
   http: 200
   estado: ok
+- url: https://nvd.nist.gov/vuln/search?keyword=Bluetooth%20BR%20EDR&resultType=records
+  http: 200
+  estado: ok
 - url: https://nvd.nist.gov/vuln/search?keyword=DHCP%20spoofing&resultType=records
   http: 200
   estado: ok
@@ -880,10 +909,16 @@ urls:
 - url: https://nvd.nist.gov/vuln/search?keyword=TCP%20session%20hijacking&resultType=records
   http: 200
   estado: ok
+- url: https://nvd.nist.gov/vuln/search?keyword=TCP%20stack%20denial%20of%20service&resultType=records
+  http: 200
+  estado: ok
 - url: https://nvd.nist.gov/vuln/search?keyword=TLS&resultType=records
   http: 200
   estado: ok
 - url: https://nvd.nist.gov/vuln/search?keyword=VLAN%20hopping&resultType=records
+  http: 200
+  estado: ok
+- url: https://nvd.nist.gov/vuln/search?keyword=WPA2%20Wi-Fi&resultType=records
   http: 200
   estado: ok
 - url: https://nvd.nist.gov/vuln/search?keyword=amplification&resultType=records
@@ -994,6 +1029,9 @@ urls:
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=BGP
   http: null
   estado: manual
+- url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=Bluetooth%20BR%20EDR
+  http: null
+  estado: manual
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=DHCP%20spoofing
   http: null
   estado: manual
@@ -1039,10 +1077,16 @@ urls:
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=TCP%20session%20hijacking
   http: null
   estado: manual
+- url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=TCP%20stack%20denial%20of%20service
+  http: null
+  estado: manual
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=TLS
   http: null
   estado: manual
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=VLAN%20hopping
+  http: null
+  estado: manual
+- url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=WPA2%20Wi-Fi
   http: null
   estado: manual
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=amplification
@@ -1138,6 +1182,9 @@ urls:
 - url: https://www.cvedetails.com/google-search-results.php?q=BGP
   http: null
   estado: manual
+- url: https://www.cvedetails.com/google-search-results.php?q=Bluetooth%20BR%20EDR
+  http: null
+  estado: manual
 - url: https://www.cvedetails.com/google-search-results.php?q=DHCP%20spoofing
   http: null
   estado: manual
@@ -1183,10 +1230,16 @@ urls:
 - url: https://www.cvedetails.com/google-search-results.php?q=TCP%20session%20hijacking
   http: null
   estado: manual
+- url: https://www.cvedetails.com/google-search-results.php?q=TCP%20stack%20denial%20of%20service
+  http: null
+  estado: manual
 - url: https://www.cvedetails.com/google-search-results.php?q=TLS
   http: null
   estado: manual
 - url: https://www.cvedetails.com/google-search-results.php?q=VLAN%20hopping
+  http: null
+  estado: manual
+- url: https://www.cvedetails.com/google-search-results.php?q=WPA2%20Wi-Fi
   http: null
   estado: manual
 - url: https://www.cvedetails.com/google-search-results.php?q=amplification
