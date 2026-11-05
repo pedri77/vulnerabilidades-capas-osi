@@ -496,7 +496,7 @@ entradas:
   control: Controles de acceso y validación ND según equipos
   aviso_version: false
   clases:
-  - L3-IPV6-RA
+  - L3-IPV6-ND
   motivo_sin_clase: null
   revision:
     estado: revisada
@@ -560,8 +560,9 @@ entradas:
   impacto: DoS de autoconfiguración
   control: Control del enlace y protecciones ND disponibles
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: denegación de servicio en la detección de direcciones duplicadas de IPv6'
+  clases:
+  - L3-IPV6-ND
+  motivo_sin_clase: null
   revision:
     estado: corregida
     fecha: '2026-11-05'
@@ -1122,8 +1123,9 @@ entradas:
   impacto: filtración de secretos
   control: Separar secretos/entrada y mitigaciones de compresión en aplicación
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: fuga por compresión HTTP, no es fallo del cifrado TLS'
+  clases:
+  - L7-COMPRESION-HTTP
+  motivo_sin_clase: null
   revision:
     estado: revisada
     fecha: '2026-11-05'
@@ -1863,8 +1865,9 @@ entradas:
   impacto: respuesta de autenticación falsificada
   control: Message-Authenticator exigido según fabricante y transporte protegido
   aviso_version: false
-  clases: []
-  motivo_sin_clase: 'Sin clase equivalente en el catálogo: falsificación en la cadena AAA'
+  clases:
+  - L7-AAA-RADIUS
+  motivo_sin_clase: null
   revision:
     estado: revisada
     fecha: '2026-11-05'

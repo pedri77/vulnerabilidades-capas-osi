@@ -338,6 +338,25 @@ capas:
       euvd: https://euvd.enisa.europa.eu/search?text=IPv6%20router%20advertisement
       cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=IPv6%20router%20advertisement
       cvedetails: https://www.cvedetails.com/google-search-results.php?q=IPv6%20router%20advertisement
+  - id: L3-IPV6-ND
+    nombre: Neighbor Discovery IPv6 sin proteger
+    descripcion: Mensajes NS y NA falsos en el enlace para suplantar vecinos o impedir que un equipo configure su dirección mediante DAD.
+    cwe: [CWE-346]
+    attack: [T1557, T1498]
+    protocolos: [ICMP]
+    controles:
+    - Inspección de Neighbor Discovery y seguridad de primer salto en switches de acceso
+    - Control de acceso al enlace con 802.1X o NAC
+    - Gestionar IPv6 de forma explícita o deshabilitarlo en el sistema si no se usa
+    deteccion: [Tabla de vecinos y eventos del switch, Fallos de DAD en los registros del sistema]
+    ens: [ENS-op.exp.2, ENS-mp.com.3]
+    nis2: [NIS2-21.2.a]
+    palabra_clave: IPv6%20neighbor%20discovery
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=IPv6%20neighbor%20discovery&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=IPv6%20neighbor%20discovery
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=IPv6%20neighbor%20discovery
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=IPv6%20neighbor%20discovery
   - id: L3-VPN
     nombre: VPN y túneles débiles o sin parchear
     descripcion: IPsec con claves precompartidas débiles o algoritmos obsoletos y concentradores VPN expuestos sin parches.
@@ -689,6 +708,25 @@ capas:
       euvd: https://euvd.enisa.europa.eu/search?text=request%20smuggling
       cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=request%20smuggling
       cvedetails: https://www.cvedetails.com/google-search-results.php?q=request%20smuggling
+  - id: L7-COMPRESION-HTTP
+    nombre: Fuga de secretos por compresión HTTP
+    descripcion: Respuestas comprimidas que mezclan un secreto con contenido influenciable por el atacante y lo filtran por su longitud aunque el tráfico vaya cifrado.
+    cwe: [CWE-203]
+    attack: [T1040]
+    protocolos: [HTTP, TLS]
+    controles:
+    - Separar secretos y contenido controlado por el usuario en la misma respuesta
+    - Tokens anti CSRF enmascarados en cada petición
+    - Desactivar la compresión en respuestas que incluyan secretos
+    deteccion: [Revisión de la compresión en servidores y proxies, Registros de peticiones repetidas con variaciones mínimas]
+    ens: [ENS-mp.s.2, ENS-mp.com.2]
+    nis2: [NIS2-21.2.e, NIS2-21.2.h]
+    palabra_clave: BREACH%20HTTP%20compression
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=BREACH%20HTTP%20compression&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=BREACH%20HTTP%20compression
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=BREACH%20HTTP%20compression
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=BREACH%20HTTP%20compression
   - id: L7-CREDENCIALES
     nombre: Credenciales débiles y fuerza bruta
     descripcion: Contraseñas débiles, por defecto o reutilizadas en servicios de acceso remoto y aplicaciones.
@@ -708,6 +746,25 @@ capas:
       euvd: https://euvd.enisa.europa.eu/search?text=brute%20force
       cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=brute%20force
       cvedetails: https://www.cvedetails.com/google-search-results.php?q=brute%20force
+  - id: L7-AAA-RADIUS
+    nombre: Falsificación de respuestas en RADIUS
+    descripcion: Atacante en el camino que altera el tráfico RADIUS y falsifica una respuesta de autenticación aprovechando la protección basada en MD5.
+    cwe: [CWE-328, CWE-924]
+    attack: [T1557]
+    protocolos: [EAP_8021X]
+    controles:
+    - Exigir Message-Authenticator en clientes y servidores según el fabricante
+    - RADIUS sobre transporte protegido como TLS
+    - Aislar el tráfico AAA en la red de gestión
+    deteccion: [Configuración AAA de clientes y servidores, Registros del servidor RADIUS]
+    ens: [ENS-op.acc.6, ENS-mp.com.3]
+    nis2: [NIS2-21.2.i, NIS2-21.2.j]
+    palabra_clave: RADIUS%20Message-Authenticator
+    consulta:
+      nvd: https://nvd.nist.gov/vuln/search?keyword=RADIUS%20Message-Authenticator&resultType=records
+      euvd: https://euvd.enisa.europa.eu/search?text=RADIUS%20Message-Authenticator
+      cisa_kev: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=RADIUS%20Message-Authenticator
+      cvedetails: https://www.cvedetails.com/google-search-results.php?q=RADIUS%20Message-Authenticator
   - id: L7-TEXTO-CLARO
     nombre: Protocolos en texto claro
     descripcion: Telnet, FTP, SNMP v1 y v2c, HTTP o LDAP sin cifrar que exponen credenciales y datos.

@@ -37,6 +37,12 @@ cwe:
   titulo: 'CWE - CWE-190: Integer Overflow or Wraparound (5.0)'
   estado: ok
   uso_mapeo: ALLOWED
+- id: CWE-203
+  url: https://cwe.mitre.org/data/definitions/203.html
+  http: 200
+  titulo: 'CWE - CWE-203: Observable Discrepancy (5.0)'
+  estado: ok
+  uso_mapeo: ALLOWED
 - id: CWE-290
   url: https://cwe.mitre.org/data/definitions/290.html
   http: 200
@@ -103,6 +109,12 @@ cwe:
   titulo: 'CWE - CWE-327: Use of a Broken or Risky Cryptographic Algorithm (5.0)'
   estado: ok
   uso_mapeo: ALLOWED-WITH-REVIEW
+- id: CWE-328
+  url: https://cwe.mitre.org/data/definitions/328.html
+  http: 200
+  titulo: 'CWE - CWE-328: Use of Weak Hash (5.0)'
+  estado: ok
+  uso_mapeo: ALLOWED
 - id: CWE-345
   url: https://cwe.mitre.org/data/definitions/345.html
   http: 200
@@ -203,6 +215,12 @@ cwe:
   url: https://cwe.mitre.org/data/definitions/918.html
   http: 200
   titulo: 'CWE - CWE-918: Server-Side Request Forgery (5.0)'
+  estado: ok
+  uso_mapeo: ALLOWED
+- id: CWE-924
+  url: https://cwe.mitre.org/data/definitions/924.html
+  http: 200
+  titulo: 'CWE - CWE-924: Improper Enforcement of Message Integrity During Transmission in a Communication Channel (5.0)'
   estado: ok
   uso_mapeo: ALLOWED
 - id: CWE-1104
@@ -705,6 +723,9 @@ urls:
 - url: https://euvd.enisa.europa.eu/search?text=BGP
   http: 200
   estado: ok
+- url: https://euvd.enisa.europa.eu/search?text=BREACH%20HTTP%20compression
+  http: 200
+  estado: ok
 - url: https://euvd.enisa.europa.eu/search?text=Bluetooth%20BR%20EDR
   http: 200
   estado: ok
@@ -726,6 +747,9 @@ urls:
 - url: https://euvd.enisa.europa.eu/search?text=IP%20spoofing
   http: 200
   estado: ok
+- url: https://euvd.enisa.europa.eu/search?text=IPv6%20neighbor%20discovery
+  http: 200
+  estado: ok
 - url: https://euvd.enisa.europa.eu/search?text=IPv6%20router%20advertisement
   http: 200
   estado: ok
@@ -739,6 +763,9 @@ urls:
   http: 200
   estado: ok
 - url: https://euvd.enisa.europa.eu/search?text=NTLM%20relay
+  http: 200
+  estado: ok
+- url: https://euvd.enisa.europa.eu/search?text=RADIUS%20Message-Authenticator
   http: 200
   estado: ok
 - url: https://euvd.enisa.europa.eu/search?text=SQL%20injection
@@ -861,6 +888,9 @@ urls:
 - url: https://nvd.nist.gov/vuln/search?keyword=BGP&resultType=records
   http: 200
   estado: ok
+- url: https://nvd.nist.gov/vuln/search?keyword=BREACH%20HTTP%20compression&resultType=records
+  http: 200
+  estado: ok
 - url: https://nvd.nist.gov/vuln/search?keyword=Bluetooth%20BR%20EDR&resultType=records
   http: 200
   estado: ok
@@ -882,6 +912,9 @@ urls:
 - url: https://nvd.nist.gov/vuln/search?keyword=IP%20spoofing&resultType=records
   http: 200
   estado: ok
+- url: https://nvd.nist.gov/vuln/search?keyword=IPv6%20neighbor%20discovery&resultType=records
+  http: 200
+  estado: ok
 - url: https://nvd.nist.gov/vuln/search?keyword=IPv6%20router%20advertisement&resultType=records
   http: 200
   estado: ok
@@ -895,6 +928,9 @@ urls:
   http: 200
   estado: ok
 - url: https://nvd.nist.gov/vuln/search?keyword=NTLM%20relay&resultType=records
+  http: 200
+  estado: ok
+- url: https://nvd.nist.gov/vuln/search?keyword=RADIUS%20Message-Authenticator&resultType=records
   http: 200
   estado: ok
 - url: https://nvd.nist.gov/vuln/search?keyword=SQL%20injection&resultType=records
@@ -1029,6 +1065,9 @@ urls:
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=BGP
   http: null
   estado: manual
+- url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=BREACH%20HTTP%20compression
+  http: null
+  estado: manual
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=Bluetooth%20BR%20EDR
   http: null
   estado: manual
@@ -1050,6 +1089,9 @@ urls:
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=IP%20spoofing
   http: null
   estado: manual
+- url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=IPv6%20neighbor%20discovery
+  http: null
+  estado: manual
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=IPv6%20router%20advertisement
   http: null
   estado: manual
@@ -1063,6 +1105,9 @@ urls:
   http: null
   estado: manual
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=NTLM%20relay
+  http: null
+  estado: manual
+- url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=RADIUS%20Message-Authenticator
   http: null
   estado: manual
 - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog?search_api_fulltext=SQL%20injection
@@ -1182,6 +1227,9 @@ urls:
 - url: https://www.cvedetails.com/google-search-results.php?q=BGP
   http: null
   estado: manual
+- url: https://www.cvedetails.com/google-search-results.php?q=BREACH%20HTTP%20compression
+  http: null
+  estado: manual
 - url: https://www.cvedetails.com/google-search-results.php?q=Bluetooth%20BR%20EDR
   http: null
   estado: manual
@@ -1203,6 +1251,9 @@ urls:
 - url: https://www.cvedetails.com/google-search-results.php?q=IP%20spoofing
   http: null
   estado: manual
+- url: https://www.cvedetails.com/google-search-results.php?q=IPv6%20neighbor%20discovery
+  http: null
+  estado: manual
 - url: https://www.cvedetails.com/google-search-results.php?q=IPv6%20router%20advertisement
   http: null
   estado: manual
@@ -1216,6 +1267,9 @@ urls:
   http: null
   estado: manual
 - url: https://www.cvedetails.com/google-search-results.php?q=NTLM%20relay
+  http: null
+  estado: manual
+- url: https://www.cvedetails.com/google-search-results.php?q=RADIUS%20Message-Authenticator
   http: null
   estado: manual
 - url: https://www.cvedetails.com/google-search-results.php?q=SQL%20injection
