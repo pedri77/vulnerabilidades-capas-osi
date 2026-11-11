@@ -151,7 +151,7 @@ code.id{{color:var(--mut)}} .aviso{{color:#d29922;font-size:.75rem}}
 <header>
 <h1>Vulnerabilidades y protecciones por capa <span>OSI</span></h1>
 <p class="resumen">{len(cat["capas"]) - 1} capas y una sección transversal, {n_clases} clases de ataque con CWE, MITRE ATT&amp;CK, controles on-premise, detección y mapeo a ENS (RD 311/2022) y NIS2 art. 21.2. Sin CVE concretos: cada clase enlaza búsquedas en fuentes oficiales.</p>
-<p>Relacionado: <a href="historico/">Matriz histórica de protocolos</a> · <a href="figuras/encapsulacion/">Figura: encapsulación OSI</a> · <a href="figuras/tls/">Figura: handshake TLS 1.3</a> · {hermanos}</p>
+<p>Relacionado: <a href="historico/">Matriz histórica de protocolos</a> · <a href="figuras/encapsulacion/">Figura: encapsulación OSI</a> · <a href="figuras/tls/">Figura: handshake TLS 1.3</a> · <a href="figuras/waf/">Figura: WAF</a> · {hermanos}</p>
 </header>
 <main>
 <nav class="filtro" aria-label="Filtrar por capa"><span class="n">Capa:</span> {"".join(botones)}</nav>
