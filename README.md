@@ -18,6 +18,8 @@ Catálogo de vulnerabilidades y protecciones on-premise ordenado por capa OSI. P
 
 Incluye además una [matriz histórica](https://pedri77.github.io/vulnerabilidades-capas-osi/historico/) de casos concretos de protocolos desde 1985: área funcional, década, fecha con su naturaleza, causa, condición, control y fuente. Cada caso enlaza con su clase del catálogo.
 
+Y una [figura interactiva de encapsulación](https://pedri77.github.io/vulnerabilidades-capas-osi/figuras/encapsulacion/): cómo cada capa añade su cabecera al enviar y la retira al recibir.
+
 ## Relación con los otros repositorios
 
 | Repositorio | Para qué |
