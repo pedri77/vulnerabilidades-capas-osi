@@ -343,7 +343,8 @@ def validar_repo(raiz: Path = RAIZ, publicar: bool = False) -> list[str]:
                                        raiz / "docs/capas.md", raiz / "docs/historico/index.html",
                                        raiz / "docs/figuras/encapsulacion/index.html",
                                        raiz / "docs/figuras/tls/index.html",
-                                       raiz / "docs/figuras/waf/index.html"])
+                                       raiz / "docs/figuras/waf/index.html",
+                                       raiz / "docs/figuras/edr/index.html"])
     return errores
 
 
