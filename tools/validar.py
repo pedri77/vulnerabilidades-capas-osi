@@ -341,7 +341,8 @@ def validar_repo(raiz: Path = RAIZ, publicar: bool = False) -> list[str]:
     errores += validar_changelog(hist["meta"]["edicion"], (raiz / "CHANGELOG.md").read_text(encoding="utf-8"))
     errores += validar_ficheros_texto([raiz / "README.md", raiz / "CHANGELOG.md", raiz / "docs/index.html",
                                        raiz / "docs/capas.md", raiz / "docs/historico/index.html",
-                                       raiz / "docs/figuras/encapsulacion/index.html"])
+                                       raiz / "docs/figuras/encapsulacion/index.html",
+                                       raiz / "docs/figuras/tls/index.html"])
     return errores
 
 
