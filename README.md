@@ -20,12 +20,15 @@ Incluye además una [matriz histórica](https://pedri77.github.io/vulnerabilidad
 
 Y una [figura interactiva de encapsulación](https://pedri77.github.io/vulnerabilidades-capas-osi/figuras/encapsulacion/): cómo cada capa añade su cabecera al enviar y la retira al recibir. Y otra del [handshake TLS 1.3](https://pedri77.github.io/vulnerabilidades-capas-osi/figuras/tls/) (capa 6): qué viaja en claro, cómo cada extremo deriva las claves sin enviarlas y qué va cifrado. Y una del [WAF](https://pedri77.github.io/vulnerabilidades-capas-osi/figuras/waf/) (capa 7): normalización, firmas del OWASP CRS, puntuación de anomalía, límite de tasa y excepciones. Y una del [EDR](https://pedri77.github.io/vulnerabilidades-capas-osi/figuras/edr/), que no es una capa OSI sino una defensa en el equipo: sensor, telemetría, detección por comportamiento de una cadena ATT&CK, aislamiento de red y cuarentena.
 
+Y [La torre OSI](https://pedri77.github.io/torre-osi/), una web narrativa que recorre un ataque de L1 a L7 con siete clases de este catálogo y su técnica ATT&CK, y termina con un juego: eliges tres controles y ves si la torre aguanta.
+
 ## Relación con los otros repositorios
 
 | Repositorio | Para qué |
 | --- | --- |
 | [Modelo OSI interactivo](https://pedri77.github.io/modelo_OSI/) | Aprender las 7 capas, PDU y protocolos. |
 | [Protección por capas OSI](https://pedri77.github.io/Basicos_Proteccion_Capas_OSI/) | Curso interactivo: señales, simulador de investigación, quiz. |
+| [La torre OSI](https://pedri77.github.io/torre-osi/) | Web narrativa: un ataque de L1 a L7 con clases de este catálogo y un juego de controles. |
 | Este repositorio | Catálogo de consulta: clase de ataque, CWE, ATT&CK, control, detección y norma. Matriz histórica: casos con fecha y fuente. |
 | [security-manager-control](https://github.com/pedri77/security-manager-control) | Evaluación NIS2/ENS; usa este catálogo en la vertical `VRT-OSI`. |
 
